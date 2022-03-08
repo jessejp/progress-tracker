@@ -1,0 +1,13 @@
+.App {
+  display: flex;
+  justify-content: center;
+}
+
+.heading {
+  margin: 0;
+}
+
+.entries {
+  font-size: 1.3em;
+  color: orange;
+}

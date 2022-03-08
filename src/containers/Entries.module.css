@@ -1,0 +1,103 @@
+.entriesTable {
+  text-align: left;
+  background: #ccc;
+  border-radius: 0.3em;
+
+  display: grid;
+  grid-template-columns: minmax(9em, 36em);
+  grid-template-rows: auto;
+}
+
+.col:first-child {
+  word-break: break-all;
+}
+
+.row:nth-child(2) {
+  border-bottom: 1px black solid;
+}
+
+.row {
+  display: grid;
+  grid-template-rows: minmax(2.2em, auto);
+  grid-template-columns:
+    minmax(auto, 2fr) minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr)
+    6em;
+  grid-column-gap: 0.5em;
+  align-items: center;
+}
+
+.row:nth-child(odd) {
+  background: rgb(173 192 201);
+}
+
+.buttonsContainer {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.submitButton {
+  background-color: #ccc;
+  width: 2em;
+  height: 2em;
+}
+
+.templateHeading {
+  margin: 0px;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.entryHeader {
+  font-weight: 500;
+}
+
+.tableData {
+  vertical-align: middle;
+}
+
+.numVal {
+  font-size: 1em;
+  height: 2em;
+  width: 2em;
+  border: 0;
+}
+
+.numPadContainer {
+  position: relative;
+  width: fit-content;
+}
+
+.numPadContainer button {
+  position: absolute;
+  width: -webkit-fill-available;
+  padding: 0.25em 0;
+  margin: 0;
+  border: 0;
+}
+
+.numBuff {
+  top: -1.6em;
+  border-top-left-radius: 0.6em;
+  border-top-right-radius: 0.6em;
+
+  background: #6abaff;
+}
+
+.numDebuff {
+  bottom: -1.6em;
+  border-bottom-left-radius: 0.6em;
+  border-bottom-right-radius: 0.6em;
+  background: #ddbf5d;
+}
+
+.numPad {
+  font-size: 1em;
+  padding: 0;
+  height: 2em;
+  width: 2em;
+  border: 0;
+
+  text-align: center;
+  font-weight: bold;
+}
