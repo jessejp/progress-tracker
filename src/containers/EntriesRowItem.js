@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import css from "./Entries.module.css";
 
 const dataValuesReducer = (state, action) => {
@@ -38,7 +38,10 @@ const EntriesRowItem = (props) => {
     sets: +props.sets,
   };
 
-  const [editEntryData, setEditEntryData] = useState(false);
+  const [openDataEdit, setOpenDataEdit] = useState(false);
+
+  // State for saving the data edit menu when blur event is activated for another input.
+  const [keepEditing, setKeepEditing] = useState(false);
 
   // Reducer for editing any value of entry
   const [dataValues, dispatchUpdate] = useReducer(
@@ -46,17 +49,31 @@ const EntriesRowItem = (props) => {
     initDataValues
   );
 
+  useEffect(() => {
+    let timerBlur = setTimeout(() => {
+      if (!keepEditing) setOpenDataEdit(false);
+    }, 250);
+    let timerInactivity = setTimeout(() => {
+      setOpenDataEdit(false);
+    }, 2000);
+    return () => {
+      clearTimeout(timerBlur);
+      clearTimeout(timerInactivity);
+    };
+  }, [keepEditing]);
+
   const submitDataHandler = () => {
     console.log("button pressed");
     //props.onDataSubmit(props.name, props.vol, props.reps, props.sets);
   };
 
   const enableEditing = (event) => {
-    if (event.type === "click") setEditEntryData(true);
+    if (event.type === "click") {
+      setOpenDataEdit(true);
+      setKeepEditing(true);
+    }
 
-    if (event.type === "blur") setEditEntryData(false);
-
-    //props.onUpdateEntryData({});
+    if (event.type === "blur") setKeepEditing(false);
   };
 
   const updateSingleValueHandler = (event) => {
@@ -88,11 +105,11 @@ const EntriesRowItem = (props) => {
         onClick={enableEditing}
         onBlur={enableEditing}
       >
-        {!editEntryData && (
+        {!openDataEdit && (
           <span className={css.tableData}>{dataValues.vol}</span>
         )}
 
-        {editEntryData && (
+        {openDataEdit && (
           <div className={css.numPadContainer}>
             <button
               className={css.numBuff}
@@ -109,6 +126,7 @@ const EntriesRowItem = (props) => {
               -2.5
             </button>
             <input
+              autoFocus
               className={css.numPad}
               type="text"
               value={dataValues.vol}
