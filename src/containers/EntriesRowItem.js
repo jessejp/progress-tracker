@@ -136,35 +136,6 @@ const EntriesRowItem = (props) => {
       >
         {!openDataEdit && (
           <span className={css.tableData}>{dataValues.vol}kg</span>
-<<<<<<< HEAD
-=======
-        )}
-
-        {openDataEdit && (
-          <div className={css.numPadContainer}>
-            <button
-              className={css.numBuff}
-              id="BUFF"
-              onClick={updateValueMinBtnHandler}
-            >
-              2.5
-            </button>
-            <button
-              className={css.numDebuff}
-              id="DEBUFF"
-              onClick={updateValueMinBtnHandler}
-            >
-              -2.5
-            </button>
-            <input
-              autoFocus
-              className={css.numPad}
-              type="text"
-              value={dataValues.vol}
-              onChange={updateSingleValueHandler}
-            />
-          </div>
->>>>>>> 0eee85fcfa830776a641858d56d64838182501fc
         )}
         {openDataEdit && dataEditSimpleForm}
       </div>
