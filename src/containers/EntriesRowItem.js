@@ -1,4 +1,5 @@
-import { useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
+import DataContext from "../store/data-context";
 import css from "./Entries.module.css";
 
 const dataValuesReducer = (state, action) => {
@@ -32,13 +33,13 @@ const dataValuesReducer = (state, action) => {
 
 const EntriesRowItem = (props) => {
   const initDataValues = {
+    name: props.name,
     vol: +props.vol,
     reps: +props.reps,
     sets: +props.sets,
   };
 
   const [openDataEdit, setOpenDataEdit] = useState(false);
-
   // State for saving the data edit menu when blur event is activated for another input.
   const [keepEditing, setKeepEditing] = useState(false);
 
@@ -48,7 +49,8 @@ const EntriesRowItem = (props) => {
     initDataValues
   );
 
-  // This effect keeps the value editing menu open if a different input type was chosen.
+  const dataCtx = useContext(DataContext);
+
   useEffect(() => {
     let timerBlur = setTimeout(() => {
       if (!keepEditing) setOpenDataEdit(false);
@@ -65,6 +67,7 @@ const EntriesRowItem = (props) => {
   const submitDataHandler = () => {
     console.log("button pressed");
     //props.onDataSubmit(props.name, props.vol, props.reps, props.sets);
+    dataCtx.addEntry(dataValues);
   };
 
   const enableEditing = (event) => {
@@ -94,6 +97,32 @@ const EntriesRowItem = (props) => {
     });
   };
 
+  const dataEditSimpleForm = (
+    <div className={css.numPadContainer}>
+      <button
+        className={css.numBuff}
+        id="BUFF"
+        onClick={updateValueMinBtnHandler}
+      >
+        2.5
+      </button>
+      <button
+        className={css.numDebuff}
+        id="DEBUFF"
+        onClick={updateValueMinBtnHandler}
+      >
+        -2.5
+      </button>
+      <input
+        autoFocus
+        className={css.numPad}
+        type="text"
+        value={dataValues.vol}
+        onChange={updateSingleValueHandler}
+      />
+    </div>
+  );
+
   return (
     <div className={css.row} key={props.id}>
       <div className={css.col}>
@@ -108,32 +137,7 @@ const EntriesRowItem = (props) => {
         {!openDataEdit && (
           <span className={css.tableData}>{dataValues.vol}kg</span>
         )}
-
-        {openDataEdit && (
-          <div className={css.numPadContainer}>
-            <button
-              className={css.numBuff}
-              id="BUFF"
-              onClick={updateValueMinBtnHandler}
-            >
-              2.5
-            </button>
-            <button
-              className={css.numDebuff}
-              id="DEBUFF"
-              onClick={updateValueMinBtnHandler}
-            >
-              -2.5
-            </button>
-            <input
-              autoFocus
-              className={css.numPad}
-              type="text"
-              value={dataValues.vol}
-              onChange={updateSingleValueHandler}
-            />
-          </div>
-        )}
+        {openDataEdit && dataEditSimpleForm}
       </div>
       <div className={css.col} id="reps">
         <span className={css.tableData}>{props.reps}</span>
