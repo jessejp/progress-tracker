@@ -1,0 +1,21 @@
+.heading {
+  margin: 0;
+}
+
+.menuSelections {
+  font-size: 1.3em;
+  color: orange;
+  display: flex;
+  column-gap: 1em;
+}
+
+.menuItem {
+  padding: 0.1em;
+  background: rgb(255 188 0 / 20%);
+  border-top-left-radius: 0.8em;
+  border-top-right-radius: 0.8em;
+}
+
+.menuItem:hover {
+  cursor: pointer;
+}
