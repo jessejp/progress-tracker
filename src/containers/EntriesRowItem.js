@@ -55,12 +55,12 @@ const EntriesRowItem = (props) => {
     let timerBlur = setTimeout(() => {
       if (!keepEditing) setOpenDataEdit(false);
     }, 250);
-    let timerInactivity = setTimeout(() => {
+    /* let timerInactivity = setTimeout(() => {
       setOpenDataEdit(false);
-    }, 2000);
+    }, 2000); */
     return () => {
       clearTimeout(timerBlur);
-      clearTimeout(timerInactivity);
+      /* clearTimeout(timerInactivity); */
     };
   }, [keepEditing]);
 
@@ -68,7 +68,6 @@ const EntriesRowItem = (props) => {
     console.log("button pressed");
     //props.onDataSubmit(props.name, props.vol, props.reps, props.sets);
     dataCtx.addEntry(dataValues);
-    console.log(dataCtx.totalAmount);
   };
 
   const enableEditing = (event) => {
@@ -136,7 +135,7 @@ const EntriesRowItem = (props) => {
         onBlur={enableEditing}
       >
         {!openDataEdit && (
-          <span className={css.tableData}>{dataValues.vol}</span>
+          <span className={css.tableData}>{dataValues.vol}kg</span>
         )}
         {openDataEdit && dataEditSimpleForm}
       </div>
