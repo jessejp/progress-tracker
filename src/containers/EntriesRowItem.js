@@ -2,7 +2,6 @@ import { useEffect, useReducer, useState } from "react";
 import css from "./Entries.module.css";
 
 const dataValuesReducer = (state, action) => {
-  console.log(action.type, action.evHandler, action.value);
   if (action.evHandler === "CHANGE") {
     return {
       vol: action.value,
@@ -49,16 +48,17 @@ const EntriesRowItem = (props) => {
     initDataValues
   );
 
+  // This effect keeps the value editing menu open if a different input type was chosen.
   useEffect(() => {
     let timerBlur = setTimeout(() => {
       if (!keepEditing) setOpenDataEdit(false);
     }, 250);
-    let timerInactivity = setTimeout(() => {
+    /* let timerInactivity = setTimeout(() => {
       setOpenDataEdit(false);
-    }, 2000);
+    }, 2000); */
     return () => {
       clearTimeout(timerBlur);
-      clearTimeout(timerInactivity);
+      /* clearTimeout(timerInactivity); */
     };
   }, [keepEditing]);
 
@@ -106,7 +106,7 @@ const EntriesRowItem = (props) => {
         onBlur={enableEditing}
       >
         {!openDataEdit && (
-          <span className={css.tableData}>{dataValues.vol}</span>
+          <span className={css.tableData}>{dataValues.vol}kg</span>
         )}
 
         {openDataEdit && (
