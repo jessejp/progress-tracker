@@ -9,7 +9,7 @@ const entriesData = [
     vol: "25",
     reps: "8",
     sets: "3",
-    enableColorKeys: true,
+    enableRPE: true,
   },
   {
     category: "Weight Lifting",
@@ -17,7 +17,7 @@ const entriesData = [
     vol: "20",
     reps: "12",
     sets: "3",
-    enableColorKeys: false,
+    enableRPE: false,
   },
   {
     category: "Weight Lifting",
@@ -25,28 +25,12 @@ const entriesData = [
     vol: "35",
     reps: "20",
     sets: "3",
-    enableColorKeys: true,
+    enableRPE: true,
   },
 ];
 
 const Entries = () => {
   const [entries, setEntries] = useState(entriesData);
-  const [savedData, setSavedData] = useState([]);
-
-  // save new data entry to state, used for data visualisation
-  const dataEntry = (name, vol, reps, sets) => {
-    const newEntry = [name, vol, reps, sets];
-    setSavedData((prevState) => {
-      return [...prevState, newEntry];
-    });
-  };
-
-  const updateEntryDataHandler = (updatedEntry) => {
-    /* setEntries(prevEntries => {
-
-    }); */
-    console.log(updatedEntry);
-  };
 
   // map table rows
   const entryRows = entries.map((e, index) => {
@@ -59,9 +43,7 @@ const Entries = () => {
         vol={e.vol}
         reps={e.reps}
         sets={e.sets}
-        enableColorKeys={e.enableColorKeys}
-        onDataSubmit={dataEntry}
-        onUpdateEntryData={updateEntryDataHandler}
+        enableRPE={e.enableRPE}
       />
     );
   });
