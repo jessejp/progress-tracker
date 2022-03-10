@@ -5,6 +5,7 @@ import css from "./Entries.module.css";
 const dataValuesReducer = (state, action) => {
   if (action.evHandler === "CHANGE") {
     return {
+      name: action.name,
       vol: action.value,
       reps: state.reps,
       sets: state.sets,
@@ -12,6 +13,7 @@ const dataValuesReducer = (state, action) => {
   }
   if (action.evHandler === "BUFF") {
     return {
+      name: action.name,
       vol: state.vol + action.value,
       reps: state.reps,
       sets: state.sets,
@@ -19,12 +21,14 @@ const dataValuesReducer = (state, action) => {
   }
   if (action.evHandler === "DEBUFF") {
     return {
+      name: action.name,
       vol: state.vol - action.value,
       reps: state.reps,
       sets: state.sets,
     };
   }
   return {
+    name: state.name,
     vol: state.vol,
     reps: state.reps,
     sets: state.sets,
@@ -64,8 +68,8 @@ const EntriesRowItem = (props) => {
     };
   }, [keepEditing]);
 
-  const submitDataHandler = () => {
-    console.log("button pressed");
+  const submitDataHandler = (event) => {
+    console.log(dataValues);
     //props.onDataSubmit(props.name, props.vol, props.reps, props.sets);
     dataCtx.addEntry(dataValues);
   };
@@ -82,6 +86,7 @@ const EntriesRowItem = (props) => {
   const updateSingleValueHandler = (event) => {
     dispatchUpdate({
       type: "VOL",
+      name: event.target.name,
       evHandler: "CHANGE",
       value: +event.target.value,
     });
@@ -92,6 +97,7 @@ const EntriesRowItem = (props) => {
 
     dispatchUpdate({
       type: "VOL",
+      name: event.target.name,
       evHandler: event.target.id,
       value: minVal,
     });
@@ -103,6 +109,7 @@ const EntriesRowItem = (props) => {
         className={css.numBuff}
         id="BUFF"
         onClick={updateValueMinBtnHandler}
+        name={props.name}
       >
         2.5
       </button>
@@ -110,6 +117,7 @@ const EntriesRowItem = (props) => {
         className={css.numDebuff}
         id="DEBUFF"
         onClick={updateValueMinBtnHandler}
+        name={props.name}
       >
         -2.5
       </button>
@@ -119,6 +127,7 @@ const EntriesRowItem = (props) => {
         type="text"
         value={dataValues.vol}
         onChange={updateSingleValueHandler}
+        name={props.name}
       />
     </div>
   );
@@ -150,8 +159,9 @@ const EntriesRowItem = (props) => {
           <button
             className={css.submitButton}
             onClick={submitDataHandler}
+            name={props.name}
           ></button>
-          {props.enableColorKeys && (
+          {props.enableRPE && (
             <>
               <button className={css.submitButton}></button>
               <button className={css.submitButton}></button>

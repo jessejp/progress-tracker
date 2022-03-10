@@ -7,20 +7,22 @@ const defaultDataState = {
 };
 
 const dataReducer = (state, action) => {
-  if (action.type === "ADD") {
-    return {
-      entries: [
-        {
-          name: action.name,
-          vol: 12,
-          reps: 8,
-          sets: 5,
-        },
-      ],
-      totalAmount: state.totalAmount++,
-    };
+  switch (action.type) {
+    case "ADD":
+      return {
+        entries: [
+          {
+            name: action.entry.name,
+            vol: action.entry.vol,
+            reps: action.entry.reps,
+            sets: action.entry.sets,
+          },
+        ],
+        totalAmount: state.totalAmount++,
+      };
+    default:
+      throw new Error();
   }
-  return defaultDataState;
 };
 
 const DataProvider = (props) => {
