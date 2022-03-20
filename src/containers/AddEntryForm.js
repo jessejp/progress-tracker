@@ -2,16 +2,20 @@ import css from "./AddEntryForm.module.css";
 import { useDispatch } from "react-redux";
 import { entryActions } from "../store/entries-slice";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const defaultFormState = {
+  name: "",
+  mass: "",
+  reps: "",
+  sets: "",
+};
 
 const AddEntryForm = () => {
-  const [userInput, setUserInput] = useState({
-    name: "",
-    mass: "",
-    reps: "",
-    sets: "",
-  });
+  const [userInput, setUserInput] = useState(defaultFormState);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const updateInputStates = (event) => {
     switch (event.target.id) {
@@ -42,6 +46,8 @@ const AddEntryForm = () => {
           sets: event.target.value,
         });
         break;
+      default:
+        break;
     }
   };
 
@@ -55,24 +61,55 @@ const AddEntryForm = () => {
         sets: +userInput.sets,
       })
     );
+
+    setUserInput(defaultFormState);
+
+    if (!event.target.innerText.includes("Add Another")) {
+      navigate("/entries");
+    }
   };
 
   return (
     <form className={css.formContainer}>
       <p>Set initial values</p>
       <label htmlFor="name">Move Name</label>
-      <input type="text" name="name" id="name" onChange={updateInputStates} />
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value={userInput.name}
+        onChange={updateInputStates}
+      />
 
       <label htmlFor="mass">Mass</label>
-      <input type="number" name="mass" id="mass" onChange={updateInputStates} />
+      <input
+        type="number"
+        name="mass"
+        id="mass"
+        value={userInput.mass}
+        onChange={updateInputStates}
+      />
 
       <label htmlFor="reps">Reps</label>
-      <input type="number" name="reps" id="reps" onChange={updateInputStates} />
+      <input
+        type="number"
+        name="reps"
+        id="reps"
+        value={userInput.reps}
+        onChange={updateInputStates}
+      />
 
       <label htmlFor="sets">Sets</label>
-      <input type="number" name="sets" id="sets" onChange={updateInputStates} />
+      <input
+        type="number"
+        name="sets"
+        id="sets"
+        value={userInput.sets}
+        onChange={updateInputStates}
+      />
 
       <button onClick={addNewEntry}>Submit</button>
+      <button onClick={addNewEntry}>Submit & Add Another</button>
     </form>
   );
 };
