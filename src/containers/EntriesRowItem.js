@@ -1,46 +1,50 @@
-import { useContext, useEffect, useReducer, useState } from "react";
-import DataContext from "../store/data-context";
+import { useEffect, useReducer, useState } from "react";
 import css from "./Entries.module.css";
 
 const dataValuesReducer = (state, action) => {
   if (action.evHandler === "CHANGE") {
     return {
       name: action.name,
-      vol: action.value,
+      mass: action.value,
       reps: state.reps,
       sets: state.sets,
+      rpe: state.rpe,
     };
   }
   if (action.evHandler === "BUFF") {
     return {
       name: action.name,
-      vol: state.vol + action.value,
+      mass: state.mass + action.value,
       reps: state.reps,
       sets: state.sets,
+      rpe: state.rpe,
     };
   }
   if (action.evHandler === "DEBUFF") {
     return {
       name: action.name,
-      vol: state.vol - action.value,
+      mass: state.mass - action.value,
       reps: state.reps,
       sets: state.sets,
+      rpe: state.rpe,
     };
   }
   return {
     name: state.name,
-    vol: state.vol,
+    mass: state.mass,
     reps: state.reps,
     sets: state.sets,
+    rpe: state.rpe,
   };
 };
 
 const EntriesRowItem = (props) => {
   const initDataValues = {
     name: props.name,
-    vol: +props.vol,
+    mass: +props.mass,
     reps: +props.reps,
     sets: +props.sets,
+    rpe: 5,
   };
 
   const [openDataEdit, setOpenDataEdit] = useState(false);
@@ -52,8 +56,6 @@ const EntriesRowItem = (props) => {
     dataValuesReducer,
     initDataValues
   );
-
-  const dataCtx = useContext(DataContext);
 
   useEffect(() => {
     let timerBlur = setTimeout(() => {
@@ -70,12 +72,19 @@ const EntriesRowItem = (props) => {
 
   const submitDataHandler = (event) => {
     console.log(dataValues);
-    //props.onDataSubmit(props.name, props.vol, props.reps, props.sets);
-    dataCtx.addEntry(dataValues);
+    //props.onDataSubmit(props.name, props.mass, props.reps, props.sets);
+    //dataCtx.addEntry(dataValues);
   };
 
+  /* As the form to edit data pops up after interacting with the data key, 
+  here I declare the rules for if the form should be hidden after blurring from the inputs or to stay open */
   const enableEditing = (event) => {
-    if (event.type === "click") {
+    if (
+      event.type === "click" ||
+      event.code === "Enter" ||
+      (event.type === "focus" &&
+        ["BUFF", "DEBUFF", "NUMBER"].includes(event.target.id))
+    ) {
       setOpenDataEdit(true);
       setKeepEditing(true);
     }
@@ -85,7 +94,7 @@ const EntriesRowItem = (props) => {
 
   const updateSingleValueHandler = (event) => {
     dispatchUpdate({
-      type: "VOL",
+      type: "MASS",
       name: event.target.name,
       evHandler: "CHANGE",
       value: +event.target.value,
@@ -96,7 +105,7 @@ const EntriesRowItem = (props) => {
     const minVal = 2.5;
 
     dispatchUpdate({
-      type: "VOL",
+      type: "MASS",
       name: event.target.name,
       evHandler: event.target.id,
       value: minVal,
@@ -113,6 +122,15 @@ const EntriesRowItem = (props) => {
       >
         2.5
       </button>
+      <input
+        autoFocus
+        className={css.numPad}
+        id="NUMBER"
+        type="text"
+        value={dataValues.mass}
+        onChange={updateSingleValueHandler}
+        name={props.name}
+      />
       <button
         className={css.numDebuff}
         id="DEBUFF"
@@ -121,14 +139,6 @@ const EntriesRowItem = (props) => {
       >
         -2.5
       </button>
-      <input
-        autoFocus
-        className={css.numPad}
-        type="text"
-        value={dataValues.vol}
-        onChange={updateSingleValueHandler}
-        name={props.name}
-      />
     </div>
   );
 
@@ -139,12 +149,19 @@ const EntriesRowItem = (props) => {
       </div>
       <div
         className={css.col}
-        id="vol"
+        id="mass"
         onClick={enableEditing}
         onBlur={enableEditing}
+        onFocus={enableEditing}
       >
         {!openDataEdit && (
-          <span className={css.tableData}>{dataValues.vol}kg</span>
+          <span
+            className={css.tableData}
+            onKeyDown={enableEditing}
+            tabIndex={0}
+          >
+            {dataValues.mass}kg
+          </span>
         )}
         {openDataEdit && dataEditSimpleForm}
       </div>
