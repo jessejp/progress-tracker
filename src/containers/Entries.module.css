@@ -86,6 +86,7 @@
 
 .numDebuff {
   bottom: -1.6em;
+  left: 0;
   border-bottom-left-radius: 0.6em;
   border-bottom-right-radius: 0.6em;
   background: #ddbf5d;
