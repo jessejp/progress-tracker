@@ -1,7 +1,6 @@
 .entriesTable {
   text-align: left;
   background: #ccc;
-  border-radius: 0.3em;
 
   display: grid;
   grid-template-columns: minmax(9em, 36em);
@@ -9,7 +8,8 @@
 }
 
 .col:first-child {
-  word-break: break-all;
+  word-break: break-word;
+  margin-left: 0.4em;
 }
 
 .row:nth-child(2) {
@@ -21,7 +21,7 @@
   grid-template-rows: minmax(2.2em, auto);
   grid-template-columns:
     minmax(auto, 2fr) minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr)
-    6em;
+    3em;
   grid-column-gap: 0.5em;
   align-items: center;
 }
@@ -33,7 +33,7 @@
 .buttonsContainer {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
 }
 
 .submitButton {
@@ -44,6 +44,8 @@
 
 .templateHeading {
   margin: 0px;
+  margin-left: 0.2em;
+
   font-size: 1.2em;
   font-weight: 500;
 }

@@ -7,13 +7,34 @@ const Header = () => {
       <h1 className={css.heading}>progress tracker app v0</h1>
       <div className={css.menuSelections}>
         <div className={css.menuItem}>
-          <NavLink to="/entries">Entries</NavLink>
+          <NavLink
+            to="/entries"
+            className={(navData) =>
+              navData.isActive ? css.active : css.inactive
+            }
+          >
+            Entries
+          </NavLink>
         </div>
         <div className={css.menuItem}>
-          <NavLink to="/addnew">Add New</NavLink>
+          <NavLink
+            to="/addnew"
+            className={(navData) =>
+              navData.isActive ? css.active : css.inactive
+            }
+          >
+            Add New
+          </NavLink>
         </div>
         <div className={css.menuItem}>
-          <NavLink to="/graphs">Graphs</NavLink>
+          <NavLink
+            to="/graphs"
+            className={(navData) =>
+              navData.isActive ? css.active : css.inactive
+            }
+          >
+            Graphs
+          </NavLink>
         </div>
       </div>
     </header>
