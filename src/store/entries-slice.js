@@ -7,7 +7,7 @@ const entriesData = [
     mass: "25",
     reps: "8",
     sets: "3",
-    enableRPE: true,
+    enableRPE: false,
   },
   {
     category: "Weight Lifting",
@@ -23,7 +23,7 @@ const entriesData = [
     mass: "35",
     reps: "20",
     sets: "3",
-    enableRPE: true,
+    enableRPE: false,
   },
 ];
 

@@ -177,13 +177,9 @@ const EntriesRowItem = (props) => {
             className={css.submitButton}
             onClick={submitDataHandler}
             name={props.name}
-          ></button>
-          {props.enableRPE && (
-            <>
-              <button className={css.submitButton}></button>
-              <button className={css.submitButton}></button>
-            </>
-          )}
+          >
+            ✔
+          </button>
         </div>
       </div>
     </div>

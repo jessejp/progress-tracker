@@ -107,9 +107,10 @@ const AddEntryForm = () => {
         value={userInput.sets}
         onChange={updateInputStates}
       />
-
-      <button onClick={addNewEntry}>Submit</button>
-      <button onClick={addNewEntry}>Submit & Add Another</button>
+      <div>
+        <button onClick={addNewEntry}>Submit & Add Another</button>
+        <button onClick={addNewEntry}>Submit</button>
+      </div>
     </form>
   );
 };
