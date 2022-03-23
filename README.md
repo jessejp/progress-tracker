@@ -4,7 +4,7 @@
 
 An app to track weightlifting progress by having the user **add an exercise** with the weight, repetitions and sets values.
 
-After doing their workout, user can then submit the completed exercises and update the values to where they want to progress next.
+After doing their workout, user can then submit the completed exercises and update the mass, reps or sets values to where they want to progress next.
 
 From the graphs page, user can see progress submitted in a graph.
 
