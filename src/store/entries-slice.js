@@ -7,7 +7,6 @@ const entriesData = [
     mass: "25",
     reps: "8",
     sets: "3",
-    enableRPE: false,
   },
   {
     category: "Weight Lifting",
@@ -15,7 +14,6 @@ const entriesData = [
     mass: "20",
     reps: "12",
     sets: "3",
-    enableRPE: false,
   },
   {
     category: "Weight Lifting",
@@ -23,7 +21,6 @@ const entriesData = [
     mass: "35",
     reps: "20",
     sets: "3",
-    enableRPE: false,
   },
 ];
 
@@ -45,7 +42,6 @@ const entriesSlice = createSlice({
           mass: newEntry.mass,
           reps: newEntry.reps,
           sets: newEntry.sets,
-          enableRPE: newEntry.enableRPE,
         });
       }
     },

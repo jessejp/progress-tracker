@@ -1,6 +1,6 @@
 import css from "./AddEntryForm.module.css";
 import { useDispatch } from "react-redux";
-import { entryActions } from "../store/entries-slice";
+import { entryActions } from "../../store/entries-slice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
