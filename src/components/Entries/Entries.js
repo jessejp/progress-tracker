@@ -1,13 +1,18 @@
 import { useSelector } from "react-redux";
 import css from "./Entries.module.css";
 import EntriesRowItem from "./EntriesRowItem";
-import { Routes, Route, Link, useParams } from "react-router-dom";
+import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import AddEntryForm from "../AddNewEntry/AddEntryForm";
 
 const Entries = () => {
-  const entries = useSelector((state) => state.entries);
+  const entries = useSelector((state) => state.entries.entries);
   const params = useParams();
   const formOpen = Object.values(params)[0];
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate("/entries", { replace: false });
+  };
 
   // map table rows
   const entryRows = entries.map((e, index) => {
@@ -35,7 +40,7 @@ const Entries = () => {
             <div>Weight Lifting</div>
             <div>
               {!formOpen && <Link to="addnew">Add New</Link>}
-              {formOpen && <a>close</a>}
+              {formOpen && <button onClick={goBack}>close</button>}
             </div>
           </div>
 
