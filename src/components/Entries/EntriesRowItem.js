@@ -1,6 +1,8 @@
 import { useEffect, useReducer, useState } from "react";
 import css from "./Entries.module.css";
 import EntriesDataInput from "./EntriesDataInput";
+import { useDispatch } from "react-redux";
+import { graphDataActions } from "../../store/graph-data-slice";
 
 const defaultBufferValue = {
   mass: 2.5,
@@ -100,6 +102,8 @@ const EntriesRowItem = (props) => {
     initDataValues
   );
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let timerBlur = setTimeout(() => {
       if (!keepEditing) setEnableEditing(false);
@@ -114,7 +118,7 @@ const EntriesRowItem = (props) => {
   }, [keepEditing]);
 
   const submitDataHandler = (event) => {
-    console.log(dataValues);
+    dispatch(graphDataActions.addData(dataValues));
     //props.onDataSubmit(dataValues.name, props.mass, props.reps, props.sets);
     //dataCtx.addEntry(dataValues);
   };
@@ -145,7 +149,6 @@ const EntriesRowItem = (props) => {
 
   const updateValueBtnHandler = (event) => {
     const minVal = 2.5;
-    console.log(event);
 
     dispatchUpdate({
       type: event.target.name,

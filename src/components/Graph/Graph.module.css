@@ -1,0 +1,11 @@
+.graphContainer {
+  background: #ccc;
+  display: grid;
+  grid-template-columns: minmax(9em, 36em);
+  grid-template-rows: auto;
+}
+
+.svgContainer {
+  background: white;
+  margin: 5%;
+}

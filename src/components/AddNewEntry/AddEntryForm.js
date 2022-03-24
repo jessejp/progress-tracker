@@ -2,7 +2,6 @@ import css from "./AddEntryForm.module.css";
 import { useDispatch } from "react-redux";
 import { entryActions } from "../../store/entries-slice";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const defaultFormState = {
   name: "",
@@ -15,7 +14,6 @@ const AddEntryForm = () => {
   const [userInput, setUserInput] = useState(defaultFormState);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const updateInputStates = (event) => {
     switch (event.target.id) {
@@ -63,10 +61,6 @@ const AddEntryForm = () => {
     );
 
     setUserInput(defaultFormState);
-
-    if (!event.target.innerText.includes("Add Another")) {
-      navigate("/entries");
-    }
   };
 
   return (
@@ -108,7 +102,6 @@ const AddEntryForm = () => {
         onChange={updateInputStates}
       />
       <div>
-        <button onClick={addNewEntry}>Submit & Add Another</button>
         <button onClick={addNewEntry}>Submit</button>
       </div>
     </form>
