@@ -19,4 +19,11 @@
 
 .svgContainer {
   background: white;
+  padding: 1em 0;
+}
+
+.graphText {
+  font-size: 1.5em;
+  font-family: monospace;
+  font-weight: 600;
 }

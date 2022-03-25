@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const entriesData = [
+/* const entriesData = [
   {
     category: "Weight Lifting",
     name: "Bench",
@@ -22,12 +22,12 @@ const entriesData = [
     reps: "20",
     sets: "3",
   },
-];
+]; */
 
 const entriesSlice = createSlice({
   name: "entries",
   initialState: {
-    entries: entriesData,
+    entries: [],
   },
   reducers: {
     addEntry(state, action) {

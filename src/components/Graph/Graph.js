@@ -23,9 +23,6 @@ const Graph = () => {
 
   const dataState = useSelector((state) => state.graph.data);
 
-  const [showValue, setShowValue] = useState(false);
-  const [currentlyShownValue, setCurrentlyShownValue] = useState();
-
   const [selectedEntry, setSelectedEntry] = useState(
     dataState.length !== 0 ? dataState[0].name : ""
   );
@@ -36,56 +33,36 @@ const Graph = () => {
       return a - b;
     });
 
-    let yDivided = [];
-
-    for (let i = 1; i <= sortedArr.length; i++) {
-      if (sortedArr.length === 1) {
-        yDivided.push(50);
-      } else if (sortedArr[i - 2] === sortedArr[i - 1]) {
-        yDivided.push(yDivided[yDivided.length - 1]);
-      } else {
-        yDivided.push(Math.round(100 / sortedArr.length) * i);
-      }
-    }
-
-    let setYCoords = [];
+    let yCoords = [];
     let lastCenter = null;
 
-    for (let i = 0; i < yDivided.length; i++) {
-      const center = yDivided[Math.round(yDivided.length / 2)];
-      const centerIndex = yDivided.findIndex((a) => a === center);
+    for (let i = 0; i < sortedArr.length; i++) {
+      const center = sortedArr[Math.round(sortedArr.length / 2)];
+      const centerIndex = sortedArr.findIndex((a) => a === center);
 
       const wholeIndex = i + 1;
       const wholeCenterIndex = centerIndex + 1;
 
-      if (yDivided[i] === center) {
-        setYCoords.push(50);
+      if (sortedArr[i] === center) {
+        yCoords.push(50);
 
-        if (yDivided[i + 1] !== center) lastCenter = i;
+        if (sortedArr[i + 1] !== center) lastCenter = i;
       } else if (i < centerIndex) {
-        setYCoords.push((50 / wholeCenterIndex) * wholeIndex);
+        yCoords.push(Math.round(50 / wholeCenterIndex) * wholeIndex);
       } else if (i > centerIndex) {
-        const indexedLeft = yDivided.length - lastCenter;
-        setYCoords.push(50 / indexedLeft + 50);
+        const indexLeft = sortedArr.length - lastCenter;
+        yCoords.push(Math.round(50 / indexLeft) * wholeIndex);
       }
     }
+
+    const balanceArray = yCoords.map((y) => (y * (y / 100)) / 2 + 2);
+
     return {
       unsorted: sortableArr,
       sorted: sortedArr,
-      yCoords: setYCoords,
+      yCoords: balanceArray,
     };
   }, []);
-
-  const valueBoxHandler = (pointVal, event) => {
-    if (event.type === "mouseenter") {
-      setCurrentlyShownValue(pointVal);
-      setShowValue(true);
-    }
-    if (event.type === "mouseleave") {
-      setCurrentlyShownValue(null);
-      setShowValue(false);
-    }
-  };
 
   const onSelectedEntry = (event) => {
     setSelectedEntry(event.target.value);
@@ -101,6 +78,8 @@ const Graph = () => {
       isInitial = false;
     }
   }, [svgBulletLocation, selectedEntry, dataState]);
+
+  console.log(graphPoints);
 
   return (
     <div className={css.graphContainer}>
@@ -119,11 +98,6 @@ const Graph = () => {
             </select>
           </form>
         )}
-
-        <div>
-          <span>{showValue ? `${currentlyShownValue}kg` : 0}</span>
-        </div>
-
         <svg className={css.svgContainer} height="300" width="90%">
           {graphPoints.unsorted.map((point, index) => {
             const yIndex = graphPoints.sorted.findIndex(
@@ -142,11 +116,11 @@ const Graph = () => {
             }
             return (
               <SvgCircle
-                onHoverCircle={valueBoxHandler.bind(null, point)}
+                pointValue={point}
                 key={index}
                 indexID={index}
                 xCoordinate={index * 30 + 15}
-                yCoordinate={`${100 - graphPoints.yCoords[yIndex]}%`}
+                yCoordinate={100 - graphPoints.yCoords[yIndex]}
                 lineProperties={lineProperties}
               />
             );

@@ -66,7 +66,7 @@ const AddEntryForm = () => {
   return (
     <form className={css.formContainer}>
       <p>Set initial values</p>
-      <label htmlFor="name">Move Name</label>
+      <label htmlFor="name">Exercise Name</label>
       <input
         type="text"
         name="name"
