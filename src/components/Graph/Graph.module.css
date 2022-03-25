@@ -5,7 +5,18 @@
   grid-template-rows: auto;
 }
 
+.graphFlexContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em;
+}
+
+.entryForm {
+  width: 90%;
+  margin-bottom: 1em;
+}
+
 .svgContainer {
   background: white;
-  margin: 5%;
 }

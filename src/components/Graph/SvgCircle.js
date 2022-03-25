@@ -2,9 +2,11 @@ const SvgCircle = (props) => {
   return (
     <>
       <circle
+        id={props.indexID}
+        onMouseEnter={props.onHoverCircle}
         cx={props.xCoordinate}
         cy={props.yCoordinate}
-        r="5"
+        r="6"
         stroke="black"
         strokeWidth="1"
         fill="#788cff"
