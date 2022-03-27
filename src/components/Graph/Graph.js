@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import css from "./Graph.module.css";
 import SvgCircle from "./SvgCircle";
+import SvgLine from "./SvgLine";
 /* const DUMMY_DATA = [
   {
     name: "Bench Press",
@@ -23,9 +24,8 @@ const Graph = () => {
 
   const dataState = useSelector((state) => state.graph.data);
 
-  const [selectedEntry, setSelectedEntry] = useState(
-    dataState.length !== 0 ? dataState[0].name : ""
-  );
+  const initialSelection = dataState.length !== 0 ? dataState[0].name : "";
+  const [selectedEntry, setSelectedEntry] = useState(initialSelection);
 
   const svgBulletLocation = useCallback((sortableArr) => {
     let sortedArr = [...sortableArr];
@@ -35,27 +35,28 @@ const Graph = () => {
 
     let yCoords = [];
     let lastCenter = null;
+    const center = sortedArr[Math.round(sortedArr.length / 2)];
+    const centerIndex = sortedArr.findIndex((a) => a === center);
 
     for (let i = 0; i < sortedArr.length; i++) {
-      const center = sortedArr[Math.round(sortedArr.length / 2)];
-      const centerIndex = sortedArr.findIndex((a) => a === center);
-
       const wholeIndex = i + 1;
       const wholeCenterIndex = centerIndex + 1;
 
       if (sortedArr[i] === center) {
         yCoords.push(50);
-
         if (sortedArr[i + 1] !== center) lastCenter = i;
       } else if (i < centerIndex) {
         yCoords.push(Math.round(50 / wholeCenterIndex) * wholeIndex);
       } else if (i > centerIndex) {
         const indexLeft = sortedArr.length - lastCenter;
-        yCoords.push(Math.round(50 / indexLeft) * wholeIndex);
+        yCoords.push(Math.round(50 / indexLeft) * (i - lastCenter) + 50);
       }
     }
 
-    const balanceArray = yCoords.map((y) => (y * (y / 100)) / 2 + 2);
+    const balanceArray =
+      sortedArr[sortableArr.length - 1] > 100
+        ? yCoords.map((y) => (y * (y / 100)) / 2 + 2)
+        : yCoords;
 
     return {
       unsorted: sortableArr,
@@ -98,7 +99,7 @@ const Graph = () => {
             </select>
           </form>
         )}
-        <svg className={css.svgContainer} height="300" width="90%">
+        <svg className={css.svgContainer} height="300" width="100%">
           {graphPoints.unsorted.map((point, index) => {
             const yIndex = graphPoints.sorted.findIndex(
               (sortedPoint) => sortedPoint === point
@@ -110,8 +111,9 @@ const Graph = () => {
                 (sortedPoint) => sortedPoint === graphPoints.unsorted[index - 1]
               );
               lineProperties = {
-                x1: (index - 1) * 30 + 15,
+                x1: (index - 1) * 25 + 25,
                 y1: `${100 - graphPoints.yCoords[lastYIndex]}%`,
+                color: "rgb(120, 140, 255, 50%)",
               };
             }
             return (
@@ -119,11 +121,38 @@ const Graph = () => {
                 pointValue={point}
                 key={index}
                 indexID={index}
-                xCoordinate={index * 30 + 15}
+                xCoordinate={index * 25 + 25}
                 yCoordinate={100 - graphPoints.yCoords[yIndex]}
                 lineProperties={lineProperties}
               />
             );
+          })}
+          {graphPoints.sorted.map((line, index) => {
+            if (graphPoints.sorted[index - 1] !== line) {
+              return (
+                <>
+                  <text
+                    y={`${100 - graphPoints.yCoords[index] - 1}%`}
+                    x="0"
+                    className={css.lineText}
+                    stroke="rgb(20, 40, 55, 10%)"
+                  >
+                    {line}
+                  </text>
+                  <SvgLine
+                    key={`${index}_svgline`}
+                    lineProperties={{
+                      x1: 0,
+                      y1: `${100 - graphPoints.yCoords[index]}%`,
+                      color: "rgb(20, 40, 55, 10%)",
+                    }}
+                    x2="100%"
+                    y2={`${100 - graphPoints.yCoords[index]}%`}
+                  />
+                </>
+              );
+            }
+            return "";
           })}
         </svg>
       </div>

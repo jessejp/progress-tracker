@@ -1,5 +1,6 @@
 import { useState } from "react";
 import css from "./Graph.module.css";
+import SvgLine from "./SvgLine";
 
 const SvgCircle = (props) => {
   const [showValue, setShowValue] = useState(false);
@@ -36,12 +37,10 @@ const SvgCircle = (props) => {
         fill="#788cff"
       />
       {props.lineProperties.x1 && props.lineProperties.y1 && (
-        <line
-          x1={props.lineProperties.x1}
-          y1={props.lineProperties.y1}
+        <SvgLine
+          lineProperties={props.lineProperties}
           x2={props.xCoordinate}
           y2={`${props.yCoordinate}%`}
-          style={{ stroke: "#788cff", strokeWidth: "2" }}
         />
       )}
     </>
