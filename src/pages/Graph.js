@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import css from "./Graph.module.css";
-import SvgCircle from "./SvgCircle";
-import SvgLine from "./SvgLine";
+import css from "../components/Graph/Graph.module.css";
+import GraphEntrySelection from "../components/Graph/GraphEntrySelection";
+import SvgCircle from "../components/Graph/SvgCircle";
+import SvgLine from "../components/Graph/SvgLine";
 /* const DUMMY_DATA = [
   {
     name: "Bench Press",
@@ -86,74 +87,68 @@ const Graph = () => {
     <div className={css.graphContainer}>
       <div className={css.graphFlexContainer}>
         {selectedEntry && (
-          <form className={css.entryForm} onChange={onSelectedEntry}>
-            <label htmlFor="entrySelection">Choose an exercise:</label>
-            <select name="entrySelection">
-              {dataState.map((entry) => {
-                return (
-                  <option key={entry.name} value={entry.name}>
-                    {entry.name}
-                  </option>
-                );
-              })}
-            </select>
-          </form>
+          <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
         )}
         <svg className={css.svgContainer} height="300" width="100%">
-          {graphPoints.unsorted.map((point, index) => {
-            const yIndex = graphPoints.sorted.findIndex(
-              (sortedPoint) => sortedPoint === point
-            );
-            //every other circle creates a line
-            let lineProperties = {};
-            if (index !== 0) {
-              const lastYIndex = graphPoints.sorted.findIndex(
-                (sortedPoint) => sortedPoint === graphPoints.unsorted[index - 1]
+          <svg>
+            {graphPoints.unsorted.map((point, index) => {
+              const yIndex = graphPoints.sorted.findIndex(
+                (sortedPoint) => sortedPoint === point
               );
-              lineProperties = {
-                x1: (index - 1) * 25 + 25,
-                y1: `${100 - graphPoints.yCoords[lastYIndex]}%`,
-                color: "rgb(120, 140, 255, 50%)",
-              };
-            }
-            return (
-              <SvgCircle
-                pointValue={point}
-                key={index}
-                indexID={index}
-                xCoordinate={index * 25 + 25}
-                yCoordinate={100 - graphPoints.yCoords[yIndex]}
-                lineProperties={lineProperties}
-              />
-            );
-          })}
-          {graphPoints.sorted.map((line, index) => {
-            if (graphPoints.sorted[index - 1] !== line) {
+              //every other circle creates a line
+              let lineProperties = {};
+              if (index !== 0) {
+                const lastYIndex = graphPoints.sorted.findIndex(
+                  (sortedPoint) =>
+                    sortedPoint === graphPoints.unsorted[index - 1]
+                );
+                lineProperties = {
+                  x1: (index - 1) * 25 + 25,
+                  y1: `${100 - graphPoints.yCoords[lastYIndex]}%`,
+                  color: "rgb(120, 140, 255, 50%)",
+                };
+              }
               return (
-                <>
-                  <text
-                    y={`${100 - graphPoints.yCoords[index] - 1}%`}
-                    x="0"
-                    className={css.lineText}
-                    stroke="rgb(20, 40, 55, 10%)"
-                  >
-                    {line}
-                  </text>
-                  <SvgLine
-                    key={`${index}_svgline`}
-                    lineProperties={{
-                      x1: 0,
-                      y1: `${100 - graphPoints.yCoords[index]}%`,
-                      color: "rgb(20, 40, 55, 10%)",
-                    }}
-                    x2="100%"
-                    y2={`${100 - graphPoints.yCoords[index]}%`}
-                  />
-                </>
+                <SvgCircle
+                  pointValue={point}
+                  key={index}
+                  indexID={index}
+                  xCoordinate={index * 25 + 25}
+                  yCoordinate={100 - graphPoints.yCoords[yIndex]}
+                  lineProperties={lineProperties}
+                />
               );
-            }
-            return "";
-          })}
+            })}
+          </svg>
+          <svg>
+            {graphPoints.sorted.map((line, index) => {
+              if (graphPoints.sorted[index - 1] !== line) {
+                return (
+                  <>
+                    <text
+                      y={`${100 - graphPoints.yCoords[index] - 1}%`}
+                      x="0"
+                      className={css.lineText}
+                      stroke="rgb(20, 40, 55, 10%)"
+                    >
+                      {line}
+                    </text>
+                    <SvgLine
+                      key={`${index}_svgline`}
+                      lineProperties={{
+                        x1: 0,
+                        y1: `${100 - graphPoints.yCoords[index]}%`,
+                        color: "rgb(20, 40, 55, 10%)",
+                      }}
+                      x2="100%"
+                      y2={`${100 - graphPoints.yCoords[index]}%`}
+                    />
+                  </>
+                );
+              }
+              return "";
+            })}
+          </svg>
         </svg>
       </div>
     </div>

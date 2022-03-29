@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import css from "./Entries.module.css";
-import EntriesRowItem from "./EntriesRowItem";
+import css from "../components/Entries/Entries.module.css";
+import EntriesRowItem from "../components/Entries/EntriesRowItem";
 import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
-import AddEntryForm from "../AddNewEntry/AddEntryForm";
+import AddEntryForm from "../components/AddNewEntry/AddEntryForm";
 
 const Entries = () => {
   const entries = useSelector((state) => state.entries.entries);

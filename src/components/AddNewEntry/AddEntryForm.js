@@ -51,16 +51,18 @@ const AddEntryForm = () => {
 
   const addNewEntry = (event) => {
     event.preventDefault();
-    dispatch(
-      entryActions.addEntry({
-        name: userInput.name,
-        mass: +userInput.mass,
-        reps: +userInput.reps,
-        sets: +userInput.sets,
-      })
-    );
 
-    setUserInput(defaultFormState);
+    if (userInput.name !== "") {
+      dispatch(
+        entryActions.addEntry({
+          name: userInput.name,
+          mass: +userInput.mass,
+          reps: +userInput.reps,
+          sets: +userInput.sets,
+        })
+      );
+      setUserInput(defaultFormState);
+    }
   };
 
   return (
