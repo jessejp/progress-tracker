@@ -52,6 +52,10 @@
   font-weight: 500;
 }
 
+.templateHeading > h3 {
+  margin: 0;
+}
+
 .entryHeader {
   font-weight: 500;
 }

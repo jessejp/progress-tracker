@@ -3,6 +3,7 @@ import css from "../components/Entries/Entries.module.css";
 import EntriesRowItem from "../components/Entries/EntriesRowItem";
 import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import AddEntryForm from "../components/AddNewEntry/AddEntryForm";
+import { useEffect } from "react";
 
 const Entries = () => {
   const entries = useSelector((state) => state.entries.entries);
@@ -29,6 +30,10 @@ const Entries = () => {
     );
   });
 
+  useEffect(() => {
+    if (entries.length === 0) navigate("/entries/addnew", { replace: false });
+  }, [entries, navigate]);
+
   return (
     <>
       <Routes>
@@ -37,7 +42,7 @@ const Entries = () => {
       <div className={css.entriesContainer}>
         <div className={css.entriesTable}>
           <div className={css.templateHeading}>
-            <div>Weight Lifting</div>
+            <h3>Weight Lifting</h3>
             <div>
               {!formOpen && <Link to="addnew">Add New</Link>}
               {formOpen && <button onClick={goBack}>close</button>}

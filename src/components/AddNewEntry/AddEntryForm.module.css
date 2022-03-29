@@ -3,3 +3,19 @@
   flex-direction: column;
   background: #ccc;
 }
+
+.suggestionButton {
+  margin: 0.1em;
+  font-size: 0.8em;
+  width: 8em;
+  padding: 0.4em;
+  border-radius: 3em;
+}
+
+h2 {
+  margin: 0.2em 0;
+}
+
+form {
+  padding: 0.4em;
+}

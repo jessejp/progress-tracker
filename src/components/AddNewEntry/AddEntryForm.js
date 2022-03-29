@@ -10,6 +10,15 @@ const defaultFormState = {
   sets: "",
 };
 
+const suggestedExercises = [
+  {
+    name: "Bench Press",
+    mass: "20",
+    reps: "8",
+    sets: "3",
+  },
+];
+
 const AddEntryForm = () => {
   const [userInput, setUserInput] = useState(defaultFormState);
 
@@ -49,6 +58,20 @@ const AddEntryForm = () => {
     }
   };
 
+  const fillSuggestion = (event) => {
+    console.log(
+      event.target.value,
+      suggestedExercises.find(
+        (exercise) => exercise.name === event.target.value
+      )
+    );
+    setUserInput(
+      suggestedExercises.find(
+        (exercise) => exercise.name === event.target.value
+      )
+    );
+  };
+
   const addNewEntry = (event) => {
     event.preventDefault();
 
@@ -67,7 +90,20 @@ const AddEntryForm = () => {
 
   return (
     <form className={css.formContainer}>
-      <p>Set initial values</p>
+      <h2>Set initial values</h2>
+      {suggestedExercises.map((e, index) => {
+        return (
+          <button
+            key={index}
+            className={css.suggestionButton}
+            type="button"
+            value={e.name}
+            onClick={fillSuggestion}
+          >
+            {e.name}
+          </button>
+        );
+      })}
       <label htmlFor="name">Exercise Name</label>
       <input
         type="text"

@@ -4,14 +4,6 @@ import css from "../components/Graph/Graph.module.css";
 import GraphEntrySelection from "../components/Graph/GraphEntrySelection";
 import SvgCircle from "../components/Graph/SvgCircle";
 import SvgLine from "../components/Graph/SvgLine";
-/* const DUMMY_DATA = [
-  {
-    name: "Bench Press",
-    mass: [20, 22, 18, 42, 18, 24, 33, 55, 12],
-    reps: [15, 8, 12],
-    sets: [4, 3, 3],
-  },
-]; */
 
 let isInitial = true;
 
@@ -86,9 +78,7 @@ const Graph = () => {
   return (
     <div className={css.graphContainer}>
       <div className={css.graphFlexContainer}>
-        {selectedEntry && (
-          <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
-        )}
+        <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
         <svg className={css.svgContainer} height="300" width="100%">
           <svg>
             {graphPoints.unsorted.map((point, index) => {
