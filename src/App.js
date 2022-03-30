@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./components/Header";
-import Entries from "./components/Entries/Entries";
-import Graph from "./components/Graph/Graph";
+import Entries from "./pages/Entries";
+import Graph from "./pages/Graph";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {

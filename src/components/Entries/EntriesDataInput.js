@@ -26,10 +26,11 @@ const EntriesDataInput = (props) => {
         autoFocus
         className={css.numPad}
         id="NUMBER"
-        type="text"
+        type="number"
         value={props.dataValue}
         onChange={props.onUpdateInputField}
         onKeyDown={props.onEnableEditing}
+        min=""
       />
       <button
         name={props.type}
