@@ -1,62 +1,31 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import css from "../components/Graph/Graph.module.css";
 import GraphEntrySelection from "../components/Graph/GraphEntrySelection";
 import SvgCircle from "../components/Graph/SvgCircle";
 import SvgLine from "../components/Graph/SvgLine";
+import useGraph from "../hooks/use-graph.js";
 
 let isInitial = true;
 
 const Graph = () => {
-  // [unsorted], [sorted], [yCoordinates]
   const [graphPoints, setGraphPoints] = useState({
     unsorted: [],
     sorted: [],
     yCoords: [],
   });
+  const [graphGuides, setGraphGuides] = useState({
+    unsorted: [],
+    sorted: [],
+    yCoords: [],
+  });
+
+  const svgCalculateYLocation = useGraph();
 
   const dataState = useSelector((state) => state.graph.data);
 
   const initialSelection = dataState.length !== 0 ? dataState[0].name : "";
   const [selectedEntry, setSelectedEntry] = useState(initialSelection);
-
-  const svgBulletLocation = useCallback((sortableArr) => {
-    let sortedArr = [...sortableArr];
-    sortedArr.sort(function (a, b) {
-      return a - b;
-    });
-
-    let yCoords = [];
-    let lastCenter = null;
-    const center = sortedArr[Math.round(sortedArr.length / 2)];
-    const centerIndex = sortedArr.findIndex((a) => a === center);
-
-    for (let i = 0; i < sortedArr.length; i++) {
-      const wholeIndex = i + 1;
-      const wholeCenterIndex = centerIndex + 1;
-
-      if (sortedArr[i] === center) {
-        yCoords.push(50);
-        if (sortedArr[i + 1] !== center) lastCenter = i;
-      } else if (i < centerIndex) {
-        yCoords.push(Math.round(50 / wholeCenterIndex) * wholeIndex);
-      } else if (i > centerIndex) {
-        const indexLeft = sortedArr.length - lastCenter;
-        yCoords.push(Math.round(50 / indexLeft) * (i - lastCenter) + 50);
-      }
-    }
-
-    const balanceArray =
-      sortedArr[sortableArr.length - 1] > 100
-        ? yCoords.map((y) => (y * (y / 100)) / 2 + 2)
-        : yCoords;
-
-    return {
-      unsorted: sortableArr,
-      sorted: sortedArr,
-      yCoords: balanceArray,
-    };
-  }, []);
 
   const onSelectedEntry = (event) => {
     setSelectedEntry(event.target.value);
@@ -66,25 +35,58 @@ const Graph = () => {
     const selectedData = dataState.find((d) => d.name === selectedEntry);
     if (!isInitial && selectedData) {
       if (selectedData.mass) {
-        setGraphPoints(svgBulletLocation(selectedData.mass));
+        setGraphPoints(svgCalculateYLocation(selectedData.mass));
       }
     } else {
       isInitial = false;
     }
-  }, [svgBulletLocation, selectedEntry, dataState]);
+  }, [svgCalculateYLocation, selectedEntry, dataState]);
+
+  const { sorted } = graphPoints;
+
+  useEffect(() => {
+    if (sorted.length > 0) {
+      const topValueFloor = Math.floor(sorted[sorted.length - 1] / 10) * 10;
+      const graphGuidesArr = [
+        Math.round(((topValueFloor / 4) * 2) / 10) * 10,
+        Math.round(((topValueFloor / 4) * 3) / 10) * 10,
+        Math.round(((topValueFloor / 4) * 4) / 10) * 10,
+        Math.round(((topValueFloor / 4) * 5) / 10) * 10,
+        sorted[sorted.length - 1],
+      ];
+
+      console.log(graphGuidesArr);
+      setGraphGuides(svgCalculateYLocation(graphGuidesArr, false));
+    }
+  }, [svgCalculateYLocation, sorted]);
 
   console.log(graphPoints);
+  console.log(graphGuides);
 
   return (
     <div className={css.graphContainer}>
       <div className={css.graphFlexContainer}>
         <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
+        <div>
+          <form>
+            <input type="radio" id="val1" name="data_type" value="Mass" />
+            <label htmlFor="val1">Mass</label>
+
+            <input type="radio" id="val2" name="data_type" value="Reps" />
+            <label htmlFor="val2">Reps</label>
+
+            <input type="radio" id="val3" name="data_type" value="Sets" />
+            <label htmlFor="val3">Sets</label>
+          </form>
+        </div>
         <svg className={css.svgContainer} height="300" width="100%">
           <svg>
             {graphPoints.unsorted.map((point, index) => {
               const yIndex = graphPoints.sorted.findIndex(
                 (sortedPoint) => sortedPoint === point
               );
+              const excess = graphPoints.yCoords[0] / 2;
+              const graphScale = 100 + excess;
               //every other circle creates a line
               let lineProperties = {};
               if (index !== 0) {
@@ -94,29 +96,35 @@ const Graph = () => {
                 );
                 lineProperties = {
                   x1: (index - 1) * 25 + 25,
-                  y1: `${100 - graphPoints.yCoords[lastYIndex]}%`,
+                  y1: `${graphScale - graphPoints.yCoords[lastYIndex]}%`,
                   color: "rgb(120, 140, 255, 50%)",
                 };
               }
               return (
                 <SvgCircle
                   pointValue={point}
-                  key={index}
+                  key={`${index}_svgcircle${Math.random}`}
                   indexID={index}
                   xCoordinate={index * 25 + 25}
-                  yCoordinate={100 - graphPoints.yCoords[yIndex]}
+                  yCoordinate={graphScale - graphPoints.yCoords[yIndex]}
                   lineProperties={lineProperties}
                 />
               );
             })}
           </svg>
           <svg>
-            {graphPoints.sorted.map((line, index) => {
-              if (graphPoints.sorted[index - 1] !== line) {
+            {graphGuides.sorted.map((line, index) => {
+              const yCVal = graphGuides.yCoords[index];
+              const excess = graphPoints.yCoords[0] / 2;
+              const graphScale = 100 + excess;
+              if (
+                index < graphGuides.sorted.length - 1 &&
+                graphGuides.sorted[index] !== graphGuides.sorted[index - 1]
+              ) {
                 return (
-                  <>
+                  <React.Fragment key={index}>
                     <text
-                      y={`${100 - graphPoints.yCoords[index] - 1}%`}
+                      y={`${graphScale - yCVal}%`}
                       x="0"
                       className={css.lineText}
                       stroke="rgb(20, 40, 55, 10%)"
@@ -124,16 +132,15 @@ const Graph = () => {
                       {line}
                     </text>
                     <SvgLine
-                      key={`${index}_svgline`}
                       lineProperties={{
                         x1: 0,
-                        y1: `${100 - graphPoints.yCoords[index]}%`,
+                        y1: `${graphScale - yCVal}%`,
                         color: "rgb(20, 40, 55, 10%)",
                       }}
                       x2="100%"
-                      y2={`${100 - graphPoints.yCoords[index]}%`}
+                      y2={`${graphScale - yCVal}%`}
                     />
-                  </>
+                  </React.Fragment>
                 );
               }
               return "";
