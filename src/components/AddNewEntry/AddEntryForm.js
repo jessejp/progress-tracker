@@ -94,7 +94,7 @@ const AddEntryForm = () => {
       {suggestedExercises.map((e, index) => {
         return (
           <button
-            key={index}
+            key={`${index}_suggestion`}
             className={css.suggestionButton}
             type="button"
             value={e.name}

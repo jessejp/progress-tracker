@@ -26,9 +26,38 @@ const Graph = () => {
 
   const initialSelection = dataState.length !== 0 ? dataState[0].name : "";
   const [selectedEntry, setSelectedEntry] = useState(initialSelection);
+  const [checkedStatus, setCheckedStatus] = useState({
+    val1: true,
+    val2: false,
+    val3: false,
+    val4: false,
+  });
 
   const onSelectedEntry = (event) => {
     setSelectedEntry(event.target.value);
+  };
+
+  const onSelectedDataRadio = (event) => {
+    if (event.target.id === "val1") {
+      setCheckedStatus((prevState) => {
+        return {
+          val1: true,
+          val2: false,
+          val3: false,
+          val4: false,
+        };
+      });
+    }
+    if (event.target.id === "val2") {
+      setCheckedStatus((prevState) => {
+        return {
+          val1: false,
+          val2: true,
+          val3: false,
+          val4: false,
+        };
+      });
+    }
   };
 
   useEffect(() => {
@@ -69,14 +98,25 @@ const Graph = () => {
         <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
         <div>
           <form>
-            <input type="radio" id="val1" name="data_type" value="Mass" />
+            <input
+              type="radio"
+              onChange={onSelectedDataRadio}
+              checked={checkedStatus.val1}
+              id="val1"
+              name="data_type"
+              value="Mass"
+            />
             <label htmlFor="val1">Mass</label>
 
-            <input type="radio" id="val2" name="data_type" value="Reps" />
+            <input
+              type="radio"
+              onChange={onSelectedDataRadio}
+              checked={checkedStatus.val2}
+              id="val2"
+              name="data_type"
+              value="Reps"
+            />
             <label htmlFor="val2">Reps</label>
-
-            <input type="radio" id="val3" name="data_type" value="Sets" />
-            <label htmlFor="val3">Sets</label>
           </form>
         </div>
         <svg className={css.svgContainer} height="300" width="100%">

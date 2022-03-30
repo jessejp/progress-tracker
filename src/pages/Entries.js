@@ -31,7 +31,7 @@ const Entries = () => {
   });
 
   useEffect(() => {
-    if (entries.length === 0) navigate("/entries/addnew", { replace: false });
+    if (entries.length === 0) navigate("/entries/addnew", { replace: true });
   }, [entries, navigate]);
 
   return (
@@ -45,7 +45,9 @@ const Entries = () => {
             <h3>Weight Lifting</h3>
             <div>
               {!formOpen && <Link to="addnew">Add New</Link>}
-              {formOpen && <button onClick={goBack}>close</button>}
+              {formOpen && entries.length !== 0 && (
+                <button onClick={goBack}>close</button>
+              )}
             </div>
           </div>
 
