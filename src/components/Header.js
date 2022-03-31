@@ -12,7 +12,10 @@ const Header = () => {
             navData.isActive ? css.active : css.inactive
           }
         >
-          <div className={css.menuItem}>Entries</div>
+          <div className={`${css.menuItem} iconTextLink`}>
+            <span className="material-icons-outlined">edit_note</span>
+            <span>Entries</span>
+          </div>
         </NavLink>
 
         {/* <NavLink
@@ -30,7 +33,10 @@ const Header = () => {
             navData.isActive ? css.active : css.inactive
           }
         >
-          <div className={css.menuItem}>Graphs</div>
+          <div className={`${css.menuItem} iconTextLink`}>
+            <span className="material-icons-outlined">timeline</span>
+            <span>Graphs</span>
+          </div>
         </NavLink>
       </div>
     </header>

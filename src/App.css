@@ -2,3 +2,23 @@
   display: flex;
   justify-content: center;
 }
+
+.iconTextLink {
+  display: flex;
+  align-items: center;
+}
+
+.iconTextLink span {
+  margin: 0 0.1em;
+}
+
+.buttonNoDefault,
+input[type="submit"],
+input[type="reset"] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
