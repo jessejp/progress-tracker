@@ -3,14 +3,9 @@
 }
 
 .menuSelections {
-  font-size: 1.3em;
-  color: orange;
   display: flex;
   column-gap: 1em;
-}
-
-.menuItem {
-  padding: 0.4em 0.1em 0.1em 0.1em;
+  font-size: 1.4em;
 }
 
 .active > .menuItem {
@@ -21,11 +16,16 @@
   cursor: pointer;
 }
 
+a {
+  text-decoration: none;
+}
+
 a.inactive {
   color: black;
-  text-decoration: none;
+  margin: 0 0 0.1em 0;
 }
 
 a.active {
   color: white;
+  border-bottom: white 0.1em solid;
 }

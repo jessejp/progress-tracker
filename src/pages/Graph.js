@@ -26,39 +26,44 @@ const Graph = () => {
 
   const initialSelection = dataState.length !== 0 ? dataState[0].name : "";
   const [selectedEntry, setSelectedEntry] = useState(initialSelection);
-  const [checkedStatus, setCheckedStatus] = useState({
+
+  /* const [checkedStatus, setCheckedStatus] = useState({
     val1: true,
     val2: false,
     val3: false,
     val4: false,
-  });
+  }); */
 
   const onSelectedEntry = (event) => {
     setSelectedEntry(event.target.value);
   };
 
-  const onSelectedDataRadio = (event) => {
-    if (event.target.id === "val1") {
-      setCheckedStatus((prevState) => {
-        return {
-          val1: true,
-          val2: false,
-          val3: false,
-          val4: false,
-        };
-      });
+  /* const onSelectedDataRadio = (event) => {
+    switch (event.target.id) {
+      case "val1":
+        setCheckedStatus((prevState) => {
+          return {
+            val1: true,
+            val2: false,
+            val3: false,
+            val4: false,
+          };
+        });
+        break;
+      case "val2":
+        setCheckedStatus((prevState) => {
+          return {
+            val1: false,
+            val2: true,
+            val3: false,
+            val4: false,
+          };
+        });
+        break;
+      default:
+        break;
     }
-    if (event.target.id === "val2") {
-      setCheckedStatus((prevState) => {
-        return {
-          val1: false,
-          val2: true,
-          val3: false,
-          val4: false,
-        };
-      });
-    }
-  };
+  }; */
 
   useEffect(() => {
     const selectedData = dataState.find((d) => d.name === selectedEntry);
@@ -89,14 +94,14 @@ const Graph = () => {
     }
   }, [svgCalculateYLocation, sorted]);
 
-  console.log(graphPoints);
-  console.log(graphGuides);
+  console.log("points", graphPoints);
+  console.log("guides", graphGuides);
 
   return (
     <div className={css.graphContainer}>
       <div className={css.graphFlexContainer}>
         <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
-        <div>
+        {/* <div>
           <form>
             <input
               type="radio"
@@ -118,7 +123,7 @@ const Graph = () => {
             />
             <label htmlFor="val2">Reps</label>
           </form>
-        </div>
+        </div> */}
         <svg className={css.svgContainer} height="300" width="100%">
           <svg>
             {graphPoints.unsorted.map((point, index) => {

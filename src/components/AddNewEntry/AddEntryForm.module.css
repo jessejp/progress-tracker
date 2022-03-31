@@ -1,7 +1,16 @@
+.addEntryFormContainer {
+  background: linear-gradient(0deg, #ccc 0%, #bcbcbc 10%, #ccc 100%);
+  padding: 1em 0;
+}
+
+.addEntryFormHeading {
+  display: flex;
+  justify-content: space-between;
+}
+
 .formContainer {
   display: flex;
   flex-direction: column;
-  background: #ccc;
 }
 
 .suggestionButton {
@@ -12,8 +21,14 @@
   border-radius: 3em;
 }
 
+.closeForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 h2 {
-  margin: 0.2em 0;
+  margin: 0 0 0.2em 0;
 }
 
 form {

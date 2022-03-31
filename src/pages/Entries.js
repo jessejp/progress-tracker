@@ -1,19 +1,13 @@
 import { useSelector } from "react-redux";
 import css from "../components/Entries/Entries.module.css";
 import EntriesRowItem from "../components/Entries/EntriesRowItem";
-import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import { Routes, Route, Link, useParams } from "react-router-dom";
 import AddEntryForm from "../components/AddNewEntry/AddEntryForm";
-import { useEffect } from "react";
 
 const Entries = () => {
   const entries = useSelector((state) => state.entries.entries);
   const params = useParams();
   const formOpen = Object.values(params)[0];
-  const navigate = useNavigate();
-
-  const goBack = () => {
-    navigate("/entries", { replace: false });
-  };
 
   // map table rows
   const entryRows = entries.map((e, index) => {
@@ -30,9 +24,9 @@ const Entries = () => {
     );
   });
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (entries.length === 0) navigate("/entries/addnew", { replace: true });
-  }, [entries, navigate]);
+  }, [entries, navigate]); */
 
   return (
     <>
@@ -43,12 +37,6 @@ const Entries = () => {
         <div className={css.entriesTable}>
           <div className={css.templateHeading}>
             <h3>Weight Lifting</h3>
-            <div>
-              {!formOpen && <Link to="addnew">Add New</Link>}
-              {formOpen && entries.length !== 0 && (
-                <button onClick={goBack}>close</button>
-              )}
-            </div>
           </div>
 
           <div className={css.row}>
@@ -60,6 +48,14 @@ const Entries = () => {
           </div>
           {entryRows}
         </div>
+        {!formOpen && (
+          <Link to="addnew">
+            <div className={`${css.addItem} iconTextLink`}>
+              <span className="material-icons-outlined">add</span>{" "}
+              <span>Add New</span>
+            </div>
+          </Link>
+        )}
       </div>
     </>
   );
