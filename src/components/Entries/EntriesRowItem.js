@@ -12,6 +12,7 @@ const defaultBufferValue = {
 
 const dataValuesReducer = (state, action) => {
   const defaultState = {
+    category: state.category,
     name: state.name,
     mass: state.mass,
     reps: state.reps,
@@ -86,6 +87,7 @@ const dataValuesReducer = (state, action) => {
 
 const EntriesRowItem = (props) => {
   const initDataValues = {
+    category: props.category,
     name: props.name,
     mass: +props.mass,
     reps: +props.reps,
@@ -119,8 +121,6 @@ const EntriesRowItem = (props) => {
 
   const submitDataHandler = (event) => {
     dispatch(graphDataActions.addData(dataValues));
-    //props.onDataSubmit(dataValues.name, props.mass, props.reps, props.sets);
-    //dataCtx.addEntry(dataValues);
   };
 
   /* As the form to edit data pops up after interacting with the data key, 

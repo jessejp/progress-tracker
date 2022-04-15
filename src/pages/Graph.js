@@ -6,8 +6,6 @@ import SvgCircle from "../components/Graph/SvgCircle";
 import SvgLine from "../components/Graph/SvgLine";
 import useGraph from "../hooks/use-graph.js";
 
-let isInitial = true;
-
 const Graph = () => {
   const [graphPoints, setGraphPoints] = useState({
     unsorted: [],
@@ -24,57 +22,32 @@ const Graph = () => {
 
   const dataState = useSelector((state) => state.graph.data);
 
-  const initialSelection = dataState.length !== 0 ? dataState[0].name : "";
-  const [selectedEntry, setSelectedEntry] = useState(initialSelection);
+  const [category, setCategory] = useState(
+    dataState.findIndex((d) => d.category === "Weight Lifting")
+  );
 
-  /* const [checkedStatus, setCheckedStatus] = useState({
-    val1: true,
-    val2: false,
-    val3: false,
-    val4: false,
-  }); */
+  const initialSelection =
+    category > -1 ? dataState[category].graphData[0].name : "";
+
+  const [selectedEntry, setSelectedEntry] = useState(initialSelection);
 
   const onSelectedEntry = (event) => {
     setSelectedEntry(event.target.value);
   };
 
-  /* const onSelectedDataRadio = (event) => {
-    switch (event.target.id) {
-      case "val1":
-        setCheckedStatus((prevState) => {
-          return {
-            val1: true,
-            val2: false,
-            val3: false,
-            val4: false,
-          };
-        });
-        break;
-      case "val2":
-        setCheckedStatus((prevState) => {
-          return {
-            val1: false,
-            val2: true,
-            val3: false,
-            val4: false,
-          };
-        });
-        break;
-      default:
-        break;
-    }
-  }; */
-
   useEffect(() => {
-    const selectedData = dataState.find((d) => d.name === selectedEntry);
-    if (!isInitial && selectedData) {
-      if (selectedData.mass) {
-        setGraphPoints(svgCalculateYLocation(selectedData.mass));
+    if (category > -1) {
+      const selectedData = dataState[category].graphData.find(
+        (d) => d.name === selectedEntry
+      );
+
+      if (selectedData) {
+        if (selectedData.mass) {
+          setGraphPoints(svgCalculateYLocation(selectedData.mass));
+        }
       }
-    } else {
-      isInitial = false;
     }
-  }, [svgCalculateYLocation, selectedEntry, dataState]);
+  }, [svgCalculateYLocation, selectedEntry, dataState, category]);
 
   const { sorted } = graphPoints;
 
@@ -101,29 +74,6 @@ const Graph = () => {
     <div className={css.graphContainer}>
       <div className={css.graphFlexContainer}>
         <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
-        {/* <div>
-          <form>
-            <input
-              type="radio"
-              onChange={onSelectedDataRadio}
-              checked={checkedStatus.val1}
-              id="val1"
-              name="data_type"
-              value="Mass"
-            />
-            <label htmlFor="val1">Mass</label>
-
-            <input
-              type="radio"
-              onChange={onSelectedDataRadio}
-              checked={checkedStatus.val2}
-              id="val2"
-              name="data_type"
-              value="Reps"
-            />
-            <label htmlFor="val2">Reps</label>
-          </form>
-        </div> */}
         <svg className={css.svgContainer} height="300" width="100%">
           <svg>
             {graphPoints.unsorted.map((point, index) => {
