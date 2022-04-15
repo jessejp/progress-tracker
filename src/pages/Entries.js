@@ -8,25 +8,25 @@ const Entries = () => {
   const entries = useSelector((state) => state.entries.entries);
   const params = useParams();
   const formOpen = Object.values(params)[0];
-
+  const categoryIndex = 0;
   // map table rows
-  const entryRows = entries.map((e, index) => {
-    return (
-      <EntriesRowItem
-        id={`${e.category}_${e.name}`}
-        key={`${e.category}_${e.name}`}
-        index={index}
-        name={e.name}
-        mass={e.mass}
-        reps={e.reps}
-        sets={e.sets}
-      />
-    );
-  });
-
-  /*   useEffect(() => {
-    if (entries.length === 0) navigate("/entries/addnew", { replace: true });
-  }, [entries, navigate]); */
+  const entryRows =
+    entries.length > 0
+      ? entries[categoryIndex].entryData.map((e, index) => {
+          return (
+            <EntriesRowItem
+              id={`${entries[categoryIndex].category}_${e.name}`}
+              key={`${entries[categoryIndex].category}_${e.name}`}
+              index={index}
+              category={entries[categoryIndex].category}
+              name={e.name}
+              mass={e.mass}
+              reps={e.reps}
+              sets={e.sets}
+            />
+          );
+        })
+      : [];
 
   return (
     <>

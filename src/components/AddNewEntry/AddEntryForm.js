@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const defaultFormState = {
+  category: "Weight Lifting",
   name: "",
   mass: "",
   reps: "",
@@ -13,18 +14,21 @@ const defaultFormState = {
 
 const suggestedExercises = [
   {
+    category: "Weight Lifting",
     name: "Bench Press",
     mass: "20",
     reps: "8",
     sets: "3",
   },
   {
+    category: "Weight Lifting",
     name: "Squat",
     mass: "40",
     reps: "6",
     sets: "3",
   },
   {
+    category: "Weight Lifting",
     name: "Lat Pulldown",
     mass: "50",
     reps: "8",
@@ -87,6 +91,7 @@ const AddEntryForm = () => {
     if (userInput.name !== "") {
       dispatch(
         entryActions.addEntry({
+          category: userInput.category,
           name: userInput.name,
           mass: +userInput.mass,
           reps: +userInput.reps,
