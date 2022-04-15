@@ -3,6 +3,7 @@ import css from "./Entries.module.css";
 import EntriesDataInput from "./EntriesDataInput";
 import { useDispatch } from "react-redux";
 import { graphDataActions } from "../../store/graph-data-slice";
+import { entryActions } from "../../store/entries-slice";
 
 const defaultBufferValue = {
   mass: 2.5,
@@ -106,6 +107,7 @@ const EntriesRowItem = (props) => {
 
   const dispatch = useDispatch();
 
+  // editing window effect
   useEffect(() => {
     let timerBlur = setTimeout(() => {
       if (!keepEditing) setEnableEditing(false);
@@ -118,6 +120,25 @@ const EntriesRowItem = (props) => {
       /* clearTimeout(timerInactivity); */
     };
   }, [keepEditing]);
+
+  //update reducer
+  useEffect(() => {
+    let timerRedux = setTimeout(() => {
+      console.log(dataValues);
+      dispatch(
+        entryActions.addEntry({
+          category: dataValues.category,
+          name: dataValues.name,
+          mass: +dataValues.mass,
+          reps: +dataValues.reps,
+          sets: +dataValues.sets,
+        })
+      );
+    }, 800);
+    return () => {
+      clearTimeout(timerRedux);
+    };
+  }, [dispatch, dataValues]);
 
   const submitDataHandler = (event) => {
     dispatch(graphDataActions.addData(dataValues));

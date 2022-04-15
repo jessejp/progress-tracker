@@ -30,6 +30,9 @@ const entriesSlice = createSlice({
     entries: [],
   },
   reducers: {
+    replaceEntries(state, action) {
+      state.entries = action.payload.entries;
+    },
     addEntry(state, action) {
       const newEntry = action.payload;
       const category = state.entries.findIndex(
@@ -60,6 +63,10 @@ const entriesSlice = createSlice({
           reps: newEntry.reps,
           sets: newEntry.sets,
         });
+      } else if (existingEntry) {
+        existingEntry.mass = newEntry.mass;
+        existingEntry.reps = newEntry.reps;
+        existingEntry.sets = newEntry.sets;
       }
     },
   },
