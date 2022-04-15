@@ -3,7 +3,7 @@ import css from "./Graph.module.css";
 
 const GraphEntrySelection = (props) => {
   const dataState = useSelector((state) => state.graph.data);
-  console.log(dataState);
+
   return (
     <form className={css.entryForm} onChange={props.onSelectedEntry}>
       <label htmlFor="entrySelection">Choose an exercise: </label>

@@ -1,24 +1,42 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import css from "../components/Entries/Entries.module.css";
 import EntriesRowItem from "../components/Entries/EntriesRowItem";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import AddEntryForm from "../components/AddNewEntry/AddEntryForm";
+import { useEffect } from "react";
+import { sendEntryData, getEntryData } from "../store/data-actions";
 
 const Entries = () => {
-  const entries = useSelector((state) => state.entries.entries);
+  const dispatch = useDispatch();
+  const entries = useSelector((state) => state.entries);
   const params = useParams();
   const formOpen = Object.values(params)[0];
   const categoryIndex = 0;
+
+  useEffect(() => {
+    dispatch(getEntryData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log("entries: effect");
+    //dispatch(sendEntryData(entries));
+  }, [entries, dispatch]);
+  console.log(entries);
+
+  const sendReqTest = () => {
+    dispatch(sendEntryData(entries));
+  };
+
   // map table rows
   const entryRows =
-    entries.length > 0
-      ? entries[categoryIndex].entryData.map((e, index) => {
+    entries.entries.length > 0
+      ? entries.entries[categoryIndex].entryData.map((e, index) => {
           return (
             <EntriesRowItem
-              id={`${entries[categoryIndex].category}_${e.name}`}
-              key={`${entries[categoryIndex].category}_${e.name}`}
+              id={`${entries.entries[categoryIndex].category}_${e.name}`}
+              key={`${entries.entries[categoryIndex].category}_${e.name}`}
               index={index}
-              category={entries[categoryIndex].category}
+              category={entries.entries[categoryIndex].category}
               name={e.name}
               mass={e.mass}
               reps={e.reps}
@@ -56,6 +74,7 @@ const Entries = () => {
             </div>
           </Link>
         )}
+        <button onClick={sendReqTest}>casual send request button</button>
       </div>
     </>
   );
