@@ -124,7 +124,6 @@ const EntriesRowItem = (props) => {
   //update reducer
   useEffect(() => {
     let timerRedux = setTimeout(() => {
-      console.log(dataValues);
       dispatch(
         entryActions.addEntry({
           category: dataValues.category,
