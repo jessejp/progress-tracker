@@ -6,6 +6,8 @@ import AddEntryForm from "../components/AddNewEntry/AddEntryForm";
 import { useEffect } from "react";
 import { sendEntryData, getEntryData } from "../store/data-actions";
 
+let isInitial = true;
+
 const Entries = () => {
   const dispatch = useDispatch();
   const entries = useSelector((state) => state.entries);
@@ -18,14 +20,18 @@ const Entries = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("entries: effect");
-    //dispatch(sendEntryData(entries));
+    let entryTimer = setTimeout(() => {
+      if (!isInitial) {
+        console.log("entries: effect", entries);
+        dispatch(sendEntryData(entries));
+      }
+    }, 1000);
+    //
+    return () => {
+      isInitial = false;
+      clearTimeout(entryTimer);
+    };
   }, [entries, dispatch]);
-  console.log(entries);
-
-  const sendReqTest = () => {
-    dispatch(sendEntryData(entries));
-  };
 
   // map table rows
   const entryRows =
@@ -74,7 +80,6 @@ const Entries = () => {
             </div>
           </Link>
         )}
-        <button onClick={sendReqTest}>casual send request button</button>
       </div>
     </>
   );
