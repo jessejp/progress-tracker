@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const Header = () => {
   return (
     <header>
-      <h1 className={css.heading}>progress tracker app v0</h1>
+      <h1 className={css.heading}>Progress Tracker</h1>
       <div className={css.menuSelections}>
         <NavLink
           to="/entries"

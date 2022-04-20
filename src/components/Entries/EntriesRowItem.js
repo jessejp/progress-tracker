@@ -112,12 +112,8 @@ const EntriesRowItem = (props) => {
     let timerBlur = setTimeout(() => {
       if (!keepEditing) setEnableEditing(false);
     }, 250);
-    /* let timerInactivity = setTimeout(() => {
-      setEnableEditing(false);
-    }, 2000); */
     return () => {
       clearTimeout(timerBlur);
-      /* clearTimeout(timerInactivity); */
     };
   }, [keepEditing]);
 
@@ -178,10 +174,11 @@ const EntriesRowItem = (props) => {
   };
 
   return (
-    <div className={css.row} key={props.id}>
-      <div className={css.col}>
-        <span className={css.tableData}>{dataValues.name}</span>
+    <div className={css.flexWrapper} key={props.id}>
+      <div className={`${css.flexItem} ${css.entryName}`}>
+        {dataValues.name}
       </div>
+      <div className={css.flexContainer}>
       <EntriesDataInput
         type="mass"
         onUpdateBufferButton={updateValueBtnHandler}
@@ -213,8 +210,8 @@ const EntriesRowItem = (props) => {
         enableEditingState={enableEditing}
         bufferValue={defaultBufferValue.sets}
       />
-      <div className={css.col}>
-        <div className={css.buttonsContainer}>
+      </div>
+      <div className={css.flexItem}>
           <button
             className={css.submitButton}
             onClick={submitDataHandler}
@@ -222,7 +219,6 @@ const EntriesRowItem = (props) => {
           >
             ✔
           </button>
-        </div>
       </div>
     </div>
   );
