@@ -14,7 +14,7 @@ const Entries = () => {
   const params = useParams();
   const formOpen = Object.values(params)[0];
   const categoryIndex = 0;
-
+  /* 
   useEffect(() => {
     dispatch(getEntryData());
   }, [dispatch]);
@@ -31,7 +31,7 @@ const Entries = () => {
       isInitial = false;
       clearTimeout(entryTimer);
     };
-  }, [entries, dispatch]);
+  }, [entries, dispatch]); */
 
   // map table rows
   const entryRows =
@@ -57,25 +57,17 @@ const Entries = () => {
       <Routes>
         <Route path="addnew" element={<AddEntryForm />} />
       </Routes>
-      <div className={css.entriesContainer}>
-        <div className={css.entriesTable}>
-          <div className={css.templateHeading}>
+      <div>
+        <div>
+          <div>
             <h3>Weight Lifting</h3>
-          </div>
-
-          <div className={css.row}>
-            <div className={css.col}>Name</div>
-            <div className={css.col}>Mass</div>
-            <div className={css.col}>Reps</div>
-            <div className={css.col}>Sets</div>
-            <div className={css.col}></div>
           </div>
           {entryRows}
         </div>
         {!formOpen && (
           <Link to="addnew">
             <div className={`${css.addItem} iconTextLink`}>
-              <span className="material-icons-outlined">add</span>{" "}
+              <span className="material-icons-outlined">add</span>
               <span>Add New</span>
             </div>
           </Link>

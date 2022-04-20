@@ -1,3 +1,12 @@
+:root {
+  --foreLight: #84B37E;
+  --fore: #6EA565;
+  --side: #658DA4;
+  --sidealt: #65A487;
+  --contrast: #9C65A4;
+  --contrastDark: #201422;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -5,7 +14,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(138, 138, 138);
+  /* background-color: rgb(138, 138, 138); */
+  background-color: var(--sidealt);
 }
 
 code {

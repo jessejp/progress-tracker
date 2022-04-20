@@ -1,6 +1,9 @@
 .heading {
   margin: 0 0 0.75em 0;
 }
+h1.heading {
+  color: var(--contrast)
+}
 
 .menuSelections {
   display: flex;
@@ -9,7 +12,7 @@
 }
 
 .active > .menuItem {
-  background: linear-gradient(0deg, #ccc, transparent 90%);
+  background: linear-gradient(0deg, var(--fore), transparent 90%);
 }
 
 .menuItem:hover {

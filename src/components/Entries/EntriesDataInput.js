@@ -45,21 +45,22 @@ const EntriesDataInput = (props) => {
 
   return (
     <div
-      className={css.col}
+      className={css.flexItem}
       name={props.type}
       onClick={props.onEnableEditing}
       onBlur={props.onEnableEditing}
       onFocus={props.onEnableEditing}
     >
+      <label htmlFor={props.type}>{props.type}</label>
       {!props.enableEditingState && (
-        <span
-          className={css.tableData}
+        <div
+          className={css.valueField}
           onKeyDown={props.onEnableEditing}
           tabIndex={0}
         >
           {props.dataValue}
           {props.unit}
-        </span>
+        </div>
       )}
       {props.enableEditingState && dataEditSimpleForm}
     </div>
