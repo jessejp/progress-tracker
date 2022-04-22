@@ -22,7 +22,30 @@ import { createSlice } from "@reduxjs/toolkit";
       reps: "20",
       sets: "3",
     }],
-  ]; */
+    settings: {
+      stepIntervalMass: 2.5,
+      stepIntervalReps: 1,
+      stepIntervalSets: 1,
+      enableRPE: true,
+      colorMarker: false,
+    }
+  }
+  ]; 
+  
+   initialState: {
+    entries: [{
+      category: '',
+      entryData: [],
+      settings: {
+        stepsIntervalMass: 2.5,
+        stepIntervalReps: 1,
+        stepIntervalSets: 1,
+        enableRPE: false,
+        colorMarker: false,
+      }
+    }],
+  },
+  */
 
 const entriesSlice = createSlice({
   name: "entries",
@@ -55,6 +78,12 @@ const entriesSlice = createSlice({
               sets: newEntry.sets,
             },
           ],
+          settings: {
+            stepIntervalMass: 2.5,
+            stepIntervalReps: 1,
+            stepIntervalSets: 1,
+            enableRPE: false,
+          },
         });
       } else if (!existingEntry && category > -1) {
         state.entries[category].entryData.push({
@@ -69,6 +98,21 @@ const entriesSlice = createSlice({
         existingEntry.sets = newEntry.sets;
       }
     },
+    updateSettings(state, action) {
+      const newSettings = action.payload.settings;
+      const category = state.entries.findIndex(
+        (entry) => entry.category === action.payload.category
+      );
+      if (category > -1 && newSettings.stepIntervalMass && newSettings.stepIntervalReps && newSettings.stepIntervalSets) {
+        console.log("settings updated")
+        state.entries[category].settings = {
+          stepIntervalMass: newSettings.stepIntervalMass,
+          stepIntervalReps: newSettings.stepIntervalReps,
+          stepIntervalSets: newSettings.stepIntervalSets,
+          enableRPE: newSettings.enableRPE,
+        }
+      }
+    }
   },
 });
 

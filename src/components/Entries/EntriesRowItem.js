@@ -93,6 +93,7 @@ const EntriesRowItem = (props) => {
     mass: +props.mass,
     reps: +props.reps,
     sets: +props.sets,
+    RPE: 'No Data'
   };
 
   const [enableEditing, setEnableEditing] = useState(false);
