@@ -9,18 +9,21 @@ import { createSlice } from "@reduxjs/toolkit";
       mass: "25",
       reps: "8",
       sets: "3",
+      rpe: "1"
     },
     {
       name: "Military Press",
       mass: "20",
       reps: "12",
       sets: "3",
+      rpe: "1"
     }, 
     {
       name: "Bulgarian Split Squats",
       mass: "35",
       reps: "20",
       sets: "3",
+      rpe: "1"
     }],
     settings: {
       stepIntervalMass: 2.5,
@@ -76,6 +79,7 @@ const entriesSlice = createSlice({
               mass: newEntry.mass,
               reps: newEntry.reps,
               sets: newEntry.sets,
+              rpe: 0,
             },
           ],
           settings: {
@@ -91,11 +95,13 @@ const entriesSlice = createSlice({
           mass: newEntry.mass,
           reps: newEntry.reps,
           sets: newEntry.sets,
+          rpe: 0,
         });
       } else if (existingEntry) {
         existingEntry.mass = newEntry.mass;
         existingEntry.reps = newEntry.reps;
         existingEntry.sets = newEntry.sets;
+        existingEntry.rpe = newEntry.rpe;
       }
     },
     updateSettings(state, action) {

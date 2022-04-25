@@ -48,6 +48,7 @@ const Entries = () => {
               mass={e.mass}
               reps={e.reps}
               sets={e.sets}
+              rpe={e.rpe}
             />
           );
         })

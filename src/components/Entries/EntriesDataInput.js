@@ -3,7 +3,6 @@ import css from "./Entries.module.css";
 <EntriesDataInput 
     onUpdateBufferButton={updateValueBtnHandler} 
     onUpdateInputField={updateValueInputHandler}
-    dataName={dataValues.name}
     dataValue={dataValues.mass}
     onEnableEditing={enableEditingHandler}
     enableEditingState={enableEditing}
@@ -43,28 +42,60 @@ const EntriesDataInput = (props) => {
     </div>
   );
 
-  return (
-    <div
-      className={css.flexItem}
-      name={props.type}
-      onClick={props.onEnableEditing}
-      onBlur={props.onEnableEditing}
-      onFocus={props.onEnableEditing}
-    >
-      <label htmlFor={props.type}>{props.type}</label>
-      {!props.enableEditingState && (
-        <div
-          className={css.valueField}
-          onKeyDown={props.onEnableEditing}
-          tabIndex={0}
-        >
-          {props.dataValue}
-          {props.unit}
-        </div>
-      )}
-      {props.enableEditingState && dataEditSimpleForm}
-    </div>
-  );
+  if (props.type !== "RPE") {
+    return (
+      <div
+        className={css.flexItem}
+        name={props.type}
+        onClick={props.onEnableEditing}
+        onBlur={props.onEnableEditing}
+        onFocus={props.onEnableEditing}
+      >
+        <label htmlFor={props.type}>{props.type}</label>
+        {!props.enableEditingState && (
+          <div
+            className={css.valueField}
+            onKeyDown={props.onEnableEditing}
+            tabIndex={0}
+          >
+            {props.dataValue}
+            {props.unit}
+          </div>
+        )}
+        {props.enableEditingState && dataEditSimpleForm}
+      </div>
+    );
+  }
+  if (props.type === "RPE") {
+    return (
+      <div
+        className={css.flexItem}
+        name={props.type}
+        onClick={props.onEnableEditing}
+        onBlur={props.onEnableEditing}
+        onFocus={props.onEnableEditing}
+      >
+        <label htmlFor={props.type}>{props.type}</label>
+        {!props.enableEditingState && (
+          <div className={css.valueField}><span>{props.dataValue}</span><span>: {props.rpeText[props.dataValue]}</span></div>
+        )}
+        {props.enableEditingState && (
+          <input
+            name={props.type}
+            id="NUMBER"
+            onChange={props.onUpdateInputField}
+            onKeyDown={props.onEnableEditing}
+            defaultValue={props.dataValue}
+            type="range"
+            step="1"
+            min="0"
+            max="4"
+          />
+        )}
+      </div>
+    );
+  }
+
 };
 
 export default EntriesDataInput;
