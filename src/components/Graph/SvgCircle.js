@@ -4,6 +4,7 @@ import SvgLine from "./SvgLine";
 
 const SvgCircle = (props) => {
   const [showValue, setShowValue] = useState(false);
+  const colorPalette = ['#788cff', '#BD9DBD', '#FBFF7A', '#FFBF7A', '#FF7B7A'];
 
   const valueBoxHandler = (event) => {
     if (event.type === "mouseenter") {
@@ -33,14 +34,17 @@ const SvgCircle = (props) => {
         cy={`${props.yCoordinate}%`}
         r="6"
         stroke="rgb(0, 0, 0, 0%)"
-        strokeWidth="8"
-        fill="#788cff"
+        strokeWidth="10"
+        fill={colorPalette[props.rpe]}
       />
       {props.lineProperties.x1 && props.lineProperties.y1 && (
         <SvgLine
-          lineProperties={props.lineProperties}
-          x2={props.xCoordinate}
-          y2={`${props.yCoordinate}%`}
+          gradient={colorPalette}
+          lineProperties={{
+            ...props.lineProperties,
+            x2: props.xCoordinate,
+            y2: props.yCoordinate,
+          }}
         />
       )}
     </>

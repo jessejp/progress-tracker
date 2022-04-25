@@ -50,6 +50,7 @@ const graphDataSlice = createSlice({
               mass: [newSubmission.mass],
               reps: [newSubmission.reps],
               sets: [newSubmission.sets],
+              rpe: [newSubmission.rpe],
             },
           ],
         });
@@ -59,11 +60,13 @@ const graphDataSlice = createSlice({
           mass: [newSubmission.mass],
           reps: [newSubmission.reps],
           sets: [newSubmission.sets],
+          rpe: [newSubmission.rpe],
         });
       } else if (existingData) {
         existingData.mass.push(newSubmission.mass);
         existingData.reps.push(newSubmission.reps);
         existingData.sets.push(newSubmission.sets);
+        existingData.rpe.push(newSubmission.rpe);
       }
     },
   },

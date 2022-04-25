@@ -42,7 +42,8 @@
 
 .entryName {
   font-weight: 500;
-  padding: 0 0.4em;
+  font-size: 1.1em;
+  padding: 0 0.2em;
   width: 8em;
   text-align: center;
 }

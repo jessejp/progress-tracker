@@ -18,6 +18,8 @@ const Graph = () => {
     yCoords: [],
   });
 
+  const [rpeData, setRpeData] = useState([]);
+
   const svgCalculateYLocation = useGraph();
 
   const dataState = useSelector((state) => state.graph.data);
@@ -45,6 +47,7 @@ const Graph = () => {
         if (selectedData.mass) {
           setGraphPoints(svgCalculateYLocation(selectedData.mass));
         }
+        setRpeData(selectedData.rpe);
       }
     }
   }, [svgCalculateYLocation, selectedEntry, dataState, category]);
@@ -76,38 +79,6 @@ const Graph = () => {
         <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
         <svg className={css.svgContainer} height="300" width="100%">
           <svg>
-            {graphPoints.unsorted.map((point, index) => {
-              const yIndex = graphPoints.sorted.findIndex(
-                (sortedPoint) => sortedPoint === point
-              );
-              const excess = graphPoints.yCoords[0] / 2;
-              const graphScale = 100 + excess;
-              //every other circle creates a line
-              let lineProperties = {};
-              if (index !== 0) {
-                const lastYIndex = graphPoints.sorted.findIndex(
-                  (sortedPoint) =>
-                    sortedPoint === graphPoints.unsorted[index - 1]
-                );
-                lineProperties = {
-                  x1: (index - 1) * 25 + 25,
-                  y1: `${graphScale - graphPoints.yCoords[lastYIndex]}%`,
-                  color: "rgb(120, 140, 255, 50%)",
-                };
-              }
-              return (
-                <SvgCircle
-                  pointValue={point}
-                  key={`${index}_svgcircle${Math.random}`}
-                  indexID={index}
-                  xCoordinate={index * 25 + 25}
-                  yCoordinate={graphScale - graphPoints.yCoords[yIndex]}
-                  lineProperties={lineProperties}
-                />
-              );
-            })}
-          </svg>
-          <svg>
             {graphGuides.sorted.map((line, index) => {
               const yCVal = graphGuides.yCoords[index];
               const excess = graphPoints.yCoords[0] / 2;
@@ -129,16 +100,53 @@ const Graph = () => {
                     <SvgLine
                       lineProperties={{
                         x1: 0,
-                        y1: `${graphScale - yCVal}%`,
+                        y1: graphScale - yCVal,
+                        x2: "100%",
+                        y2: graphScale - yCVal,
                         color: "rgb(20, 40, 55, 10%)",
+                        id: null,
                       }}
-                      x2="100%"
-                      y2={`${graphScale - yCVal}%`}
                     />
                   </React.Fragment>
                 );
               }
               return "";
+            })}
+          </svg>
+          <svg>
+            {graphPoints.unsorted.map((point, index) => {
+              const yIndex = graphPoints.sorted.findIndex(
+                (sortedPoint) => sortedPoint === point
+              );
+              const excess = graphPoints.yCoords[0] / 2;
+              const graphScale = 100 + excess;
+              //every other circle creates a line
+              let lineProperties = {};
+              if (index !== 0) {
+                const lastYIndex = graphPoints.sorted.findIndex(
+                  (sortedPoint) =>
+                    sortedPoint === graphPoints.unsorted[index - 1]
+                );
+                lineProperties = {
+                  x1: (index - 1) * 25 + 25,
+                  y1: graphScale - graphPoints.yCoords[lastYIndex],
+                  color: `url(#linear${index})`,
+                  id: `linear${index}`,
+                  gradientColor1: rpeData[index - 1],
+                  gradientColor2: rpeData[index],
+                };
+              }
+              return (
+                <SvgCircle
+                  pointValue={point}
+                  key={`${index}_svgcircle${Math.random}`}
+                  indexID={index}
+                  xCoordinate={index * 25 + 25}
+                  yCoordinate={graphScale - graphPoints.yCoords[yIndex]}
+                  lineProperties={lineProperties}
+                  rpe={rpeData[index]}
+                />
+              );
             })}
           </svg>
         </svg>

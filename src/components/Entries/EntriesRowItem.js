@@ -1,90 +1,9 @@
 import { useEffect, useReducer, useState } from "react";
 import css from "./Entries.module.css";
 import EntriesDataInput from "./EntriesDataInput";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { graphDataActions } from "../../store/graph-data-slice";
 import { entryActions } from "../../store/entries-slice";
-
-const defaultBufferValue = {
-  mass: 2.5,
-  reps: 1,
-  sets: 1,
-};
-
-const dataValuesReducer = (state, action) => {
-  const defaultState = {
-    category: state.category,
-    name: state.name,
-    mass: state.mass,
-    reps: state.reps,
-    sets: state.sets,
-  };
-
-  if (action.evHandler === "CHANGE") {
-    switch (action.type) {
-      case "mass":
-        return {
-          ...state,
-          mass: action.value,
-        };
-      case "reps":
-        return {
-          ...state,
-          reps: action.value,
-        };
-      case "sets":
-        return {
-          ...state,
-          sets: action.value,
-        };
-      default:
-        return defaultState;
-    }
-  }
-  if (action.evHandler === "BUFF") {
-    switch (action.type) {
-      case "mass":
-        return {
-          ...state,
-          mass: state.mass + defaultBufferValue.mass,
-        };
-      case "reps":
-        return {
-          ...state,
-          reps: state.reps + defaultBufferValue.reps,
-        };
-      case "sets":
-        return {
-          ...state,
-          sets: state.sets + defaultBufferValue.reps,
-        };
-      default:
-        return defaultState;
-    }
-  }
-  if (action.evHandler === "DEBUFF") {
-    switch (action.type) {
-      case "mass":
-        return {
-          ...state,
-          mass: state.mass - defaultBufferValue.mass,
-        };
-      case "reps":
-        return {
-          ...state,
-          reps: state.reps - defaultBufferValue.reps,
-        };
-      case "sets":
-        return {
-          ...state,
-          sets: state.sets - defaultBufferValue.reps,
-        };
-      default:
-        return defaultState;
-    }
-  }
-  return defaultState;
-};
 
 const EntriesRowItem = (props) => {
   const initDataValues = {
@@ -93,8 +12,10 @@ const EntriesRowItem = (props) => {
     mass: +props.mass,
     reps: +props.reps,
     sets: +props.sets,
-    RPE: 'No Data'
+    rpe: +props.rpe,
   };
+
+  const settings = useSelector((state) => state.entries.entries[0].settings);
 
   const [enableEditing, setEnableEditing] = useState(false);
   // State for saving the data edit menu when blur event is activated for another input.
@@ -128,6 +49,7 @@ const EntriesRowItem = (props) => {
           mass: +dataValues.mass,
           reps: +dataValues.reps,
           sets: +dataValues.sets,
+          rpe: +dataValues.rpe,
         })
       );
     }, 800);
@@ -156,6 +78,15 @@ const EntriesRowItem = (props) => {
     if (event.type === "blur" || event.code === "Enter") setKeepEditing(false);
   };
 
+  const updateRPEValueInputHandler = (event) => {
+    console.log(event)
+    dispatchUpdate({
+      type: event.target.name,
+      evHandler: "CHANGE",
+      value: +event.target.valueAsNumber,
+    });
+  };
+
   const updateValueInputHandler = (event) => {
     dispatchUpdate({
       type: event.target.name,
@@ -165,12 +96,26 @@ const EntriesRowItem = (props) => {
   };
 
   const updateValueBtnHandler = (event) => {
-    const minVal = 2.5;
+    let stepVal = 0;
 
+    switch (event.target.name) {
+      case "mass":
+        stepVal = settings.stepIntervalMass;
+        break;
+      case "reps":
+        stepVal = settings.stepIntervalReps;
+        break;
+      case "sets":
+        stepVal = settings.stepIntervalSets;
+        break;
+      default:
+        break;
+    }
+    console.log(stepVal);
     dispatchUpdate({
       type: event.target.name,
       evHandler: event.target.id,
-      value: minVal,
+      step: +stepVal,
     });
   };
 
@@ -180,49 +125,138 @@ const EntriesRowItem = (props) => {
         {dataValues.name}
       </div>
       <div className={css.flexContainer}>
-      <EntriesDataInput
-        type="mass"
-        onUpdateBufferButton={updateValueBtnHandler}
-        onUpdateInputField={updateValueInputHandler}
-        dataName={dataValues.name}
-        dataValue={dataValues.mass}
-        onEnableEditing={enableEditingHandler}
-        enableEditingState={enableEditing}
-        bufferValue={defaultBufferValue.mass}
-        unit="kg"
-      />
-      <EntriesDataInput
-        type="reps"
-        onUpdateBufferButton={updateValueBtnHandler}
-        onUpdateInputField={updateValueInputHandler}
-        dataName={dataValues.name}
-        dataValue={dataValues.reps}
-        onEnableEditing={enableEditingHandler}
-        enableEditingState={enableEditing}
-        bufferValue={defaultBufferValue.reps}
-      />
-      <EntriesDataInput
-        type="sets"
-        onUpdateBufferButton={updateValueBtnHandler}
-        onUpdateInputField={updateValueInputHandler}
-        dataName={dataValues.name}
-        dataValue={dataValues.sets}
-        onEnableEditing={enableEditingHandler}
-        enableEditingState={enableEditing}
-        bufferValue={defaultBufferValue.sets}
-      />
+        <EntriesDataInput
+          type="mass"
+          onUpdateBufferButton={updateValueBtnHandler}
+          onUpdateInputField={updateValueInputHandler}
+          dataValue={dataValues.mass}
+          onEnableEditing={enableEditingHandler}
+          enableEditingState={enableEditing}
+          bufferValue={settings.stepIntervalMass}
+          unit="kg"
+        />
+        <EntriesDataInput
+          type="reps"
+          onUpdateBufferButton={updateValueBtnHandler}
+          onUpdateInputField={updateValueInputHandler}
+          dataValue={dataValues.reps}
+          onEnableEditing={enableEditingHandler}
+          enableEditingState={enableEditing}
+          bufferValue={settings.stepIntervalReps}
+        />
+        <EntriesDataInput
+          type="sets"
+          onUpdateBufferButton={updateValueBtnHandler}
+          onUpdateInputField={updateValueInputHandler}
+          dataValue={dataValues.sets}
+          onEnableEditing={enableEditingHandler}
+          enableEditingState={enableEditing}
+          bufferValue={settings.stepIntervalSets}
+        />
+        {settings.enableRPE === true && (
+          <EntriesDataInput
+            type="RPE"
+            onUpdateInputField={updateRPEValueInputHandler}
+            dataValue={dataValues.rpe}
+            rpeText={['very light intensity', 'light intensity', 'moderate intensity', 'vigorous intensity', 'maximum intensity']}
+            onEnableEditing={enableEditingHandler}
+            enableEditingState={enableEditing}
+          />
+        )}
       </div>
       <div className={css.flexItem}>
-          <button
-            className={css.submitButton}
-            onClick={submitDataHandler}
-            name={dataValues.name}
-          >
-            ✔
-          </button>
+        <button
+          className={css.submitButton}
+          onClick={submitDataHandler}
+          name={dataValues.name}
+        >
+          ✔
+        </button>
       </div>
     </div>
   );
+};
+
+const dataValuesReducer = (state, action) => {
+  const defaultState = {
+    category: state.category,
+    name: state.name,
+    mass: state.mass,
+    reps: state.reps,
+    sets: state.sets,
+    rpe: state.rpe,
+  };
+  console.log(action);
+
+  if (action.evHandler === "CHANGE") {
+    switch (action.type) {
+      case "mass":
+        return {
+          ...state,
+          mass: action.value,
+        };
+      case "reps":
+        return {
+          ...state,
+          reps: action.value,
+        };
+      case "sets":
+        return {
+          ...state,
+          sets: action.value,
+        };
+      case "RPE":
+        return {
+          ...state,
+          rpe: action.value,
+        };
+      default:
+        return defaultState;
+    }
+  }
+  if (action.evHandler === "BUFF") {
+    switch (action.type) {
+      case "mass":
+        return {
+          ...state,
+          mass: state.mass + action.step,
+        };
+      case "reps":
+        return {
+          ...state,
+          reps: state.reps + action.step,
+        };
+      case "sets":
+        return {
+          ...state,
+          sets: state.sets + action.step,
+        };
+      default:
+        return defaultState;
+    }
+  }
+  if (action.evHandler === "DEBUFF") {
+    switch (action.type) {
+      case "mass":
+        return {
+          ...state,
+          mass: state.mass - action.step,
+        };
+      case "reps":
+        return {
+          ...state,
+          reps: state.reps - action.step,
+        };
+      case "sets":
+        return {
+          ...state,
+          sets: state.sets - action.step,
+        };
+      default:
+        return defaultState;
+    }
+  }
+  return defaultState;
 };
 
 export default EntriesRowItem;
