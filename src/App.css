@@ -3,6 +3,10 @@
   justify-content: center;
 }
 
+.App>div {
+  width: calc(100vw / 2 + 14em);
+}
+
 .iconTextLink {
   display: flex;
   align-items: center;

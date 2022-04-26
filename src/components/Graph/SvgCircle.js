@@ -1,42 +1,10 @@
-import { useState } from "react";
-import css from "./Graph.module.css";
 import SvgLine from "./SvgLine";
+import { colorPalette } from "../../store/rpeStrings";
 
 const SvgCircle = (props) => {
-  const [showValue, setShowValue] = useState(false);
-  const colorPalette = ['#788cff', '#BD9DBD', '#FBFF7A', '#FFBF7A', '#FF7B7A'];
-
-  const valueBoxHandler = (event) => {
-    if (event.type === "mouseenter") {
-      setShowValue(true);
-    }
-    if (event.type === "mouseleave") {
-      setShowValue(false);
-    }
-  };
-
   return (
     <>
-      {showValue && (
-        <text
-          className={css.graphText}
-          x={props.xCoordinate - 5}
-          y={`${props.yCoordinate - 3}%`}
-        >
-          {props.pointValue}
-        </text>
-      )}
-      <circle
-        id={props.indexID}
-        onMouseEnter={valueBoxHandler}
-        onMouseLeave={valueBoxHandler}
-        cx={props.xCoordinate}
-        cy={`${props.yCoordinate}%`}
-        r="6"
-        stroke="rgb(0, 0, 0, 0%)"
-        strokeWidth="10"
-        fill={colorPalette[props.rpe]}
-      />
+     
       {props.lineProperties.x1 && props.lineProperties.y1 && (
         <SvgLine
           gradient={colorPalette}
@@ -47,6 +15,17 @@ const SvgCircle = (props) => {
           }}
         />
       )}
+      <circle
+        id={props.indexID}
+        onMouseEnter={(e) => {props.valueBoxHandler(e, props.reps, props.sets, props.rpe, props.pointValue, props.date)}}
+        onMouseLeave={(e) => {props.valueBoxHandler(e, props.reps, props.sets, props.rpe, props.pointValue, props.date)}}
+        cx={props.xCoordinate}
+        cy={`${props.yCoordinate}%`}
+        r="8"
+        stroke="rgb(0, 0, 0, 20%)"
+        strokeWidth="2"
+        fill={colorPalette[props.rpe]}
+      />
     </>
   );
 };

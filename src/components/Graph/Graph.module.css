@@ -1,20 +1,23 @@
-.graphContainer {
-  background: #ccc;
-  display: grid;
-  grid-template-columns: minmax(9em, 36em);
-  grid-template-rows: auto;
-}
+
 
 .graphFlexContainer {
+  background: #ccc;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 2em 3%;
+    padding: 0 3% 2em 3%;
 }
 
 .entryForm {
-  width: 90%;
-  margin-bottom: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.entryForm select {
+  background: none;
+  border: none;
+  font-size: 1.8em;
+  font-family: monospace;
+  font-weight: 800;
 }
 
 .svgContainer {
@@ -23,9 +26,10 @@
 }
 
 .graphText {
-  font-size: 1.5em;
+  font-size: 1.4em;
   font-family: monospace;
   font-weight: 600;
+  text-transform: capitalize;
 }
 
 .lineText {
