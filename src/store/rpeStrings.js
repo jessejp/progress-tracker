@@ -7,9 +7,9 @@ export const intensity = [
 ];
 
 export const colorPalette = [
-  "#788cff",
-  "#BD9DBD",
-  "#FBFF7A",
-  "#FFBF7A",
-  "#FF7B7A",
+  "#7EAB9C",
+  "#CBE838",
+  "#E8C838",
+  "#E88C38",
+  "#E75038",
 ];

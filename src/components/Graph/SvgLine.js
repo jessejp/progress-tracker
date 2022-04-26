@@ -17,9 +17,9 @@ const SvgLine = (props) => {
         </defs>
       )}
       <line
-        x1={props.lineProperties.x1}
+        x1={`${props.lineProperties.x1}%`}
         y1={`${props.lineProperties.y1}%`}
-        x2={props.lineProperties.x2}
+        x2={`${props.lineProperties.x2}%`}
         y2={
           props.lineProperties.y2 === props.lineProperties.y1
             ? `${props.lineProperties.y2 + 0.001}%`
