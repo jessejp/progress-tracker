@@ -28,6 +28,8 @@ const Graph = () => {
 
   const dataState = useSelector((state) => state.graph.data);
 
+  const [graphRange, setGraphRange] = useState(10);
+
   const [category, setCategory] = useState(
     dataState.findIndex((d) => d.category === "Weight Lifting")
   );
@@ -49,15 +51,19 @@ const Graph = () => {
 
       if (selectedData) {
         if (selectedData.mass) {
-          setGraphPoints(svgCalculateYLocation(selectedData.mass));
+          setGraphPoints(
+            svgCalculateYLocation(
+              selectedData.mass.slice(dateData.length-10, graphRange + 1)
+            )
+          );
         }
-        setRepsData(selectedData.reps);
-        setSetsData(selectedData.sets);
-        setRpeData(selectedData.rpe);
-        setDateData(selectedData.date);
+        setRepsData(selectedData.reps.slice(dateData.length-10, graphRange + 1));
+        setSetsData(selectedData.sets.slice(dateData.length-10, graphRange + 1));
+        setRpeData(selectedData.rpe.slice(dateData.length-10, graphRange + 1));
+        setDateData(selectedData.date.slice(dateData.length-10, graphRange + 1));
       }
     }
-  }, [svgCalculateYLocation, selectedEntry, dataState, category]);
+  }, [svgCalculateYLocation, selectedEntry, dataState, category, graphRange]);
 
   const { sorted } = graphPoints;
 
@@ -77,12 +83,17 @@ const Graph = () => {
     }
   }, [svgCalculateYLocation, sorted]);
 
-  
-  const [showValue, setShowValue] = useState({mass: null, reps: null, sets: null, rpe: null, date: [0,0,0]});
+  const [showValue, setShowValue] = useState({
+    mass: null,
+    reps: null,
+    sets: null,
+    rpe: null,
+    date: [0, 0, 0],
+  });
 
   const valueBoxHandler = (event, reps, sets, rpe, mass, date) => {
     if (event.type === "mouseenter") {
-      setShowValue({mass, reps, sets, rpe, date});
+      setShowValue({ mass, reps, sets, rpe, date });
     }
   };
 
@@ -122,7 +133,7 @@ const Graph = () => {
                       lineProperties={{
                         x1: 0,
                         y1: graphScale - yCVal,
-                        x2: "100%",
+                        x2: "100",
                         y2: graphScale - yCVal,
                         color: "rgb(20, 40, 55, 10%)",
                         id: null,
@@ -149,7 +160,7 @@ const Graph = () => {
                     sortedPoint === graphPoints.unsorted[index - 1]
                 );
                 lineProperties = {
-                  x1: (index - 1) * 25 + 25,
+                  x1: (index - 1) * 10 + 5,
                   y1: graphScale - graphPoints.yCoords[lastYIndex],
                   color: `url(#linear${index})`,
                   id: `linear${index}`,
@@ -162,7 +173,7 @@ const Graph = () => {
                   pointValue={point}
                   key={`${index}_svgcircle${Math.random}`}
                   indexID={index}
-                  xCoordinate={index * 25 + 25}
+                  xCoordinate={index * 10 + 5}
                   yCoordinate={graphScale - graphPoints.yCoords[yIndex]}
                   lineProperties={lineProperties}
                   reps={repsData[index]}
@@ -175,6 +186,23 @@ const Graph = () => {
             })}
           </svg>
         </svg>
+        {dateData.length > 0 && (
+          <div className={css.graphDateRange}>
+            <div>
+              {dateData[0].day}.{dateData[0].month}
+            </div>
+            <div>
+              {dateData[0].year !== dateData[dateData.length-1].year
+                ? `${dateData[0].year} - ${
+                    dateData[dateData.length-1].year
+                  }`
+                : dateData[0].year}
+            </div>
+            <div>
+              {dateData[dateData.length-1].day}.{dateData[dateData.length-1].month}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

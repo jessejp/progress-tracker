@@ -37,3 +37,9 @@
   font-family: monospace;
   font-weight: 200;
 }
+
+.graphDateRange {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1em;
+}
