@@ -4,6 +4,7 @@ import EntriesDataInput from "./EntriesDataInput";
 import { useDispatch, useSelector } from "react-redux";
 import { graphDataActions } from "../../store/graph-data-slice";
 import { entryActions } from "../../store/entries-slice";
+import { intensity } from "../../store/rpeStrings";
 
 const EntriesRowItem = (props) => {
   const initDataValues = {
@@ -59,7 +60,8 @@ const EntriesRowItem = (props) => {
   }, [dispatch, dataValues]);
 
   const submitDataHandler = (event) => {
-    dispatch(graphDataActions.addData(dataValues));
+    const submitDate = new Date();
+    dispatch(graphDataActions.addData({...dataValues, date: submitDate.toISOString()}));
   };
 
   /* As the form to edit data pops up after interacting with the data key, 
@@ -158,7 +160,7 @@ const EntriesRowItem = (props) => {
             type="RPE"
             onUpdateInputField={updateRPEValueInputHandler}
             dataValue={dataValues.rpe}
-            rpeText={['very light intensity', 'light intensity', 'moderate intensity', 'vigorous intensity', 'maximum intensity']}
+            rpeText={intensity}
             onEnableEditing={enableEditingHandler}
             enableEditingState={enableEditing}
           />

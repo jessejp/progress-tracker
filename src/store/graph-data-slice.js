@@ -11,6 +11,7 @@ import { createSlice } from "@reduxjs/toolkit";
         reps: [8, 8, 6, 6],
         sets: [3, 3, 3, 3],
         RPE: ['No Data', 5, 8, 8],
+        date: [{day: 25, month: 4, year: 2022}]
       },
       {
         name: "Military Press",
@@ -18,6 +19,7 @@ import { createSlice } from "@reduxjs/toolkit";
         reps: [12, 12, 12, 12],
         sets: [3, 3, 3, 3],
         RPE: ['No Data', 5, 8, 8],
+        date: [{day: 25, month: 4, year: 2022}]
       },
     ],
     },
@@ -41,6 +43,9 @@ const graphDataSlice = createSlice({
               (d) => d.name === newSubmission.name
             )
           : false;
+
+      const newSubmissionDate = action.payload.date.split("T")[0].split("-");
+
       if (!existingData && category === -1) {
         state.data.push({
           category: newSubmission.category,
@@ -51,6 +56,13 @@ const graphDataSlice = createSlice({
               reps: [newSubmission.reps],
               sets: [newSubmission.sets],
               rpe: [newSubmission.rpe],
+              date: [
+                {
+                  day: +newSubmissionDate[2],
+                  month: +newSubmissionDate[1],
+                  year: +newSubmissionDate[0],
+                },
+              ],
             },
           ],
         });
@@ -61,12 +73,24 @@ const graphDataSlice = createSlice({
           reps: [newSubmission.reps],
           sets: [newSubmission.sets],
           rpe: [newSubmission.rpe],
+          date: [
+            {
+              day: +newSubmissionDate[2],
+              month: +newSubmissionDate[1],
+              year: +newSubmissionDate[0],
+            },
+          ],
         });
       } else if (existingData) {
         existingData.mass.push(newSubmission.mass);
         existingData.reps.push(newSubmission.reps);
         existingData.sets.push(newSubmission.sets);
         existingData.rpe.push(newSubmission.rpe);
+        existingData.date.push({
+          day: +newSubmissionDate[2],
+          month: +newSubmissionDate[1],
+          year: +newSubmissionDate[0],
+        });
       }
     },
   },

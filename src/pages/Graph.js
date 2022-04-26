@@ -4,6 +4,7 @@ import css from "../components/Graph/Graph.module.css";
 import GraphEntrySelection from "../components/Graph/GraphEntrySelection";
 import SvgCircle from "../components/Graph/SvgCircle";
 import SvgLine from "../components/Graph/SvgLine";
+import SvgText from "../components/Graph/SvgText";
 import useGraph from "../hooks/use-graph.js";
 
 const Graph = () => {
@@ -18,7 +19,10 @@ const Graph = () => {
     yCoords: [],
   });
 
+  const [repsData, setRepsData] = useState([]);
+  const [setsData, setSetsData] = useState([]);
   const [rpeData, setRpeData] = useState([]);
+  const [dateData, setDateData] = useState([]);
 
   const svgCalculateYLocation = useGraph();
 
@@ -47,7 +51,10 @@ const Graph = () => {
         if (selectedData.mass) {
           setGraphPoints(svgCalculateYLocation(selectedData.mass));
         }
+        setRepsData(selectedData.reps);
+        setSetsData(selectedData.sets);
         setRpeData(selectedData.rpe);
+        setDateData(selectedData.date);
       }
     }
   }, [svgCalculateYLocation, selectedEntry, dataState, category]);
@@ -70,6 +77,15 @@ const Graph = () => {
     }
   }, [svgCalculateYLocation, sorted]);
 
+  
+  const [showValue, setShowValue] = useState({mass: null, reps: null, sets: null, rpe: null, date: [0,0,0]});
+
+  const valueBoxHandler = (event, reps, sets, rpe, mass, date) => {
+    if (event.type === "mouseenter") {
+      setShowValue({mass, reps, sets, rpe, date});
+    }
+  };
+
   console.log("points", graphPoints);
   console.log("guides", graphGuides);
 
@@ -77,6 +93,11 @@ const Graph = () => {
     <div className={css.graphContainer}>
       <div className={css.graphFlexContainer}>
         <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
+        <svg height="50" width="100%">
+          {showValue.rpe !== null && showValue.mass !== null && (
+            <SvgText showValue={showValue} />
+          )}
+        </svg>
         <svg className={css.svgContainer} height="300" width="100%">
           <svg>
             {graphGuides.sorted.map((line, index) => {
@@ -144,7 +165,11 @@ const Graph = () => {
                   xCoordinate={index * 25 + 25}
                   yCoordinate={graphScale - graphPoints.yCoords[yIndex]}
                   lineProperties={lineProperties}
+                  reps={repsData[index]}
+                  sets={setsData[index]}
                   rpe={rpeData[index]}
+                  date={dateData[index]}
+                  valueBoxHandler={valueBoxHandler}
                 />
               );
             })}
