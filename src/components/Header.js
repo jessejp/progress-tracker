@@ -1,10 +1,17 @@
 import css from "./Header.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const authData = useSelector((state) => state.auth);
+
   return (
     <header>
-      <h1 className={css.heading}>Progress Tracker</h1>
+      <div className={css.headingContainer}>
+        <h1 className={css.heading}>Progress Tracker</h1>
+        {!authData.isLoggedIn && <Link to="authenticate">Login to save data</Link>}
+        {authData.isLoggedIn && <p>Logged in as {authData.email}</p>}
+      </div>
       <div className={css.menuSelections}>
         <NavLink
           to="/entries"
