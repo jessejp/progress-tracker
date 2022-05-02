@@ -1,3 +1,8 @@
+.headingContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
 .heading {
   margin: 0 0 0.75em 0;
 }
