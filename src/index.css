@@ -1,10 +1,10 @@
 :root {
-  --foreLight: #84B37E;
-  --fore: #6EA565;
-  --side: #658DA4;
-  --sidealt: #65A487;
-  --contrast: #9C65A4;
-  --contrastDark: #201422;
+  --foreLight: #bab5f6;
+  --background: #7795d7;
+  --fore: #a7a7fd;
+  --side: #3676c5;
+  --contrast: #00438a;
+  --contrastDark: #000;
 }
 
 body {
@@ -14,15 +14,18 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: var(--contrastDark);
   /* background-color: rgb(138, 138, 138); */
-  background-color: var(--sidealt);
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  background-color: var(--background);
 }
 
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+
+button {  
+  padding: 0.4em;
+  background: var(--foreLight);
+  border: none;
+  box-shadow: var(--contrast) 2px 3px;
 }
