@@ -15,11 +15,11 @@ h1.heading {
   column-gap: 1em;
   font-size: 1.4em;
 }
-
+/* 
 .active > .menuItem {
   background: linear-gradient(0deg, var(--fore), transparent 90%);
 }
-
+ */
 .menuItem:hover {
   cursor: pointer;
 }
@@ -29,7 +29,7 @@ a {
 }
 
 a.inactive {
-  color: black;
+  color: var(--contrastDark);
   margin: 0 0 0.1em 0;
 }
 

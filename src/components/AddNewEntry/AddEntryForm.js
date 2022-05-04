@@ -2,7 +2,7 @@ import css from "./AddEntryForm.module.css";
 import { useDispatch } from "react-redux";
 import { entryActions } from "../../store/entries-slice";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const defaultFormState = {
   category: "Weight Lifting",
@@ -38,10 +38,13 @@ const suggestedExercises = [
 
 const AddEntryForm = () => {
   const [userInput, setUserInput] = useState(defaultFormState);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  const showSuggestionsHandler = () => {
+    setShowSuggestions((state) => !state);
+  };
 
   const updateInputStates = (event) => {
     switch (event.target.id) {
@@ -105,70 +108,107 @@ const AddEntryForm = () => {
   return (
     <div className={css.addEntryFormContainer}>
       <div className={css.addEntryFormHeading}>
-        <div>
-          <h2>Set initial values</h2>
-          {suggestedExercises.map((e, index) => {
-            return (
-              <button
-                key={`${index}_suggestion`}
-                className={css.suggestionButton}
-                type="button"
-                value={e.name}
-                onClick={fillSuggestion}
-              >
-                {e.name}
-              </button>
-            );
-          })}
+        <div className={css.closeFormContainer}>
+          <Link to="/entries" className={`${css.closeForm}`}>
+            <span className="material-icons-outlined">close</span>
+          </Link>
         </div>
         <div>
-          <button
-            onClick={() => {
-              navigate("/entries", { replace: false });
-            }}
-            className={`${css.closeForm} buttonNoDefault`}
-          >
-            <span className="material-icons-outlined">close</span>
-          </button>
+          <h2>Set initial values</h2>
+          {!showSuggestions && (
+            <button
+              className={css.showSuggestionButtons}
+              onClick={showSuggestionsHandler}
+            >
+              Show Exercise Suggestions
+            </button>
+          )}
+          {showSuggestions &&
+            suggestedExercises.map((e, index) => {
+              return (
+                <button
+                  key={`${index}_suggestion`}
+                  className={css.suggestionButton}
+                  type="button"
+                  value={e.name}
+                  onClick={fillSuggestion}
+                >
+                  {e.name}
+                </button>
+              );
+            })}
         </div>
       </div>
 
       <form className={css.formContainer}>
-        <label htmlFor="name">Exercise Name</label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={userInput.name}
-          onChange={updateInputStates}
-        />
+        <div className={css.formInputsWrapper}>
+          <div className={css.formInputContainer}>
+            <label htmlFor="name">Exercise Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={userInput.name}
+              onChange={updateInputStates}
+            />
+          </div>
 
-        <label htmlFor="mass">Mass</label>
-        <input
-          type="number"
-          name="mass"
-          id="mass"
-          value={userInput.mass}
-          onChange={updateInputStates}
-        />
+          <div className={`${css.formInputContainer} ${css.massInputs}`}>
+            <div>
+              <label htmlFor="mass">Mass</label>
+              <input
+                type="number"
+                name="mass"
+                id="mass"
+                value={userInput.mass}
+                onChange={updateInputStates}
+              />
+            </div>
+            {/* <div className={css.unitsContainer}>
+              <label htmlFor="kg">kg</label>
+              <input
+                type="radio"
+                name="unit"
+                id="kg"
+                value="kg"
+                checked={true}
+                onChange={updateInputStates}
+              />
+            </div>
+            <div className={css.unitsContainer}>
+              <label htmlFor="lbs">lbs.</label>
+              <input
+                type="radio"
+                name="unit"
+                id="lbs"
+                value="lbs"
+                onChange={updateInputStates}
+              />
+            </div> */}
+          </div>
 
-        <label htmlFor="reps">Reps</label>
-        <input
-          type="number"
-          name="reps"
-          id="reps"
-          value={userInput.reps}
-          onChange={updateInputStates}
-        />
+          <div className={css.formInputContainer}>
+            <label htmlFor="reps">Reps</label>
+            <input
+              type="number"
+              name="reps"
+              id="reps"
+              value={userInput.reps}
+              onChange={updateInputStates}
+            />
+          </div>
 
-        <label htmlFor="sets">Sets</label>
-        <input
-          type="number"
-          name="sets"
-          id="sets"
-          value={userInput.sets}
-          onChange={updateInputStates}
-        />
+          <div className={css.formInputContainer}>
+            <label htmlFor="sets">Sets</label>
+            <input
+              type="number"
+              name="sets"
+              id="sets"
+              value={userInput.sets}
+              onChange={updateInputStates}
+            />
+          </div>
+        </div>
         <div>
           <button onClick={addNewEntry}>Submit</button>
         </div>

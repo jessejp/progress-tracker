@@ -1,7 +1,7 @@
 
 
 .graphFlexContainer {
-  background: #ccc;
+  background: var(--side);
   display: flex;
   flex-direction: column;
     padding: 0 3% 2em 3%;
@@ -21,7 +21,7 @@
 }
 
 .svgContainer {
-  background: white;
+  background: var(--foreLight);
   padding: 1.5em 0;
 }
 

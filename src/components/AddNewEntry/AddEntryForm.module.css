@@ -1,24 +1,94 @@
 .addEntryFormContainer {
-  background: linear-gradient(0deg, #ccc 0%, #bcbcbc 10%, #ccc 100%);
-  padding: 1em 0;
+  /*  background: linear-gradient(0deg, #ccc 0%, #bcbcbc 10%, #ccc 100%); */
+  background: var(--side);
+  padding: 1em 0.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .addEntryFormHeading {
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
 
 .formContainer {
   display: flex;
   flex-direction: column;
+  gap: 1em;
+}
+
+.formInputsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.formInputContainer {
+  display: flex;
+  flex-direction: column;
+  width: calc(10vw + 8em);
+}
+
+.formInputContainer.massInputs {
+  flex-direction: row;
+  gap: 12%;
+}
+
+.massInputs .unitsContainer {
+  width: 2.3em;
+  align-items: center;
+}
+
+.formInputContainer div {
+  display: flex;
+  flex-direction: column;
+}
+
+.formInputContainer input[type="radio"] {
+  appearance: none;
+  margin: 0;
+  width: 2em;
+  height: 2em;
+  border: 3px solid var(--fore);
+  border-radius: 50%;
+  padding: 2px;
+  background-clip: content-box;
+}
+
+.formInputContainer input[type="radio"]:checked {
+  background-color: var(--contrast);
+}
+
+.formInputContainer input[type="number"],
+.formInputContainer input[type="text"] {
+  height: 2em;
+  text-align: center;
+  background: var(--foreLight);
+}
+
+.formInputContainer input[type="number"] {
+  width: calc(4em);
+}
+
+.formInputContainer input[type="text"] {
+  width: calc(10vw + 8em);
+}
+
+.showSuggestionButtons {
+  font-size: 0.8em;
 }
 
 .suggestionButton {
-  margin: 0.1em;
+  margin: 0 0.2em 0 0;
   font-size: 0.8em;
   width: 8em;
-  padding: 0.4em;
-  border-radius: 3em;
+}
+
+.closeFormContainer {
+  position: absolute;
+  right: 1em;
 }
 
 .closeForm {
@@ -29,8 +99,4 @@
 
 h2 {
   margin: 0 0 0.2em 0;
-}
-
-form {
-  padding: 0.4em;
 }
