@@ -140,7 +140,7 @@ const AddEntryForm = () => {
         </div>
       </div>
 
-      <form className={css.formContainer}>
+      <form className={css.formContainer} onSubmit={addNewEntry}>
         <div className={css.formInputsWrapper}>
           <div className={css.formInputContainer}>
             <label htmlFor="name">Exercise Name</label>
@@ -210,7 +210,7 @@ const AddEntryForm = () => {
           </div>
         </div>
         <div>
-          <button onClick={addNewEntry}>Submit</button>
+          <button>Submit</button>
         </div>
       </form>
     </div>
