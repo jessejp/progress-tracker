@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import css from "./Entries.module.css";
 import EntriesDataInput from "./EntriesDataInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,7 +61,28 @@ const EntriesRowItem = (props) => {
 
   const submitDataHandler = (event) => {
     const submitDate = new Date();
-    dispatch(graphDataActions.addData({...dataValues, date: submitDate.toISOString()}));
+    dispatch(
+      graphDataActions.addData({
+        ...dataValues,
+        date: submitDate.toISOString(),
+        week: getWeekNumber(submitDate),
+        weekday: submitDate.getDay(),
+      })
+    );
+  };
+
+  const getWeekNumber = (d) => {
+    // Copy date so don't modify original
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    // Set to nearest Thursday: current date + 4 - current day number
+    // Make Sunday's day number 7
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    // Get first day of year
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    // Calculate full weeks to nearest Thursday
+    var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+    // Return array of year and week number
+    return [d.getUTCFullYear(), weekNo];
   };
 
   /* As the form to edit data pops up after interacting with the data key, 
@@ -81,7 +102,7 @@ const EntriesRowItem = (props) => {
   };
 
   const updateRPEValueInputHandler = (event) => {
-    console.log(event)
+    console.log(event);
     dispatchUpdate({
       type: event.target.name,
       evHandler: "CHANGE",

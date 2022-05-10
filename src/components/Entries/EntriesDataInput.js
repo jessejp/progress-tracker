@@ -77,7 +77,7 @@ const EntriesDataInput = (props) => {
       >
         <label htmlFor={props.type}>{props.type}</label>
         {!props.enableEditingState && (
-          <div className={css.valueField}><span>{props.dataValue}</span><span>: {props.rpeText[props.dataValue]}</span></div>
+          <div className={css.valueField}><span>{props.dataValue + 1}</span><span>: {props.rpeText[props.dataValue]}</span></div>
         )}
         {props.enableEditingState && (
           <input

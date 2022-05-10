@@ -11,7 +11,7 @@ import { createSlice } from "@reduxjs/toolkit";
         reps: [8, 8, 6, 6],
         sets: [3, 3, 3, 3],
         RPE: ['No Data', 5, 8, 8],
-        date: [{day: 25, month: 4, year: 2022}]
+        date: [{day: 25, month: 4, year: 2022, week: 18, weekday: 1}],
       },
       {
         name: "Military Press",
@@ -19,7 +19,7 @@ import { createSlice } from "@reduxjs/toolkit";
         reps: [12, 12, 12, 12],
         sets: [3, 3, 3, 3],
         RPE: ['No Data', 5, 8, 8],
-        date: [{day: 25, month: 4, year: 2022}]
+        date: [{day: 25, month: 4, year: 2022, week: 18, weekday: 1}],
       },
     ],
     },
@@ -44,8 +44,12 @@ const graphDataSlice = createSlice({
             )
           : false;
 
-      const newSubmissionDate = action.payload.date.split("T")[0].split("-");
+      console.log(action.payload.weekday);
+      console.log(action.payload.week);
 
+      const newSubmissionDate = action.payload.date.split("T")[0].split("-");
+      console.log(newSubmissionDate);
+      
       if (!existingData && category === -1) {
         state.data.push({
           category: newSubmission.category,
