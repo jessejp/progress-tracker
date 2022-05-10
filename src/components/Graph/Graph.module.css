@@ -1,10 +1,8 @@
-
-
 .graphFlexContainer {
   background: var(--side);
   display: flex;
   flex-direction: column;
-    padding: 0 3% 2em 3%;
+  padding: 0 3% 2em 3%;
 }
 
 .entryForm {
@@ -25,11 +23,17 @@
   padding: 1.5em 0;
 }
 
+.graphTextContainer {
+  display: flex;
+  align-items: center;
+}
+
 .graphText {
   font-size: 1.4em;
   font-family: monospace;
   font-weight: 600;
   text-transform: capitalize;
+  margin: 0;
 }
 
 .lineText {

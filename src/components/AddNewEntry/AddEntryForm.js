@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const defaultFormState = {
-  category: "Weight Lifting",
+  category: "Weight Training",
   name: "",
   mass: "",
   reps: "",
@@ -14,21 +14,21 @@ const defaultFormState = {
 
 const suggestedExercises = [
   {
-    category: "Weight Lifting",
+    category: "Weight Training",
     name: "Bench Press",
     mass: "20",
     reps: "8",
     sets: "3",
   },
   {
-    category: "Weight Lifting",
+    category: "Weight Training",
     name: "Squat",
     mass: "40",
     reps: "6",
     sets: "3",
   },
   {
-    category: "Weight Lifting",
+    category: "Weight Training",
     name: "Lat Pulldown",
     mass: "50",
     reps: "8",
