@@ -1,8 +1,14 @@
+.graphContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
 .graphFlexContainer {
   background: var(--side);
   display: flex;
   flex-direction: column;
-  padding: 0 3% 2em 3%;
+  padding: 1em 3% 2em 3%;
 }
 
 .entryForm {
@@ -46,4 +52,14 @@
   display: flex;
   justify-content: space-between;
   margin: 0 1em;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barSvgContainer{
+  transform: rotate(180deg);
 }

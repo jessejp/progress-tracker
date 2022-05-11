@@ -86,7 +86,6 @@ const LineGraph = (props) => {
         sorted[sorted.length - 1],
       ];
 
-      console.log(graphGuidesArr);
       setGraphGuides(svgCalculateYLocation(graphGuidesArr, false));
     }
   }, [svgCalculateYLocation, sorted]);

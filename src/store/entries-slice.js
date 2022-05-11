@@ -86,7 +86,7 @@ const entriesSlice = createSlice({
             stepIntervalMass: 2.5,
             stepIntervalReps: 1,
             stepIntervalSets: 1,
-            enableRPE: false,
+            enableRPE: true,
           },
         });
       } else if (!existingEntry && category > -1) {
