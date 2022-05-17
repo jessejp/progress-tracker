@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { graphDataActions } from "../../store/graph-data-slice";
 import { entryActions } from "../../store/entries-slice";
 import { intensity } from "../../store/rpeStrings";
+import { getWeekNumber } from "../../functions/getWeekNumber";
 
 const EntriesRowItem = (props) => {
   const initDataValues = {
@@ -69,20 +70,6 @@ const EntriesRowItem = (props) => {
         weekday: submitDate.getDay(),
       })
     );
-  };
-
-  const getWeekNumber = (d) => {
-    // Copy date so don't modify original
-    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    // Set to nearest Thursday: current date + 4 - current day number
-    // Make Sunday's day number 7
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    // Get first day of year
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    // Calculate full weeks to nearest Thursday
-    var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-    // Return week number
-    return weekNo;
   };
 
   /* As the form to edit data pops up after interacting with the data key, 
