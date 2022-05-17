@@ -44,11 +44,7 @@ const graphDataSlice = createSlice({
             )
           : false;
 
-      console.log(action.payload.weekday);
-      console.log(action.payload.week);
-
       const newSubmissionDate = action.payload.date.split("T")[0].split("-");
-      console.log(newSubmissionDate);
       
       if (!existingData && category === -1) {
         state.data.push({
@@ -65,6 +61,8 @@ const graphDataSlice = createSlice({
                   day: +newSubmissionDate[2],
                   month: +newSubmissionDate[1],
                   year: +newSubmissionDate[0],
+                  week: action.payload.week,
+                  weekday: action.payload.weekday,
                 },
               ],
             },
@@ -82,6 +80,8 @@ const graphDataSlice = createSlice({
               day: +newSubmissionDate[2],
               month: +newSubmissionDate[1],
               year: +newSubmissionDate[0],
+              week: action.payload.week,
+              weekday: action.payload.weekday,
             },
           ],
         });
@@ -94,6 +94,8 @@ const graphDataSlice = createSlice({
           day: +newSubmissionDate[2],
           month: +newSubmissionDate[1],
           year: +newSubmissionDate[0],
+          week: action.payload.week,
+          weekday: action.payload.weekday,
         });
       }
     },

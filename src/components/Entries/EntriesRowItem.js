@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import css from "./Entries.module.css";
 import EntriesDataInput from "./EntriesDataInput";
 import { useDispatch, useSelector } from "react-redux";
 import { graphDataActions } from "../../store/graph-data-slice";
 import { entryActions } from "../../store/entries-slice";
 import { intensity } from "../../store/rpeStrings";
+import { getWeekNumber } from "../../functions/getWeekNumber";
 
 const EntriesRowItem = (props) => {
   const initDataValues = {
@@ -71,20 +72,6 @@ const EntriesRowItem = (props) => {
     );
   };
 
-  const getWeekNumber = (d) => {
-    // Copy date so don't modify original
-    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    // Set to nearest Thursday: current date + 4 - current day number
-    // Make Sunday's day number 7
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    // Get first day of year
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    // Calculate full weeks to nearest Thursday
-    var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-    // Return array of year and week number
-    return [d.getUTCFullYear(), weekNo];
-  };
-
   /* As the form to edit data pops up after interacting with the data key, 
   here I declare the rules for if the form should be hidden after blurring from the inputs or to stay open */
   const enableEditingHandler = (event) => {
@@ -102,7 +89,6 @@ const EntriesRowItem = (props) => {
   };
 
   const updateRPEValueInputHandler = (event) => {
-    console.log(event);
     dispatchUpdate({
       type: event.target.name,
       evHandler: "CHANGE",
@@ -134,7 +120,7 @@ const EntriesRowItem = (props) => {
       default:
         break;
     }
-    console.log(stepVal);
+    
     dispatchUpdate({
       type: event.target.name,
       evHandler: event.target.id,
@@ -209,7 +195,6 @@ const dataValuesReducer = (state, action) => {
     sets: state.sets,
     rpe: state.rpe,
   };
-  console.log(action);
 
   if (action.evHandler === "CHANGE") {
     switch (action.type) {
