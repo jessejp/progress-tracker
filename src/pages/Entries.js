@@ -4,7 +4,7 @@ import css from "../components/Entries/Entries.module.css";
 import EntriesRowItem from "../components/Entries/EntriesRowItem";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import AddEntryForm from "../components/AddNewEntry/AddEntryForm";
-import { sendEntryData, getEntryData } from "../store/data-actions";
+import { sendEntryData } from "../store/data-actions";
 import EntriesSettings from "../components/Entries/EntriesSettings";
 
 let isInitial = true;
@@ -15,15 +15,13 @@ const Entries = () => {
   const params = useParams();
   const formOpen = Object.values(params)[0];
   const categoryIndex = 0;
-  /* 
-  useEffect(() => {
-    dispatch(getEntryData());
-  }, [dispatch]);
 
-  useEffect(() => {
+  /* useEffect(() => {
+    console.log("entries effect");
     let entryTimer = setTimeout(() => {
+      console.log(entries);
       if (!isInitial) {
-        console.log("entries: effect", entries);
+        console.log("entries: effect, sendEntryData", entries);
         dispatch(sendEntryData(entries));
       }
     }, 1000);
@@ -61,21 +59,19 @@ const Entries = () => {
     ? entries.entries[categoryIndex].category
     : "";
 
-
   return (
     <>
       <Routes>
         <Route path="addnew" element={<AddEntryForm />} />
-        <Route
-          path="settings"
-          element={<EntriesSettings />}
-        />
+        <Route path="settings" element={<EntriesSettings />} />
       </Routes>
       <div>
         <div>
           <div className={css.categoryHeading}>
             <h3>{categoryString}</h3>
-            {formOpen !== "settings" && categoryString && <Link to={`settings`}>settings</Link>}
+            {formOpen !== "settings" && categoryString && (
+              <Link to={`settings`}>settings</Link>
+            )}
           </div>
           {entryRows}
         </div>

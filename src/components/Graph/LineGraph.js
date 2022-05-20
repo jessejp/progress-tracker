@@ -3,29 +3,19 @@ import css from "./Graph.module.css";
 import LineGraphGuides from "./LineGraphGuides";
 import LineGraphPoints from "./LineGraphPoints";
 import GraphEntrySelection from "./GraphEntrySelection";
-import SvgText from "./SvgText";
+import DetailText from "./PointDetailText";
 import useGraph from "../../hooks/use-graph.js";
 
 const LineGraph = (props) => {
   const { dataState, category } = props;
 
-  const initialSelection =
-    category > -1 ? dataState[category].graphData[0].name : "";
+  const initialSelection = dataState[category].graphData[0].name;
 
   const [selectedEntry, setSelectedEntry] = useState(initialSelection);
-  const [selectedData, setSelectedData] = useState();
-
+  //const [selectedData, setSelectedData] = useState();
   const onSelectedEntry = (event) => {
     setSelectedEntry(event.target.value);
   };
-
-  useEffect(() => {
-    if (category > -1) {
-      setSelectedData(
-        dataState[category].graphData.find((d) => d.name === selectedEntry)
-      );
-    }
-  }, [dataState, category, selectedEntry]);
 
   const [repsData, setRepsData] = useState([]);
   const [setsData, setSetsData] = useState([]);
@@ -42,36 +32,32 @@ const LineGraph = (props) => {
     yCoords: [],
   });
 
-  useEffect(() => {
-    if (selectedData) {
-      if (selectedData.mass) {
-        setGraphPoints(
-          svgCalculateYLocation(
-            selectedData.mass.slice(graphRange - 10, graphRange + 1)
-          )
-        );
-      }
-      setRepsData(selectedData.reps.slice(graphRange - 10, graphRange + 1));
-      setSetsData(selectedData.sets.slice(graphRange - 10, graphRange + 1));
-      setRpeData(selectedData.rpe.slice(graphRange - 10, graphRange + 1));
-      setDateData(selectedData.date.slice(graphRange - 10, graphRange + 1));
-      console.log("selectedData Graph effect");
-    }
-  }, [svgCalculateYLocation, selectedData, graphRange]);
-
-  const [showValue, setShowValue] = useState({
-    mass: null,
-    reps: null,
-    sets: null,
-    rpe: null,
-    date: [0, 0, 0],
-  });
-
   const [graphGuides, setGraphGuides] = useState({
     unsorted: [],
     sorted: [],
     yCoords: [],
   });
+
+  useEffect(() => {
+    if (category > -1 && selectedEntry) {
+      let selectedData = dataState[category].graphData.find(
+        (d) => d.name === selectedEntry
+      );
+
+      if (selectedData) {
+        setGraphPoints(
+          svgCalculateYLocation(
+            selectedData.mass.slice(graphRange - 10, graphRange + 1)
+          )
+        );
+        setRepsData(selectedData.reps.slice(graphRange - 10, graphRange + 1));
+        setSetsData(selectedData.sets.slice(graphRange - 10, graphRange + 1));
+        setRpeData(selectedData.rpe.slice(graphRange - 10, graphRange + 1));
+        setDateData(selectedData.date.slice(graphRange - 10, graphRange + 1));
+        console.log("selectedData Graph effect");
+      }
+    }
+  }, [dataState, category, svgCalculateYLocation, selectedEntry, graphRange]);
 
   const { sorted } = graphPoints;
 
@@ -90,6 +76,15 @@ const LineGraph = (props) => {
     }
   }, [svgCalculateYLocation, sorted]);
 
+  const [showValue, setShowValue] = useState({
+    mass: null,
+    reps: null,
+    sets: null,
+    rpe: null,
+    date: [0, 0, 0],
+  });
+
+  // Values to show in the text info
   const valueBoxHandler = (event, reps, sets, rpe, mass, date) => {
     if (event.type === "mouseenter") {
       setShowValue({ mass, reps, sets, rpe, date });
@@ -101,9 +96,10 @@ const LineGraph = (props) => {
       <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
       <div className={css.graphTextContainer}>
         {showValue.rpe !== null && showValue.mass !== null && (
-          <SvgText showValue={showValue} />
+          <DetailText showValue={showValue} />
         )}
       </div>
+
       <svg className={css.svgContainer} height="300" width="100%">
         <LineGraphGuides graphGuides={graphGuides} graphPoints={graphPoints} />
         <LineGraphPoints
@@ -115,6 +111,7 @@ const LineGraph = (props) => {
           valueBoxHandler={valueBoxHandler}
         />
       </svg>
+
       {dateData.length > 0 && (
         <div className={css.graphDateRange}>
           <div>

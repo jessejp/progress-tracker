@@ -109,16 +109,21 @@ const entriesSlice = createSlice({
       const category = state.entries.findIndex(
         (entry) => entry.category === action.payload.category
       );
-      if (category > -1 && newSettings.stepIntervalMass && newSettings.stepIntervalReps && newSettings.stepIntervalSets) {
-        console.log("settings updated")
+      if (
+        category > -1 &&
+        newSettings.stepIntervalMass &&
+        newSettings.stepIntervalReps &&
+        newSettings.stepIntervalSets
+      ) {
+        console.log("settings updated");
         state.entries[category].settings = {
           stepIntervalMass: newSettings.stepIntervalMass,
           stepIntervalReps: newSettings.stepIntervalReps,
           stepIntervalSets: newSettings.stepIntervalSets,
           enableRPE: newSettings.enableRPE,
-        }
+        };
       }
-    }
+    },
   },
 });
 
