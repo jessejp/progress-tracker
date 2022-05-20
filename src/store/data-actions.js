@@ -1,5 +1,7 @@
 import axios from "axios";
 import { entryActions } from "./entries-slice";
+import { graphDataActions } from "./graph-data-slice";
+import { uiActions } from "./ui-slice";
 import { APIJSON } from "../strings/APIJSON";
 
 const api = axios.create({
@@ -20,6 +22,7 @@ export const getEntryData = () => {
 
     try {
       const entriesData = await getData();
+      console.log("App.js getEntryData from firebase");
       dispatch(
         entryActions.replaceEntries({ entries: entriesData.entries || [] })
       );
@@ -47,7 +50,7 @@ export const sendEntryData = (entries) => {
 export const getGraphData = () => {
   return async (dispatch) => {
     const getData = async () => {
-      let res = await api.get("/graphData.json");
+      let res = await api.get("/graphdata.json");
       console.log(res.data);
       if (!res.data) {
         throw new Error("No graph data to fetch!");
@@ -56,10 +59,12 @@ export const getGraphData = () => {
     };
 
     try {
-      const entriesData = await getData();
+      const graphData = await getData();
+      console.log("Graph.js getGraphData from firebase");
       dispatch(
-        entryActions.replaceEntries({ entries: entriesData.entries || [] })
+        graphDataActions.replaceGraphData({ data: graphData.data || [] })
       );
+      dispatch(uiActions.graphLoaded());
     } catch (error) {
       console.log("getGraphData:", error);
     }
@@ -69,11 +74,11 @@ export const getGraphData = () => {
 export const sendGraphData = (data) => {
   return async () => {
     const sendRequest = async () => {
-      await api.patch("/graphData.json", data);
+      console.log('graph sending request to /graphdata.json', data)
+      await api.patch("/graphdata.json", data);
     };
 
     try {
-      console.log("sendGraphData");
       await sendRequest();
     } catch (error) {
       console.log("sendGraphData:", error);

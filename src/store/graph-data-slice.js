@@ -32,6 +32,9 @@ const graphDataSlice = createSlice({
     data: [],
   },
   reducers: {
+    replaceGraphData(state, action) {
+      state.data = action.payload.data;
+    },
     addData(state, action) {
       const newSubmission = action.payload;
       const category = state.data.findIndex(
@@ -45,7 +48,7 @@ const graphDataSlice = createSlice({
           : false;
 
       const newSubmissionDate = action.payload.date.split("T")[0].split("-");
-      
+
       if (!existingData && category === -1) {
         state.data.push({
           category: newSubmission.category,
