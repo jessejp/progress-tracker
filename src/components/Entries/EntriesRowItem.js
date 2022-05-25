@@ -4,7 +4,7 @@ import EntriesDataInput from "./EntriesDataInput";
 import { useDispatch, useSelector } from "react-redux";
 import { graphDataActions } from "../../store/graph-data-slice";
 import { entryActions } from "../../store/entries-slice";
-import { intensity } from "../../store/rpeStrings";
+import { intensity } from "../../functions/rpeStrings";
 import { getWeekNumber } from "../../functions/getWeekNumber";
 
 const EntriesRowItem = (props) => {

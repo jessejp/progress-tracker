@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import css from "./Graph.module.css";
-import { colorPalette } from "../../store/rpeStrings";
+import { colorPalette } from "../../functions/rpeStrings";
 
 const BarGraph = (props) => {
   const { dataState, category } = props;

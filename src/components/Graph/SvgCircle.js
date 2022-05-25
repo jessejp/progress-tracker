@@ -1,5 +1,5 @@
 import SvgLine from "./SvgLine";
-import { colorPalette } from "../../store/rpeStrings";
+import { colorPalette } from "../../functions/rpeStrings";
 
 const SvgCircle = (props) => {
   return (

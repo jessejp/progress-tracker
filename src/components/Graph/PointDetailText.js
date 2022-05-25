@@ -1,6 +1,6 @@
 import React from "react";
 import css from "./Graph.module.css";
-import { intensity, colorPalette } from "../../store/rpeStrings";
+import { intensity, colorPalette } from "../../functions/rpeStrings";
 
 function SvgText(props) {
   const { mass, reps, sets, rpe, date } = props.showValue;
