@@ -18,7 +18,7 @@ function App() {
     const initDate = new Date();
     dispatch(uiActions.initCurrentWeek({week: getWeekNumber(initDate)}));
 
-    dispatch(getEntryData());
+    //dispatch(getEntryData());
   }, [dispatch, getWeekNumber, uiActions]);
 
   return (

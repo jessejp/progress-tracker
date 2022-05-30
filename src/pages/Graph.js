@@ -17,7 +17,7 @@ const Graph = () => {
   useEffect(() => {
     console.log("Graph effect", graphLoaded);
     if (!graphLoaded) {
-      dispatch(getGraphData());
+      //dispatch(getGraphData());
     }
   }, [dispatch, graphLoaded]);
 
