@@ -46,6 +46,7 @@ export const sendSignInUser = (user) => {
         }
       })
       .then((data) => {
+        console.log(data);
         dispatch(authActions.loginUser({ token: data.data.idToken, email: data.data.email }));
       })
       .catch((err) => {

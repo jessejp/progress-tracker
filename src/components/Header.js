@@ -2,6 +2,7 @@ import css from "./Header.module.css";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { sendEntryData, sendGraphData } from "../store/data-actions";
+import { authActions } from "../store/auth-slice";
 
 const Header = () => {
   const authData = useSelector((state) => state.auth);
@@ -16,16 +17,27 @@ const Header = () => {
     dispatch(sendGraphData(graphData));
   };
 
+  const logoutUserHandler = () => {
+    dispatch(authActions.logoutUser());
+  }
+
+  console.log(authData);
+
   return (
     <header>
       <div className={css.headingContainer}>
         <h1 className={css.heading}>Progress Tracker</h1>
         <div>
-          <button onClick={saveDataHandler}>save</button>
           {!authData.isLoggedIn && (
             <Link to="authenticate">Login to save data</Link>
           )}
-          {authData.isLoggedIn && <p>Logged in as {authData.email}</p>}
+          {authData.isLoggedIn && (
+            <>
+              <button onClick={saveDataHandler}>save</button>
+              <p>Logged in as {authData.email}</p>
+              <button onClick={logoutUserHandler}>Logout</button>
+            </>
+          )}
         </div>
       </div>
       <div className={css.menuSelections}>

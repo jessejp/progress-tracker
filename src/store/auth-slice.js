@@ -13,6 +13,11 @@ const authSlice = createSlice({
             state.isLoggedIn = true;
             state.email = action.payload.email;
         },
+        logoutUser(state) {
+            state.isLoggedIn = false;
+            state.token = '';
+            state.email = '';
+        }
     }
 })
 
