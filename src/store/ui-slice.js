@@ -20,6 +20,9 @@ const uiSlice = createSlice({
     graphLoaded(state) {
       state.graphLoaded = true;
     },
+    initCurrentWeek(state, action) {
+      state.currentWeek = action.payload.week;
+    },
   },
 });
 

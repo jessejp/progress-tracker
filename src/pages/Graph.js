@@ -8,9 +8,11 @@ import { uiActions } from "../store/ui-slice";
 
 const Graph = () => {
   const dataState = useSelector((state) => state.graph.data);
-  const graphLoaded = useSelector((state) => state.ui.graphLoaded);
+  const uiState = useSelector((state) => state.ui);
   const category = dataState.findIndex((d) => d.category === "Weight Training");
   const dispatch = useDispatch();
+
+  const { graphLoaded } = uiState;
 
   useEffect(() => {
     console.log("Graph effect", graphLoaded);
@@ -41,7 +43,11 @@ const Graph = () => {
       </div>
     );
   } else {
-    return <div><p>No Data.</p></div>
+    return (
+      <div>
+        <p>No Data.</p>
+      </div>
+    );
   }
 };
 
