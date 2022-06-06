@@ -59,6 +59,10 @@ const Entries = () => {
     ? entries.entries[categoryIndex].category
     : "";
 
+    const fss = () => {
+      dispatch(sendEntryData(entries.entries, "add"));
+    }
+
   return (
     <>
       <Routes>
@@ -84,6 +88,7 @@ const Entries = () => {
           </Link>
         )}
       </div>
+      <button onClick={fss}>firestore send data</button>
     </>
   );
 };

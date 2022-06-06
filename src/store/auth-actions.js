@@ -1,12 +1,24 @@
-import axios from "axios";
+/* import axios from "axios"; */
 import { authActions } from "./auth-slice";
-import { APIKEY } from "../strings/APIJSON";
+/* import { APIKEY } from "../strings/APIJSON"; */
+import { graphDataActions } from "./graph-data-slice";
+import { entryActions } from "./entries-slice";
 
-const api = axios.create({
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+
+/* const api = axios.create({
   baseURL: "https://identitytoolkit.googleapis.com/v1",
-});
+}); */
 
-export const sendRegisterUser = (newUser) => {
+const auth = getAuth();
+
+/* export const sendRegisterUser = (newUser) => {
   return async (dispatch) => {
     const sendRequest = async () => {
       await api.post(`/accounts:signUp?key=${APIKEY}`, {
@@ -24,10 +36,76 @@ export const sendRegisterUser = (newUser) => {
     }
   };
 };
+ */
 
+export const authStateObserver = () => {
+  return async (dispatch) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("onauthstatechanged:", user);
+        dispatch(authActions.loginUser({ uid: user.uid, email: user.email }));
+      } else {
+        console.log("onauthstatechanged: user not logged in");
+        dispatch(authActions.logoutUser());
+      }
+    });
+  };
+};
+
+export const signOutUser = () => {
+  return async (dispatch) => {
+    signOut(auth)
+      .then(() => {
+        dispatch(authActions.logoutUser());
+        console.log("Logged user out.");
+      })
+      .catch((e) => console.log(e));
+  };
+};
+
+export const sendRegisterUser = (newUser) => {
+  return async (dispatch) => {
+    createUserWithEmailAndPassword(
+      auth,
+      newUser.enteredEmail,
+      newUser.enteredPassword
+    )
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user.uid;
+        dispatch(entryActions.inititalizeNewUserEntries({ userid: user }));
+        dispatch(graphDataActions.inititalizeNewUserGraph({ userid: user }));
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+        console.log(errorCode, errorMessage);
+      });
+  };
+};
 export const sendSignInUser = (user) => {
   return async (dispatch) => {
-    await api.post(`/accounts:signInWithPassword?key=${APIKEY}`, {
+    signInWithEmailAndPassword(auth, user.enteredEmail, user.enteredPassword)
+      .then((userCredential) => {
+        // Signed in
+        console.log(userCredential.user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
+};
+
+/* 
+export const sendSignInUser = (user) => {
+  return async (dispatch) => {
+    await api
+      .post(`/accounts:signInWithPassword?key=${APIKEY}`, {
         email: user.enteredEmail,
         password: user.enteredPassword,
         returnSecureToken: true,
@@ -47,15 +125,15 @@ export const sendSignInUser = (user) => {
       })
       .then((data) => {
         console.log(data);
-        dispatch(authActions.loginUser({ token: data.data.idToken, email: data.data.email }));
+        dispatch(
+          authActions.loginUser({
+            token: data.data.idToken,
+            email: data.data.email,
+          })
+        );
       })
       .catch((err) => {
         console.log(err.message);
       });
-    /* if (res) {
-        dispatch(authActions.loginUser({ idToken: res.idToken }));
-      } else {
-        throw new Error("Authentication Failed!");
-      } */
   };
-};
+}; */

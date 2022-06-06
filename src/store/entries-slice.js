@@ -30,7 +30,6 @@ import { createSlice } from "@reduxjs/toolkit";
       stepIntervalReps: 1,
       stepIntervalSets: 1,
       enableRPE: true,
-      colorMarker: false,
     }
   }
   ]; 
@@ -44,7 +43,6 @@ import { createSlice } from "@reduxjs/toolkit";
         stepIntervalReps: 1,
         stepIntervalSets: 1,
         enableRPE: false,
-        colorMarker: false,
       }
     }],
   },
@@ -54,12 +52,31 @@ const entriesSlice = createSlice({
   name: "entries",
   initialState: {
     entries: [],
+    updated: false,
   },
   reducers: {
+    dataSyncDone(state) {
+      state.updated = false;
+    },
+    inititalizeNewUserEntries(state) {
+      state.updated = true;
+      state.entries.push({
+        category: "Weight Training",
+        entryData: [],
+        settings: {
+          stepIntervalMass: 2.5,
+          stepIntervalReps: 1,
+          stepIntervalSets: 1,
+          enableRPE: true,
+        }
+      });
+    },
     replaceEntries(state, action) {
+      state.updated = true;
       state.entries = action.payload.entries;
     },
     addEntry(state, action) {
+      state.updated = true;
       const newEntry = action.payload;
       const category = state.entries.findIndex(
         (entry) => entry.category === newEntry.category
@@ -105,6 +122,7 @@ const entriesSlice = createSlice({
       }
     },
     updateSettings(state, action) {
+      state.updated = true;
       const newSettings = action.payload.settings;
       const category = state.entries.findIndex(
         (entry) => entry.category === action.payload.category
