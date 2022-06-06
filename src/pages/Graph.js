@@ -35,7 +35,7 @@ const Graph = () => {
       clearTimeout(loadGraphDataTimer);
     };
   }, [dataState, dispatch]); */
-  if (dataState.length > 0 && category > -1) {
+  if (dataState.length > 0 && category > -1 && dataState[category].graphData.length) {
     return (
       <div className={css.graphContainer}>
         <LineGraph dataState={dataState} category={category} />

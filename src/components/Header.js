@@ -2,7 +2,7 @@ import css from "./Header.module.css";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { sendEntryData, sendGraphData } from "../store/data-actions";
-import { authActions } from "../store/auth-slice";
+import {signOutUser} from "../store/auth-actions"
 
 const Header = () => {
   const authData = useSelector((state) => state.auth);
@@ -17,11 +17,9 @@ const Header = () => {
     dispatch(sendGraphData(graphData));
   };
 
-  const logoutUserHandler = () => {
-    dispatch(authActions.logoutUser());
+  const signoutUserHandler = () => {
+    dispatch(signOutUser());
   }
-
-  console.log(authData);
 
   return (
     <header>
@@ -33,9 +31,8 @@ const Header = () => {
           )}
           {authData.isLoggedIn && (
             <>
-              <button onClick={saveDataHandler}>save</button>
               <p>Logged in as {authData.email}</p>
-              <button onClick={logoutUserHandler}>Logout</button>
+              <button onClick={signoutUserHandler}>Sign Out</button>
             </>
           )}
         </div>
