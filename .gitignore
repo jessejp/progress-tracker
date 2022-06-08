@@ -3,6 +3,7 @@
 src/strings/
 src/hooks/usegraph-legacy.js
 src/trash/
+src/firebase-config.js
 
 # dependencies
 /node_modules
@@ -16,6 +17,7 @@ src/trash/
 /build
 
 # misc
+.env
 .DS_Store
 .env.local
 .env.development.local

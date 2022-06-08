@@ -5,19 +5,26 @@ const authSlice = createSlice({
     initialState:{
         isLoggedIn: false,
         email: '',
-        uid: ''
+        dataExists: {
+            entries: false,
+            graphData: false,
+        }
     },
     reducers: {
         loginUser(state, action) {
             state.isLoggedIn = true;
             state.email = action.payload.email;
-            state.uid = action.payload.uid;
         },
         logoutUser(state) {
             state.isLoggedIn = false;
             state.email = "";
-            state.uid = "";
-        }
+        },
+        firestoreEntriesFound(state) {
+            state.dataExists.entries = true;
+        },
+        firestoreGraphDataFound(state) {
+            state.dataExists.graphData = true;
+        },
     }
 })
 

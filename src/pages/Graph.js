@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import BarGraph from "../components/Graph/BarGraph";
 import css from "../components/Graph/Graph.module.css";
 import LineGraph from "../components/Graph/LineGraph";
-import { getGraphData } from "../store/data-actions";
+import { getGraphData, sendGraphData } from "../store/data-actions";
 import { uiActions } from "../store/ui-slice";
 
 const Graph = () => {
   const dataState = useSelector((state) => state.graph.data);
   const uiState = useSelector((state) => state.ui);
+  const authState = useSelector(state => state.auth);
   const category = dataState.findIndex((d) => d.category === "Weight Training");
   const dispatch = useDispatch();
 
@@ -20,6 +21,10 @@ const Graph = () => {
       //dispatch(getGraphData());
     }
   }, [dispatch, graphLoaded]);
+
+  const fsgraph = () => {
+    dispatch(sendGraphData(dataState, authState.dataExists.graphData));
+  };
 
   /* useEffect(() => {
     console.log("graph effect");
@@ -35,11 +40,16 @@ const Graph = () => {
       clearTimeout(loadGraphDataTimer);
     };
   }, [dataState, dispatch]); */
-  if (dataState.length > 0 && category > -1 && dataState[category].graphData.length) {
+  if (
+    dataState.length > 0 &&
+    category > -1 &&
+    dataState[category].graphData.length
+  ) {
     return (
       <div className={css.graphContainer}>
         <LineGraph dataState={dataState} category={category} />
         <BarGraph dataState={dataState} category={category} />
+        <button onClick={fsgraph}>send graphData to firestore</button>
       </div>
     );
   } else {

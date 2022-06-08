@@ -42,8 +42,8 @@ export const authStateObserver = () => {
   return async (dispatch) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("onauthstatechanged:", user);
-        dispatch(authActions.loginUser({ uid: user.uid, email: user.email }));
+        console.log("onauthstatechanged:", user ? true : false);
+        dispatch(authActions.loginUser({ email: user.email }));
       } else {
         console.log("onauthstatechanged: user not logged in");
         dispatch(authActions.logoutUser());
@@ -57,6 +57,8 @@ export const signOutUser = () => {
     signOut(auth)
       .then(() => {
         dispatch(authActions.logoutUser());
+        dispatch(entryActions.replaceEntries({entries: []}))
+        dispatch(graphDataActions.replaceGraphData({data: []}))
         console.log("Logged user out.");
       })
       .catch((e) => console.log(e));
@@ -73,8 +75,6 @@ export const sendRegisterUser = (newUser) => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user.uid;
-        dispatch(entryActions.inititalizeNewUserEntries({ userid: user }));
-        dispatch(graphDataActions.inititalizeNewUserGraph({ userid: user }));
         // ...
       })
       .catch((error) => {

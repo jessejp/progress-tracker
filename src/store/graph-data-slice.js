@@ -32,13 +32,6 @@ const graphDataSlice = createSlice({
     data: [],
   },
   reducers: {
-    inititalizeNewUserGraph(state, action) {
-      state.data.push({
-        category: "Weight Training",
-        graphData: [],
-        userid: action.payload.userid,
-      });
-    },
     replaceGraphData(state, action) {
       state.data = action.payload.data;
     },

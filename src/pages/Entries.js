@@ -12,6 +12,7 @@ let isInitial = true;
 const Entries = () => {
   const dispatch = useDispatch();
   const entries = useSelector((state) => state.entries);
+  const authState = useSelector((state) => state.auth)
   const params = useParams();
   const formOpen = Object.values(params)[0];
   const categoryIndex = 0;
@@ -60,7 +61,7 @@ const Entries = () => {
     : "";
 
     const fss = () => {
-      dispatch(sendEntryData(entries.entries, "add"));
+      dispatch(sendEntryData(entries.entries, authState.dataExists.entries));
     }
 
   return (
