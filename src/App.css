@@ -7,7 +7,7 @@
   width: calc(100vw / 4 + 14em);
 }
 
-.iconTextLink {
+.iconTextLink, .iconTextLink a {
   display: flex;
   align-items: center;
 }

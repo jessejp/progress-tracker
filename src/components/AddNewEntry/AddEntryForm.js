@@ -1,6 +1,7 @@
 import css from "./AddEntryForm.module.css";
 import { useDispatch } from "react-redux";
 import { entryActions } from "../../store/entries-slice";
+import { uiActions } from "../../store/ui-slice";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -102,6 +103,8 @@ const AddEntryForm = () => {
         })
       );
       setUserInput(defaultFormState);
+
+      dispatch(uiActions.unsavedEntriesData());
     }
   };
 

@@ -1,36 +1,16 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import css from "../components/Entries/Entries.module.css";
 import EntriesRowItem from "../components/Entries/EntriesRowItem";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import AddEntryForm from "../components/AddNewEntry/AddEntryForm";
-import { sendEntryData } from "../store/data-actions";
 import EntriesSettings from "../components/Entries/EntriesSettings";
 
-let isInitial = true;
 
 const Entries = () => {
-  const dispatch = useDispatch();
   const entries = useSelector((state) => state.entries);
   const params = useParams();
   const formOpen = Object.values(params)[0];
   const categoryIndex = 0;
-
-  /* useEffect(() => {
-    console.log("entries effect");
-    let entryTimer = setTimeout(() => {
-      console.log(entries);
-      if (!isInitial) {
-        console.log("entries: effect, sendEntryData", entries);
-        dispatch(sendEntryData(entries));
-      }
-    }, 1000);
-    //
-    return () => {
-      isInitial = false;
-      clearTimeout(entryTimer);
-    };
-  }, [entries, dispatch]); */
 
   // map table rows
   const entryRows =
@@ -52,16 +32,9 @@ const Entries = () => {
         })
       : [];
 
-  /* 
-      category: "Weight Lifting",
-  */
   const categoryString = entries.entries.length
     ? entries.entries[categoryIndex].category
     : "";
-
-    const fss = () => {
-      dispatch(sendEntryData(entries.entries, "add"));
-    }
 
   return (
     <>
@@ -80,15 +53,14 @@ const Entries = () => {
           {entryRows}
         </div>
         {formOpen !== "addnew" && (
-          <Link to="addnew">
-            <div className={`${css.addItem} iconTextLink`}>
+          <div className={`${css.addItem} iconTextLink`}>
+            <Link to="addnew">
               <span className="material-icons-outlined">add</span>
               <span>Add New</span>
-            </div>
-          </Link>
+            </Link>
+          </div>
         )}
       </div>
-      <button onClick={fss}>firestore send data</button>
     </>
   );
 };

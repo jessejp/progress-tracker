@@ -4,21 +4,23 @@ const uiSlice = createSlice({
   name: "ui",
   initialState: {
     currentWeek: 0,
-    unsavedData: false,
-    graphLoaded: false,
+    unsavedData: {
+      unsavedEntries: false,
+      unsavedGraph: false,
+    }
   },
   reducers: {
-    unsavedData(state) {
-      state.unsavedData = true;
+    unsavedEntriesData(state) {
+      state.unsavedData.unsavedEntries = true;
     },
-    saveData(state) {
-      state.unsavedData = false;
+    saveEntriesData(state) {
+      state.unsavedData.unsavedEntries = false;
     },
-    graphUnloaded(state) {
-      state.graphLoaded = false;
+    unsavedGraphData(state) {
+      state.unsavedData.unsavedGraph = true;
     },
-    graphLoaded(state) {
-      state.graphLoaded = true;
+    saveGraphData(state) {
+      state.unsavedData.unsavedGraph = false;
     },
     initCurrentWeek(state, action) {
       state.currentWeek = action.payload.week;

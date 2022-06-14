@@ -1,25 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
-    name: "authentication",
-    initialState:{
-        isLoggedIn: false,
-        email: '',
-        uid: ''
+  name: "authentication",
+  initialState: {
+    isLoggedIn: false,
+    email: "",
+    dataInitialized: {
+      entriesInitialized: false,
+      graphDataInitialized: false,
     },
-    reducers: {
-        loginUser(state, action) {
-            state.isLoggedIn = true;
-            state.email = action.payload.email;
-            state.uid = action.payload.uid;
-        },
-        logoutUser(state) {
-            state.isLoggedIn = false;
-            state.email = "";
-            state.uid = "";
-        }
-    }
-})
+    dataFound: {
+      entriesFound: false,
+      graphDataFound: false,
+    },
+  },
+  reducers: {
+    loginUser(state, action) {
+      state.isLoggedIn = true;
+      state.email = action.payload.email;
+    },
+    logoutUser(state) {
+      state.isLoggedIn = false;
+      state.email = "";
+    },
+    firestoreEntriesFound(state) {
+      state.dataFound.entriesFound = true;
+    },
+    firestoreGraphDataFound(state) {
+      state.dataFound.graphDataFound = true;
+    },
+    firestoreEntriesInitialized(state) {
+      state.dataInitialized.entriesInitialized = true;
+    },
+    firestoreGraphDataInitialized(state) {
+      state.dataInitialized.graphDataInitialized = true;
+    },
+  },
+});
 
 export const authActions = authSlice.actions;
 
