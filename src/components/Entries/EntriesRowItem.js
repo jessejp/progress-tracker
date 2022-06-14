@@ -4,6 +4,7 @@ import EntriesDataInput from "./EntriesDataInput";
 import { useDispatch, useSelector } from "react-redux";
 import { graphDataActions } from "../../store/graph-data-slice";
 import { entryActions } from "../../store/entries-slice";
+import { uiActions } from "../../store/ui-slice";
 import { intensity } from "../../functions/rpeStrings";
 import { getWeekNumber } from "../../functions/getWeekNumber";
 
@@ -20,8 +21,11 @@ const EntriesRowItem = (props) => {
   const settings = useSelector((state) => state.entries.entries[0].settings);
 
   const [enableEditing, setEnableEditing] = useState(false);
+
   // State for saving the data edit menu when blur event is activated for another input.
   const [keepEditing, setKeepEditing] = useState(false);
+
+  const [allowEntryDispatch, setAllowEntryDispatch] = useState(false);
 
   // Reducer for editing any value of entry
   const [dataValues, dispatchUpdate] = useReducer(
@@ -31,34 +35,45 @@ const EntriesRowItem = (props) => {
 
   const dispatch = useDispatch();
 
-  // editing window effect
+  // editing window effect, we are done editing.
   useEffect(() => {
     let timerBlur = setTimeout(() => {
-      if (!keepEditing) setEnableEditing(false);
-    }, 250);
+      if (!keepEditing) {
+        setEnableEditing(false);
+      }
+    }, 100);
+
     return () => {
       clearTimeout(timerBlur);
     };
   }, [keepEditing]);
 
-  //update reducer
   useEffect(() => {
-    let timerRedux = setTimeout(() => {
-      dispatch(
-        entryActions.addEntry({
-          category: dataValues.category,
-          name: dataValues.name,
-          mass: +dataValues.mass,
-          reps: +dataValues.reps,
-          sets: +dataValues.sets,
-          rpe: +dataValues.rpe,
-        })
-      );
-    }, 800);
+    let entryDispatchTimer = setTimeout(() => {
+      if (allowEntryDispatch === true && !keepEditing && !enableEditing) {
+        console.log("entry redux updated.");
+        dispatch(
+          entryActions.addEntry({
+            category: dataValues.category,
+            name: dataValues.name,
+            mass: +dataValues.mass,
+            reps: +dataValues.reps,
+            sets: +dataValues.sets,
+            rpe: +dataValues.rpe,
+          })
+        );
+
+        console.log(
+          "usaved Entry data uiAction dispatched in EntiesRowItem effect."
+        );
+        dispatch(uiActions.unsavedEntriesData());
+        setAllowEntryDispatch(false);
+      }
+    }, 300);
     return () => {
-      clearTimeout(timerRedux);
-    };
-  }, [dispatch, dataValues]);
+      clearTimeout(entryDispatchTimer);
+    }
+  }, [dispatch, dataValues, allowEntryDispatch, keepEditing, enableEditing]);
 
   const submitDataHandler = (event) => {
     const submitDate = new Date();
@@ -70,8 +85,9 @@ const EntriesRowItem = (props) => {
         weekday: submitDate.getDay(),
       })
     );
+    dispatch(uiActions.unsavedGraphData());
   };
-
+  
   /* As the form to edit data pops up after interacting with the data key, 
   here I declare the rules for if the form should be hidden after blurring from the inputs or to stay open */
   const enableEditingHandler = (event) => {
@@ -85,10 +101,13 @@ const EntriesRowItem = (props) => {
       setKeepEditing(true);
     }
 
-    if (event.type === "blur" || event.code === "Enter") setKeepEditing(false);
+    if (event.type === "blur" || event.code === "Enter") {
+      setKeepEditing(false);
+    }
   };
 
   const updateRPEValueInputHandler = (event) => {
+    setAllowEntryDispatch(true);
     dispatchUpdate({
       type: event.target.name,
       evHandler: "CHANGE",
@@ -97,6 +116,7 @@ const EntriesRowItem = (props) => {
   };
 
   const updateValueInputHandler = (event) => {
+    setAllowEntryDispatch(true);
     dispatchUpdate({
       type: event.target.name,
       evHandler: "CHANGE",
@@ -105,6 +125,7 @@ const EntriesRowItem = (props) => {
   };
 
   const updateValueBtnHandler = (event) => {
+    setAllowEntryDispatch(true);
     let stepVal = 0;
 
     switch (event.target.name) {
@@ -120,7 +141,7 @@ const EntriesRowItem = (props) => {
       default:
         break;
     }
-    
+
     dispatchUpdate({
       type: event.target.name,
       evHandler: event.target.id,

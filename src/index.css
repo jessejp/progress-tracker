@@ -28,4 +28,5 @@ button {
   background: var(--foreLight);
   border: none;
   box-shadow: var(--contrast) 2px 3px;
+  cursor:pointer;
 }

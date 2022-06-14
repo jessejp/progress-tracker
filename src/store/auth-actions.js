@@ -74,7 +74,7 @@ export const sendRegisterUser = (newUser) => {
     )
       .then((userCredential) => {
         // Signed in
-        const user = userCredential.user.uid;
+        console.log("Signed in")
         // ...
       })
       .catch((error) => {
