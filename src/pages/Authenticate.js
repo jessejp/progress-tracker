@@ -7,18 +7,7 @@ import { Route, Routes } from "react-router-dom";
 const Authenticate = () => {
   return (
     <div className={css.loginForm}>
-      <Routes>
-        <Route path="/" element={<>
-      <AuthPageLink />
       <AuthForm />
-        </>}/>
-      </Routes>
-      <Routes>
-        <Route path="/register" element={<>
-      <AuthPageLink />
-      <AuthForm />
-        </>}/>
-      </Routes>
     </div>
   );
 };
