@@ -8,41 +8,18 @@ const AuthForm = () => {
   const pageParam = Object.values(params)[0];
   const dispatch = useDispatch();
 
-  const emailRef = useRef();
-  const passwordRef = useRef();
-
   const sendForm = (event) => {
     event.preventDefault();
 
-    const enteredEmail = emailRef.current.value;
-    const enteredPassword = emailRef.current.value;
-
-    if (pageParam === "register" && enteredEmail && enteredPassword) {
-      console.log("sent user register dispatch");
-
-      dispatch(sendRegisterUser({ enteredEmail, enteredPassword }));
-
-    } else if (pageParam !== "register" && enteredEmail && enteredPassword) {
+    if (pageParam !== "register") {
       console.log("sent user log in dispatch");
-
-      dispatch(sendSignInUser({ enteredEmail, enteredPassword }));
+      dispatch(sendSignInUser());
     }
-
-    passwordRef.current.value = "";
   };
 
   return (
     <form onSubmit={sendForm}>
-      <label>Email</label>
-      <input type="text" ref={emailRef} />
-
-      <label>Password</label>
-      <input type="password" ref={passwordRef} />
-
-      <button>
-        {pageParam === "register" && "Register"}
-        {pageParam !== "register" && "Login"}
-      </button>
+      <button>Login with Google</button>
     </form>
   );
 };

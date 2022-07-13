@@ -10,6 +10,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from "firebase/auth";
 
 /* const api = axios.create({
@@ -17,6 +19,7 @@ import {
 }); */
 
 const auth = getAuth();
+const provider = new GoogleAuthProvider();
 
 /* export const sendRegisterUser = (newUser) => {
   return async (dispatch) => {
@@ -57,8 +60,8 @@ export const signOutUser = () => {
     signOut(auth)
       .then(() => {
         dispatch(authActions.logoutUser());
-        dispatch(entryActions.replaceEntries({entries: []}))
-        dispatch(graphDataActions.replaceGraphData({data: []}))
+        dispatch(entryActions.replaceEntries({ entries: [] }));
+        dispatch(graphDataActions.replaceGraphData({ data: [] }));
         console.log("Logged user out.");
       })
       .catch((e) => console.log(e));
@@ -74,7 +77,7 @@ export const sendRegisterUser = (newUser) => {
     )
       .then((userCredential) => {
         // Signed in
-        console.log("Signed in")
+        console.log("Signed in");
         // ...
       })
       .catch((error) => {
@@ -85,7 +88,8 @@ export const sendRegisterUser = (newUser) => {
       });
   };
 };
-export const sendSignInUser = (user) => {
+
+/* export const sendSignInUser = (user) => {
   return async (dispatch) => {
     signInWithEmailAndPassword(auth, user.enteredEmail, user.enteredPassword)
       .then((userCredential) => {
@@ -97,6 +101,32 @@ export const sendSignInUser = (user) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+      });
+  };
+}; */
+
+export const sendSignInUser = () => {
+  return async (dispatch) => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const userRes = result.user;
+        console.log(userRes);
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...;
       });
   };
 };
