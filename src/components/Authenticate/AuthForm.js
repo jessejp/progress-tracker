@@ -1,7 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { sendRegisterUser, sendSignInUser } from "../../store/auth-actions";
+import { sendSignInUser } from "../../store/auth-actions";
 import { useDispatch } from "react-redux";
+import googleLogo from "../../images/g-logo.png";
+import css from "./Authenticate.module.css";
 
 const AuthForm = () => {
   const params = useParams();
@@ -19,7 +21,10 @@ const AuthForm = () => {
 
   return (
     <form onSubmit={sendForm}>
-      <button>Login with Google</button>
+      <button className={`${css.googleSignIn}`}>
+        <img src={googleLogo} alt="google logo" />
+        <span>Sign in with Google</span>
+      </button>
     </form>
   );
 };

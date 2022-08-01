@@ -1,5 +1,23 @@
 .loginForm form {
-    display: flex;
-    flex-direction: column;
-    width: 12em;
+  display: flex;
+  flex-direction: column;
+  width: 12em;
+}
+
+.googleSignIn {
+  font-family: "Roboto", sans-serif;
+  color: #757575;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  padding: 0.4em;
+  width: 13em;
+  border: 0;
+  border-radius: 3px;
+  box-shadow: 1px 1px #757575;
+}
+
+.googleSignIn img {
+  width: 25px;
 }
