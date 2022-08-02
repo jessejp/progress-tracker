@@ -7,7 +7,8 @@ const uiSlice = createSlice({
     unsavedData: {
       unsavedEntries: false,
       unsavedGraph: false,
-    }
+    },
+    editingEntry: false,
   },
   reducers: {
     unsavedEntriesData(state) {
@@ -24,6 +25,12 @@ const uiSlice = createSlice({
     },
     initCurrentWeek(state, action) {
       state.currentWeek = action.payload.week;
+    },
+    enableEditingEntry(state) {
+      state.editingEntry = true;
+    },
+    disableEditingEntry(state) {
+      state.editingEntry = false;
     },
   },
 });

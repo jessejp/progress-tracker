@@ -19,11 +19,7 @@ const EntriesRowItem = (props) => {
   };
 
   const settings = useSelector((state) => state.entries.entries[0].settings);
-
-  const [enableEditing, setEnableEditing] = useState(false);
-
-  // State for saving the data edit menu when blur event is activated for another input.
-  const [keepEditing, setKeepEditing] = useState(false);
+  const editingEntry = useSelector((state) => state.ui.editingEntry);
 
   const [allowEntryDispatch, setAllowEntryDispatch] = useState(false);
 
@@ -37,20 +33,9 @@ const EntriesRowItem = (props) => {
 
   // editing window effect, we are done editing.
   useEffect(() => {
-    let timerBlur = setTimeout(() => {
-      if (!keepEditing) {
-        setEnableEditing(false);
-      }
-    }, 100);
-
-    return () => {
-      clearTimeout(timerBlur);
-    };
-  }, [keepEditing]);
-
-  useEffect(() => {
+    console.log(editingEntry);
     let entryDispatchTimer = setTimeout(() => {
-      if (allowEntryDispatch === true && !keepEditing && !enableEditing) {
+      if (allowEntryDispatch === true && !editingEntry) {
         console.log("entry redux updated.");
         dispatch(
           entryActions.addEntry({
@@ -69,11 +54,11 @@ const EntriesRowItem = (props) => {
         dispatch(uiActions.unsavedEntriesData());
         setAllowEntryDispatch(false);
       }
-    }, 300);
+    }, 450);
     return () => {
       clearTimeout(entryDispatchTimer);
-    }
-  }, [dispatch, dataValues, allowEntryDispatch, keepEditing, enableEditing]);
+    };
+  }, [dispatch, dataValues, allowEntryDispatch, editingEntry]);
 
   const submitDataHandler = (event) => {
     const submitDate = new Date();
@@ -86,24 +71,6 @@ const EntriesRowItem = (props) => {
       })
     );
     dispatch(uiActions.unsavedGraphData());
-  };
-  
-  /* As the form to edit data pops up after interacting with the data key, 
-  here I declare the rules for if the form should be hidden after blurring from the inputs or to stay open */
-  const enableEditingHandler = (event) => {
-    if (
-      event.type === "click" ||
-      event.code === "Enter" ||
-      (event.type === "focus" &&
-        ["BUFF", "DEBUFF", "NUMBER"].includes(event.target.id))
-    ) {
-      setEnableEditing(true);
-      setKeepEditing(true);
-    }
-
-    if (event.type === "blur" || event.code === "Enter") {
-      setKeepEditing(false);
-    }
   };
 
   const updateRPEValueInputHandler = (event) => {
@@ -160,8 +127,6 @@ const EntriesRowItem = (props) => {
           onUpdateBufferButton={updateValueBtnHandler}
           onUpdateInputField={updateValueInputHandler}
           dataValue={dataValues.mass}
-          onEnableEditing={enableEditingHandler}
-          enableEditingState={enableEditing}
           bufferValue={settings.stepIntervalMass}
           unit="kg"
         />
@@ -170,8 +135,6 @@ const EntriesRowItem = (props) => {
           onUpdateBufferButton={updateValueBtnHandler}
           onUpdateInputField={updateValueInputHandler}
           dataValue={dataValues.reps}
-          onEnableEditing={enableEditingHandler}
-          enableEditingState={enableEditing}
           bufferValue={settings.stepIntervalReps}
         />
         <EntriesDataInput
@@ -179,8 +142,6 @@ const EntriesRowItem = (props) => {
           onUpdateBufferButton={updateValueBtnHandler}
           onUpdateInputField={updateValueInputHandler}
           dataValue={dataValues.sets}
-          onEnableEditing={enableEditingHandler}
-          enableEditingState={enableEditing}
           bufferValue={settings.stepIntervalSets}
         />
         {settings.enableRPE === true && (
@@ -189,8 +150,6 @@ const EntriesRowItem = (props) => {
             onUpdateInputField={updateRPEValueInputHandler}
             dataValue={dataValues.rpe}
             rpeText={intensity}
-            onEnableEditing={enableEditingHandler}
-            enableEditingState={enableEditing}
           />
         )}
       </div>

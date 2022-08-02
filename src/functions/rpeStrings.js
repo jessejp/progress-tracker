@@ -1,9 +1,9 @@
 export const intensity = [
-  "very light intensity",
-  "light intensity",
-  "moderate intensity",
-  "vigorous intensity",
-  "maximum intensity",
+  "very light",
+  "light",
+  "moderate",
+  "vigorous",
+  "maximum",
 ];
 
 export const colorPalette = [
