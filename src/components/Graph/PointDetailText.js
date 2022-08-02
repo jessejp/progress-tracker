@@ -25,7 +25,7 @@ function SvgText(props) {
         <p className={css.graphText}>
           {mass}kg, {reps} reps for {sets} sets
         </p>
-        <p className={css.graphText}>{intensity[rpe]}</p>
+        <p className={css.graphText}>{intensity[rpe]} intensity</p>
       </div>
     </>
   );

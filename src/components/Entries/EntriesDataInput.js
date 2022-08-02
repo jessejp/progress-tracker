@@ -1,15 +1,47 @@
 import css from "./Entries.module.css";
-/*
-<EntriesDataInput 
-    onUpdateBufferButton={updateValueBtnHandler} 
-    onUpdateInputField={updateValueInputHandler}
-    dataValue={dataValues.mass}
-    onEnableEditing={enableEditingHandler}
-    enableEditingState={enableEditing}
-> 
-*/
+import React, { useState, useEffect } from "react";
+import { uiActions } from "../../store/ui-slice";
+import { useDispatch } from "react-redux";
 
 const EntriesDataInput = (props) => {
+  const dispatch = useDispatch();
+  const [enableEditing, setEnableEditing] = useState(false);
+
+  // State for saving the data edit menu when blur event is activated for another input.
+  const [keepEditing, setKeepEditing] = useState(false);
+
+  useEffect(() => {
+    let timerBlur = setTimeout(() => {
+      if (!keepEditing) {
+        setEnableEditing(false);
+        dispatch(uiActions.disableEditingEntry());
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timerBlur);
+    };
+  }, [keepEditing, dispatch]);
+
+/* As the form to edit data pops up after interacting with the data key, 
+  here I declare the rules for if the form should be hidden after blurring from the inputs or to stay open */
+  const enableEditingHandler = (event) => {
+    if (
+      event.type === "click" ||
+      event.code === "Enter" ||
+      (event.type === "focus" &&
+        ["BUFF", "DEBUFF", "NUMBER"].includes(event.target.id))
+    ) {
+      setEnableEditing(true);
+      setKeepEditing(true);
+      dispatch(uiActions.enableEditingEntry());
+    }
+
+    if (event.type === "blur" || event.code === "Enter") {
+      setKeepEditing(false);
+    }
+  };
+
   const dataEditSimpleForm = (
     <div className={css.numPadContainer}>
       <button
@@ -28,7 +60,7 @@ const EntriesDataInput = (props) => {
         type="number"
         value={props.dataValue}
         onChange={props.onUpdateInputField}
-        onKeyDown={props.onEnableEditing}
+        onKeyDown={enableEditingHandler}
         min=""
       />
       <button
@@ -47,22 +79,22 @@ const EntriesDataInput = (props) => {
       <div
         className={css.flexItem}
         name={props.type}
-        onClick={props.onEnableEditing}
-        onBlur={props.onEnableEditing}
-        onFocus={props.onEnableEditing}
+        onClick={enableEditingHandler}
+        onBlur={enableEditingHandler}
+        onFocus={enableEditingHandler}
       >
         <label htmlFor={props.type}>{props.type}</label>
-        {!props.enableEditingState && (
+        {!enableEditing && (
           <div
             className={css.valueField}
-            onKeyDown={props.onEnableEditing}
+            onKeyDown={enableEditingHandler}
             tabIndex={0}
           >
             {props.dataValue}
             {props.unit}
           </div>
         )}
-        {props.enableEditingState && dataEditSimpleForm}
+        {enableEditing && dataEditSimpleForm}
       </div>
     );
   }
@@ -71,20 +103,28 @@ const EntriesDataInput = (props) => {
       <div
         className={css.flexItem}
         name={props.type}
-        onClick={props.onEnableEditing}
-        onBlur={props.onEnableEditing}
-        onFocus={props.onEnableEditing}
+        onClick={enableEditingHandler}
+        onBlur={enableEditingHandler}
+        onFocus={enableEditingHandler}
       >
         <label htmlFor={props.type}>{props.type}</label>
-        {!props.enableEditingState && (
-          <div className={css.valueField}><span>{props.dataValue + 1}</span><span>: {props.rpeText[props.dataValue]}</span></div>
+        {!enableEditing && (
+          <div
+            className={css.valueField}
+            onKeyDown={enableEditingHandler}
+            tabIndex={0}
+          >
+            <span>{props.dataValue + 1}</span>
+            <span>: {props.rpeText[props.dataValue]}</span>
+          </div>
         )}
-        {props.enableEditingState && (
+        {enableEditing && (
           <input
             name={props.type}
+            autoFocus
             id="NUMBER"
             onChange={props.onUpdateInputField}
-            onKeyDown={props.onEnableEditing}
+            onKeyDown={enableEditingHandler}
             defaultValue={props.dataValue}
             type="range"
             step="1"
@@ -95,7 +135,6 @@ const EntriesDataInput = (props) => {
       </div>
     );
   }
-
 };
 
 export default EntriesDataInput;
