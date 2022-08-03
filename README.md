@@ -1,5 +1,7 @@
 # Progress Tracker app
 
+##### Demo the app: https://progressive-overload-tracker.web.app/
+
 ### Description of features
 
 An app to track weightlifting progress by having the user **add an exercise** with the weight, repetitions and sets values.
