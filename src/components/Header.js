@@ -10,13 +10,6 @@ const Header = () => {
   const graphData = useSelector((state) => state.graph);
   const dispatch = useDispatch();
 
-  const saveDataHandler = () => {
-    console.log(entriesData);
-    console.log(graphData);
-    dispatch(sendEntryData(entriesData));
-    dispatch(sendGraphData(graphData));
-  };
-
   const signoutUserHandler = () => {
     dispatch(signOutUser());
   }
@@ -24,15 +17,15 @@ const Header = () => {
   return (
     <header>
       <div className={css.headingContainer}>
-        <h1 className={css.heading}>Progress Tracker</h1>
+        <h1 className={css.heading}>Test Demo</h1>
         <div>
           {!authData.isLoggedIn && (
             <Link to="authenticate">Login to save data</Link>
           )}
           {authData.isLoggedIn && (
             <>
-              <p>Logged in as {authData.email}</p>
-              <button onClick={signoutUserHandler}>Sign Out</button>
+              <p>{authData.email}</p>
+              <button className="generic" onClick={signoutUserHandler}>Sign Out</button>
             </>
           )}
         </div>

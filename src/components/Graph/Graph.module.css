@@ -59,6 +59,14 @@
   margin: 0 1em;
 }
 
+.graphDateRangeItem {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+  align-items: center;
+}
+
 .barGraphFlex {
   display: flex;
   flex-direction: row;
