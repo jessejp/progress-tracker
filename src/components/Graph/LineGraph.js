@@ -12,7 +12,8 @@ const LineGraph = (props) => {
   const initialSelection = dataState[category].graphData[0].name;
 
   const [selectedEntry, setSelectedEntry] = useState(initialSelection);
-  //const [selectedData, setSelectedData] = useState();
+  const [selectedData, setSelectedData] = useState();
+
   const onSelectedEntry = (event) => {
     setSelectedEntry(event.target.value);
   };
@@ -40,24 +41,37 @@ const LineGraph = (props) => {
 
   useEffect(() => {
     if (category > -1 && selectedEntry) {
-      let selectedData = dataState[category].graphData.find(
+      const newData = dataState[category].graphData.find(
         (d) => d.name === selectedEntry
       );
 
-      if (selectedData) {
-        setGraphPoints(
-          svgCalculateYLocation(
-            selectedData.mass.slice(graphRange - 10, graphRange + 1)
-          )
-        );
-        setRepsData(selectedData.reps.slice(graphRange - 10, graphRange + 1));
-        setSetsData(selectedData.sets.slice(graphRange - 10, graphRange + 1));
-        setRpeData(selectedData.rpe.slice(graphRange - 10, graphRange + 1));
-        setDateData(selectedData.date.slice(graphRange - 10, graphRange + 1));
-        console.log("selectedData Graph effect");
+      setSelectedData(newData);
+
+      if (newData) {
+        if (newData.mass.length > 10) {
+          setGraphRange(10 + newData.mass.length - 8);
+        } else {
+          setGraphRange(10);
+        }
       }
     }
-  }, [dataState, category, svgCalculateYLocation, selectedEntry, graphRange]);
+  }, [dataState, category, selectedEntry]);
+
+  useEffect(() => {
+    console.log("current graph Range:", graphRange);
+    if (selectedData) {
+      setGraphPoints(
+        svgCalculateYLocation(
+          selectedData.mass.slice(graphRange - 10, graphRange + 1)
+        )
+      );
+      setRepsData(selectedData.reps.slice(graphRange - 10, graphRange + 1));
+      setSetsData(selectedData.sets.slice(graphRange - 10, graphRange + 1));
+      setRpeData(selectedData.rpe.slice(graphRange - 10, graphRange + 1));
+      setDateData(selectedData.date.slice(graphRange - 10, graphRange + 1));
+      console.log("selectedData Graph effect");
+    }
+  }, [dataState, selectedData, svgCalculateYLocation, graphRange]);
 
   const { sorted } = graphPoints;
 
@@ -91,6 +105,17 @@ const LineGraph = (props) => {
     }
   };
 
+  const slideEntries = (direction) => {
+    if (direction === "back" && graphRange > 10) {
+      setGraphRange((state) => state - 1);
+    } else if (
+      direction === "forward" &&
+      graphRange < graphRange + sorted.length - 1
+    ) {
+      setGraphRange((state) => state + 1);
+    }
+  };
+
   return (
     <div className={css.graphFlexContainer}>
       <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
@@ -114,17 +139,38 @@ const LineGraph = (props) => {
 
       {dateData.length > 0 && (
         <div className={css.graphDateRange}>
-          <div>
-            {dateData[0].day}.{dateData[0].month}
+          <div className={css.graphDateRangeItem}>
+            <div>
+              {dateData[0].day}.{dateData[0].month}
+            </div>
+
+            <button
+              className="generic"
+              onClick={() => {
+                slideEntries("back");
+              }}
+            >
+              back
+            </button>
           </div>
           <div>
             {dateData[0].year !== dateData[dateData.length - 1].year
               ? `${dateData[0].year} - ${dateData[dateData.length - 1].year}`
               : dateData[0].year}
           </div>
-          <div>
-            {dateData[dateData.length - 1].day}.
-            {dateData[dateData.length - 1].month}
+          <div className={css.graphDateRangeItem}>
+            <div>
+              {dateData[dateData.length - 1].day}.
+              {dateData[dateData.length - 1].month}
+            </div>
+            <button
+              className="generic"
+              onClick={() => {
+                slideEntries("forward");
+              }}
+            >
+              forward
+            </button>
           </div>
         </div>
       )}

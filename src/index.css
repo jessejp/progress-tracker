@@ -26,7 +26,14 @@ input[type="number"]::-webkit-inner-spin-button {
 button.generic {  
   padding: 0.4em;
   background: var(--foreLight);
-  border: none;
+  border: transparent 1px solid;
   box-shadow: var(--contrast) 2px 3px;
   cursor:pointer;
+  width: fit-content;
+}
+
+button.generic:active {
+  background: radial-gradient(var(--foreLight) 10%, var(--contrast) 200%);
+  border: var(--contrastDark) 1px solid;
+  box-shadow: var(--contrast) 0px 0px;
 }

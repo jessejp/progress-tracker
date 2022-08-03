@@ -33,7 +33,6 @@ const EntriesRowItem = (props) => {
 
   // editing window effect, we are done editing.
   useEffect(() => {
-    console.log(editingEntry);
     let entryDispatchTimer = setTimeout(() => {
       if (allowEntryDispatch === true && !editingEntry) {
         console.log("entry redux updated.");
@@ -155,7 +154,7 @@ const EntriesRowItem = (props) => {
       </div>
       <div className={css.flexItem}>
         <button
-          className={css.submitButton}
+          className={`${css.submitButton} generic`}
           onClick={submitDataHandler}
           name={dataValues.name}
         >
