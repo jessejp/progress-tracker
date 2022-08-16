@@ -1,0 +1,12 @@
+@keyframes circleSelection {
+    from {
+        r: 9;
+    }
+    to {
+        r: 13;
+    }
+}
+
+circle:hover, circle:focus, circle:active  {
+    animation: circleSelection .5s forwards;
+}

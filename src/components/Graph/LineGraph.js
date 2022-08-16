@@ -16,6 +16,7 @@ const LineGraph = (props) => {
 
   const onSelectedEntry = (event) => {
     setSelectedEntry(event.target.value);
+    valueBoxHandlerReset();
   };
 
   const [repsData, setRepsData] = useState([]);
@@ -58,7 +59,6 @@ const LineGraph = (props) => {
   }, [dataState, category, selectedEntry]);
 
   useEffect(() => {
-    console.log("current graph Range:", graphRange);
     if (selectedData) {
       setGraphPoints(
         svgCalculateYLocation(
@@ -69,7 +69,6 @@ const LineGraph = (props) => {
       setSetsData(selectedData.sets.slice(graphRange - 10, graphRange + 1));
       setRpeData(selectedData.rpe.slice(graphRange - 10, graphRange + 1));
       setDateData(selectedData.date.slice(graphRange - 10, graphRange + 1));
-      console.log("selectedData Graph effect");
     }
   }, [dataState, selectedData, svgCalculateYLocation, graphRange]);
 
@@ -99,10 +98,21 @@ const LineGraph = (props) => {
   });
 
   // Values to show in the text info
-  const valueBoxHandler = (event, reps, sets, rpe, mass, date) => {
-    if (event.type === "mouseenter") {
-      setShowValue({ mass, reps, sets, rpe, date });
+  const valueBoxHandler = (event, reps, sets, rpe, mass, date, index) => {
+    if (event.type === "mouseenter" || event.type === "focus") {
+      setShowValue({ mass, reps, sets, rpe, date, index });
     }
+  };
+
+  const valueBoxHandlerReset = () => {
+    setShowValue({
+      mass: null,
+      reps: null,
+      sets: null,
+      rpe: null,
+      date: null,
+      index: null,
+    });
   };
 
   const slideEntries = (direction) => {
@@ -121,7 +131,12 @@ const LineGraph = (props) => {
       <GraphEntrySelection onSelectedEntry={onSelectedEntry} />
       <div className={css.graphTextContainer}>
         {showValue.rpe !== null && showValue.mass !== null && (
-          <DetailText showValue={showValue} />
+          <DetailText
+            showValue={showValue}
+            name={selectedEntry}
+            category={category}
+            showValueReset={valueBoxHandlerReset}
+          />
         )}
       </div>
 

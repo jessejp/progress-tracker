@@ -1,9 +1,34 @@
 import React from "react";
 import css from "./Graph.module.css";
 import { intensity, colorPalette } from "../../functions/rpeStrings";
+import { useDispatch } from "react-redux";
+import { graphDataActions } from "../../store/graph-data-slice";
+import { uiActions } from "../../store/ui-slice";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function SvgText(props) {
-  const { mass, reps, sets, rpe, date } = props.showValue;
+  const dispatch = useDispatch();
+  const [deleteCheck, setDeleteCheck] = useState(false);
+  const { mass, reps, sets, rpe, date, index } = props.showValue;
+
+  useEffect(() => {
+    setDeleteCheck(false);
+  }, [index]);
+
+  const deleteHandler = () => {
+    dispatch(
+      graphDataActions.deleteData({
+        name: props.name,
+        category: "Weight Training",
+        deletionType: "point",
+        index: index,
+      })
+    );
+    dispatch(uiActions.unsavedGraphData());
+
+    props.showValueReset();
+  };
 
   return (
     <>
@@ -26,6 +51,26 @@ function SvgText(props) {
           {mass}kg, {reps} reps for {sets} sets
         </p>
         <p className={css.graphText}>{intensity[rpe]} intensity</p>
+      </div>
+      <div className={css.deleteButton}>
+        {!deleteCheck && (
+          <button
+            className="generic"
+            onClick={() => {
+              setDeleteCheck(true);
+            }}
+          >
+            Delete
+          </button>
+        )}
+        {deleteCheck && (
+          <>
+            <div><p className="delete">Are you sure?</p></div>
+            <button className="generic delete" onClick={deleteHandler}>
+              Yes. Delete.
+            </button>
+          </>
+        )}
       </div>
     </>
   );

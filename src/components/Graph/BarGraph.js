@@ -14,7 +14,6 @@ const BarGraph = (props) => {
 
   // select week's entries
   useEffect(() => {
-    console.log("selecting weeks data", selectedWeek);
     if (category > -1 && selectedWeek) {
       let barGraphEntries = [];
       dataState[category].graphData.map((entry, entryIndex) => {
@@ -35,10 +34,7 @@ const BarGraph = (props) => {
     }
   }, [dataState, category, selectedWeek]);
 
-  console.log(graphBars);
-
   const changeWeekHandler = (event) => {
-    console.log(event.target.innerHTML);
     if (event.target.innerHTML === "&lt;") {
       setSelectedWeek((prevState) => prevState - 1);
     } else if (event.target.innerHTML === "&gt;") {

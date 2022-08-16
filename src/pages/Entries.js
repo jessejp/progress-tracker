@@ -4,7 +4,7 @@ import EntriesRowItem from "../components/Entries/EntriesRowItem";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import AddEntryForm from "../components/AddNewEntry/AddEntryForm";
 import EntriesSettings from "../components/Entries/EntriesSettings";
-
+import EntriesDeleteItem from "../components/Entries/EntriesDeleteItem";
 
 const Entries = () => {
   const entries = useSelector((state) => state.entries);
@@ -36,6 +36,21 @@ const Entries = () => {
     ? entries.entries[categoryIndex].category
     : "";
 
+  const deleteEntryRows =
+    entries.entries.length > 0
+      ? entries.entries[categoryIndex].entryData.map((e, index) => {
+          return (
+            <EntriesDeleteItem
+              id={`${entries.entries[categoryIndex].category}_${e.name}`}
+              key={`${entries.entries[categoryIndex].category}_${e.name}`}
+              index={index}
+              category={entries.entries[categoryIndex].category}
+              name={e.name}
+            />
+          );
+        })
+      : [];
+
   return (
     <>
       <Routes>
@@ -50,7 +65,8 @@ const Entries = () => {
               <Link to={`settings`}>settings</Link>
             )}
           </div>
-          {entryRows}
+          {formOpen !== "settings" && entryRows}
+          {formOpen === "settings" && deleteEntryRows}
         </div>
         {formOpen !== "addnew" && (
           <div className={`${css.addItem} iconTextLink`}>

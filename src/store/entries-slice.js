@@ -102,6 +102,22 @@ const entriesSlice = createSlice({
         existingEntry.rpe = newEntry.rpe;
       }
     },
+    deleteEntry(state, action) {
+      const selectedEntry = action.payload;
+      const category = state.entries.findIndex(
+        (entry) => entry.category === selectedEntry.category
+      );
+      const deleteExistingEntry =
+        category > -1
+          ? state.entries[category].entryData.findIndex(
+              (entry) => entry.name === selectedEntry.name
+            )
+          : false;
+
+          // Splice the entry out
+          if(deleteExistingEntry)
+          state.entries[category].entryData.splice(deleteExistingEntry, 1);
+    },
     updateSettings(state, action) {
       const newSettings = action.payload.settings;
       const category = state.entries.findIndex(

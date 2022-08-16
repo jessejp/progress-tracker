@@ -102,6 +102,30 @@ const graphDataSlice = createSlice({
         });
       }
     },
+    deleteData(state, action) {
+      const selectedData = action.payload;
+      const category = state.data.findIndex(
+        (d) => d.category === selectedData.category
+      );
+
+      const deleteExistingData =
+      category > -1
+        ? state.data[category].graphData.findIndex(
+            (d) => d.name === selectedData.name
+          )
+        : false;
+
+      if (selectedData.deletionType === "point") {
+        state.data[category].graphData[deleteExistingData].mass.splice(selectedData.index, 1);
+        state.data[category].graphData[deleteExistingData].reps.splice(selectedData.index, 1);
+        state.data[category].graphData[deleteExistingData].sets.splice(selectedData.index, 1);
+        state.data[category].graphData[deleteExistingData].rpe.splice(selectedData.index, 1);
+        state.data[category].graphData[deleteExistingData].date.splice(selectedData.index, 1);
+      } else if (selectedData.deletionType === "complete") {
+       
+        state.data[category].graphData.splice(deleteExistingData, 1);
+      }
+    },
   },
 });
 

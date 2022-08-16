@@ -37,6 +37,15 @@
 .graphTextContainer {
   display: flex;
   align-items: center;
+  min-height: 70px;
+}
+
+.graphTextContainer svg:nth-child(1), .graphTextContainer button:nth-child(3)  {
+  flex-grow: 1;
+}
+
+.graphTextContainer div:nth-child(2) {
+  flex-grow: 8;
 }
 
 .graphText {
@@ -51,6 +60,12 @@
   font-size: 1em;
   font-family: monospace;
   font-weight: 200;
+}
+
+.deleteButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .graphDateRange {
