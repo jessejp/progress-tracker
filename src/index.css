@@ -37,3 +37,15 @@ button.generic:active {
   border: var(--contrastDark) 1px solid;
   box-shadow: var(--contrast) 0px 0px;
 }
+
+div p.delete {
+  margin: .2em;
+  font-weight: 500;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+button.delete {
+  width: fit-content;
+  background: #fc5567;
+}

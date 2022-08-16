@@ -77,18 +77,18 @@ const EntriesDataInput = (props) => {
   if (props.type !== "RPE") {
     return (
       <div
-        className={css.flexItem}
+        className={`${css.flexItem} ${css.dataInput}`}
         name={props.type}
         onClick={enableEditingHandler}
         onBlur={enableEditingHandler}
         onFocus={enableEditingHandler}
+        onKeyDown={enableEditingHandler}
+        tabIndex={0}
       >
         <label htmlFor={props.type}>{props.type}</label>
         {!enableEditing && (
           <div
             className={css.valueField}
-            onKeyDown={enableEditingHandler}
-            tabIndex={0}
           >
             {props.dataValue}
             {props.unit}
@@ -101,18 +101,18 @@ const EntriesDataInput = (props) => {
   if (props.type === "RPE") {
     return (
       <div
-        className={css.flexItem}
+        className={`${css.flexItem} ${css.dataInput}`}
         name={props.type}
         onClick={enableEditingHandler}
         onBlur={enableEditingHandler}
         onFocus={enableEditingHandler}
+        onKeyDown={enableEditingHandler}
+        tabIndex={0}
       >
-        <label htmlFor={props.type}>{props.type}</label>
+        <label htmlFor={props.type}>intensity</label>
         {!enableEditing && (
           <div
             className={css.valueField}
-            onKeyDown={enableEditingHandler}
-            tabIndex={0}
           >
             <span>{props.dataValue + 1}</span>
             <span>: {props.rpeText[props.dataValue]}</span>

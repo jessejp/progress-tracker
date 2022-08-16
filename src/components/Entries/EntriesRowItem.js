@@ -116,7 +116,7 @@ const EntriesRowItem = (props) => {
   };
 
   return (
-    <div className={css.flexWrapper} key={props.id}>
+    <div className={css.flexWrapper}>
       <div className={`${css.flexItem} ${css.entryName}`}>
         {dataValues.name}
       </div>

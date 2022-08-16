@@ -15,6 +15,9 @@ src/firebase-config.js
 
 # production
 /build
+/.firebase
+.firebaserc
+firebase.json
 
 # misc
 .env
