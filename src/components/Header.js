@@ -1,23 +1,22 @@
 import css from "./Header.module.css";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { sendEntryData, sendGraphData } from "../store/data-actions";
-import {signOutUser} from "../store/auth-actions"
+import { signOutUser } from "../store/auth-actions";
 
 const Header = () => {
   const authData = useSelector((state) => state.auth);
-  const entriesData = useSelector((state) => state.entries);
-  const graphData = useSelector((state) => state.graph);
   const dispatch = useDispatch();
 
   const signoutUserHandler = () => {
     dispatch(signOutUser());
-  }
+  };
 
   return (
     <header>
       <div className={css.headingContainer}>
-        <h1 className={css.heading}>Test Demo</h1>
+        <NavLink to="/entries">
+          <h1 className={css.heading}>Progress Tracker</h1>
+        </NavLink>
         <div>
           {!authData.isLoggedIn && (
             <Link to="authenticate">Login to save data</Link>
@@ -25,7 +24,9 @@ const Header = () => {
           {authData.isLoggedIn && (
             <>
               <p>{authData.email}</p>
-              <button className="generic" onClick={signoutUserHandler}>Sign Out</button>
+              <button className="generic" onClick={signoutUserHandler}>
+                Sign Out
+              </button>
             </>
           )}
         </div>

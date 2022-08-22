@@ -33,7 +33,6 @@
 }
 
 .flexItem.dataInput {
-  
   cursor: pointer;
 }
 
@@ -67,6 +66,13 @@
 .categoryHeading {
   display: flex;
   justify-content: space-between;
+}
+
+.categoryHeadingLinks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 .deleteButton {

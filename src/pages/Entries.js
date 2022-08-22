@@ -62,7 +62,16 @@ const Entries = () => {
           <div className={css.categoryHeading}>
             <h3>{categoryString}</h3>
             {formOpen !== "settings" && categoryString && (
-              <Link to={`settings`}>settings</Link>
+              <div className={css.categoryHeadingLinks}>
+                <Link to={`settings`}>settings</Link>
+
+                <div className={`${css.addItem} iconTextLink`}>
+                  <Link to="addnew">
+                    <span className="material-icons-outlined">add</span>
+                    <span>Add New</span>
+                  </Link>
+                </div>
+              </div>
             )}
           </div>
           {formOpen !== "settings" && entryRows}
