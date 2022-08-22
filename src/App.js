@@ -82,7 +82,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        {unsavedEntries || unsavedGraph ? 'loading...' : ' '}
+        {/* unsavedEntries || unsavedGraph ? 'loading...' : ' ' */}
         <Header />
         <Routes>
           <Route path="/" element={<Navigate replace to="/entries" />} />

@@ -49,28 +49,28 @@ const AddEntryForm = () => {
 
   const updateInputStates = (event) => {
     switch (event.target.id) {
-      case "name":
+      case "add_entry_name":
         setUserInput({
           ...userInput,
           name: event.target.value,
         });
         break;
 
-      case "mass":
+      case "add_entry_mass":
         setUserInput({
           ...userInput,
           mass: event.target.value,
         });
         break;
 
-      case "reps":
+      case "add_entry_reps":
         setUserInput({
           ...userInput,
           reps: event.target.value,
         });
         break;
 
-      case "sets":
+      case "add_entry_sets":
         setUserInput({
           ...userInput,
           sets: event.target.value,
@@ -113,7 +113,7 @@ const AddEntryForm = () => {
       <div className={css.addEntryFormHeading}>
         <div className={css.closeFormContainer}>
           <Link to="/entries" className={`${css.closeForm}`}>
-            <span className="material-icons-outlined">close</span>
+            <span className="add_entry_material-icons-outlined">close</span>
           </Link>
         </div>
         <div>
@@ -149,8 +149,8 @@ const AddEntryForm = () => {
             <label htmlFor="name">Exercise Name</label>
             <input
               type="text"
-              name="name"
-              id="name"
+              name="add_entry_name"
+              id="add_entry_name"
               value={userInput.name}
               onChange={updateInputStates}
             />
@@ -161,8 +161,8 @@ const AddEntryForm = () => {
               <label htmlFor="mass">Mass</label>
               <input
                 type="number"
-                name="mass"
-                id="mass"
+                name="add_entry_mass"
+                id="add_entry_mass"
                 value={userInput.mass}
                 onChange={updateInputStates}
               />
@@ -171,8 +171,8 @@ const AddEntryForm = () => {
               <label htmlFor="kg">kg</label>
               <input
                 type="radio"
-                name="unit"
-                id="kg"
+                name="add_entry_unit"
+                id="add_entry_kg"
                 value="kg"
                 checked={true}
                 onChange={updateInputStates}
@@ -182,8 +182,8 @@ const AddEntryForm = () => {
               <label htmlFor="lbs">lbs.</label>
               <input
                 type="radio"
-                name="unit"
-                id="lbs"
+                name="add_entry_unit"
+                id="add_entry_lbs"
                 value="lbs"
                 onChange={updateInputStates}
               />
@@ -194,8 +194,8 @@ const AddEntryForm = () => {
             <label htmlFor="reps">Reps</label>
             <input
               type="number"
-              name="reps"
-              id="reps"
+              name="add_entry_reps"
+              id="add_entry_reps"
               value={userInput.reps}
               onChange={updateInputStates}
             />
@@ -205,8 +205,8 @@ const AddEntryForm = () => {
             <label htmlFor="sets">Sets</label>
             <input
               type="number"
-              name="sets"
-              id="sets"
+              name="add_entry_sets"
+              id="add_entry_sets"
               value={userInput.sets}
               onChange={updateInputStates}
             />

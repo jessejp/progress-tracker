@@ -2,7 +2,7 @@ import { entryActions } from "./entries-slice";
 import { graphDataActions } from "./graph-data-slice";
 import { uiActions } from "./ui-slice";
 
-import { db } from "../firebase-config";
+import { db, auth } from "../firebase-config";
 import {
   collection,
   getDocs,
@@ -12,10 +12,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-import { getAuth } from "firebase/auth";
 import { authActions } from "./auth-slice";
-
-const auth = getAuth();
 
 const entriesCollectionRef = collection(db, "entries");
 const graphCollectionRef = collection(db, "graphData");

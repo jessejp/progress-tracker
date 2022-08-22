@@ -88,7 +88,7 @@ const entriesSlice = createSlice({
           },
         });
       } else if (!existingEntry && category > -1) {
-        state.entries[category].entryData.push({
+        state.entries[category].entryData.unshift({
           name: newEntry.name,
           mass: newEntry.mass,
           reps: newEntry.reps,

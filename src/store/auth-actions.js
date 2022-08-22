@@ -3,6 +3,7 @@ import { authActions } from "./auth-slice";
 /* import { APIKEY } from "../strings/APIJSON"; */
 import { graphDataActions } from "./graph-data-slice";
 import { entryActions } from "./entries-slice";
+import { auth } from "../firebase-config";
 
 import {
   getAuth,
@@ -18,7 +19,6 @@ import {
   baseURL: "https://identitytoolkit.googleapis.com/v1",
 }); */
 
-const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
 /* export const sendRegisterUser = (newUser) => {
