@@ -87,8 +87,7 @@
 }
 
 .closeFormContainer {
-  position: absolute;
-  right: 1em;
+  order: 2;
 }
 
 .closeForm {

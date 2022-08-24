@@ -4,7 +4,7 @@
 }
 
 .App>div {
-  width: calc(100vw / 4 + 14em);
+  width: calc(30vw + 12em);
 }
 
 .iconTextLink, .iconTextLink a {

@@ -6,40 +6,13 @@ import { entryActions } from "./entries-slice";
 import { auth } from "../firebase-config";
 
 import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
 
-/* const api = axios.create({
-  baseURL: "https://identitytoolkit.googleapis.com/v1",
-}); */
-
 const provider = new GoogleAuthProvider();
-
-/* export const sendRegisterUser = (newUser) => {
-  return async (dispatch) => {
-    const sendRequest = async () => {
-      await api.post(`/accounts:signUp?key=${APIKEY}`, {
-        email: newUser.enteredEmail,
-        password: newUser.enteredPassword,
-        returnSecureToken: true,
-      });
-    };
-
-    try {
-      console.log("registering new user...");
-      await sendRequest();
-    } catch (error) {
-      console.log("sendRegisterUser", error);
-    }
-  };
-};
- */
 
 export const authStateObserver = () => {
   return async (dispatch) => {
@@ -68,43 +41,6 @@ export const signOutUser = () => {
   };
 };
 
-export const sendRegisterUser = (newUser) => {
-  return async (dispatch) => {
-    createUserWithEmailAndPassword(
-      auth,
-      newUser.enteredEmail,
-      newUser.enteredPassword
-    )
-      .then((userCredential) => {
-        // Signed in
-        console.log("Signed in");
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-        console.log(errorCode, errorMessage);
-      });
-  };
-};
-
-/* export const sendSignInUser = (user) => {
-  return async (dispatch) => {
-    signInWithEmailAndPassword(auth, user.enteredEmail, user.enteredPassword)
-      .then((userCredential) => {
-        // Signed in
-        console.log(userCredential.user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-  };
-}; */
-
 export const sendSignInUser = () => {
   return async (dispatch) => {
     signInWithPopup(auth, provider)
@@ -114,7 +50,6 @@ export const sendSignInUser = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const userRes = result.user;
-        console.log(userRes);
         // ...
       })
       .catch((error) => {
@@ -130,40 +65,3 @@ export const sendSignInUser = () => {
       });
   };
 };
-
-/* 
-export const sendSignInUser = (user) => {
-  return async (dispatch) => {
-    await api
-      .post(`/accounts:signInWithPassword?key=${APIKEY}`, {
-        email: user.enteredEmail,
-        password: user.enteredPassword,
-        returnSecureToken: true,
-      })
-      .then((res) => {
-        if (res) {
-          return res;
-        } else {
-          return res.then((data) => {
-            let errorMessage = "Authentication failed!";
-            if (data && data.error && data.error.message) {
-              errorMessage = data.error.message;
-            }
-            throw new Error(errorMessage);
-          });
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        dispatch(
-          authActions.loginUser({
-            token: data.data.idToken,
-            email: data.data.email,
-          })
-        );
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
-}; */
