@@ -113,7 +113,7 @@ const AddEntryForm = () => {
       <div className={css.addEntryFormHeading}>
         <div className={css.closeFormContainer}>
           <Link to="/entries" className={`${css.closeForm}`}>
-            <span className="add_entry_material-icons-outlined">close</span>
+            <span className="material-icons-outlined">close</span>
           </Link>
         </div>
         <div>
